@@ -134,7 +134,8 @@ load_input_regions <- function(data) {
   ### -----------------------------------------------------------------------###
   ## Test if provided file paths in input do exist
 
-  if (!all(file.exists(data$file_path))) {
+  if (!all(file.exists(system.file(package = "peakCombiner", 
+                                   data$file_path)))) {
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
@@ -233,7 +234,8 @@ load_input_regions <- function(data) {
       file_path = data$file_path
     ) |>
     dplyr::mutate(
-      input_file = purrr::map(.data$file_path,
+      input_file = purrr::map(system.file(package = "peakCombiner", 
+                                          .data$file_path),
         readr::read_tsv,
         col_names = colnames_input,
         .progress = FALSE,
