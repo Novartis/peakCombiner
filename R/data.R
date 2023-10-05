@@ -124,7 +124,6 @@
 #' @usage data(blacklist_hg38)
 "blacklist_hg38"
 
-
 #' Blacklisted regions from ENCODE for mouse mm10
 #'
 #' BED file format with blacklisted regions for mouse annotation mm10 with
@@ -136,3 +135,4 @@
 #' @source Downloaded from ENCODE https://www.encodeproject.org/files/ENCFF547MET/
 #' @usage data(blacklist_mm10)
 "blacklist_mm10"
+
