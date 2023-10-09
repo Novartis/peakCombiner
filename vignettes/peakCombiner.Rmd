@@ -82,11 +82,11 @@ devtools::load_all()
 ```
 
 ```{r, eval=TRUE}
-utils::data("syn_sample_sheet")
-syn_sample_sheet
+utils::data("syn_data_tibble")
+syn_data_tibble
 
 data_prepared <- prepare_input_regions(
-  data = syn_sample_sheet,
+  data = syn_data_tibble,
   show_messages = FALSE)
 
 data_center_expand <- center_expand_regions(
@@ -142,12 +142,7 @@ utils::data("syn_sample_sheet")
 syn_sample_sheet
 ```
 
-```{r, eval=TRUE}
-data_prepared <- prepare_input_regions(
-  data = syn_sample_sheet,
-  show_messages = FALSE) 
-data_prepared
-```
+This is the expected structure of an sample_sheet.
 
 If you already have your BED-like region files loaded into your R session, you can alternatively provide them to `prepare_input_regions` as a single GRanges or tibble object with genomic regions and named columns (see section "[Standard genomic regions format]") that, importantly, include a unique sample identifier ('sample_name'). Here, we show as an example the GRanges object.
 
