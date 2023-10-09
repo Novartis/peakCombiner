@@ -134,7 +134,7 @@ load_input_regions <- function(data) {
   ### -----------------------------------------------------------------------###
   ## Test if provided file paths in input do exist
 
-  if (!all(file.exists(ata$file_path))) {
+  if (!all(file.exists(data$file_path))) {
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
