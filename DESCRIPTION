@@ -46,7 +46,8 @@ Imports:
     tibble (>= 3.2.1),
     stats,
     IRanges,
-    rlang
+    rlang,
+    here
 URL:
 BugReports:
 Config/testthat/edition: 3
