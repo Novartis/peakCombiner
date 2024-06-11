@@ -34,7 +34,8 @@ Suggests:
     knitr,
     devtools,
     qpdf,
-    BiocStyle
+    BiocStyle,
+    ggplot2
 DEPENDS:
         dplyr (>= 1.1.2),
         GenomicRanges
