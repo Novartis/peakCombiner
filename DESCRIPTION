@@ -33,7 +33,8 @@ Suggests:
     rtracklayer,
     knitr,
     devtools,
-    qpdf
+    qpdf,
+    BiocStyle
 DEPENDS:
         dplyr (>= 1.1.2),
         GenomicRanges
