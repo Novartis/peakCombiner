@@ -33,7 +33,9 @@ Suggests:
     rtracklayer,
     knitr,
     devtools,
-    qpdf
+    qpdf,
+    BiocStyle,
+    ggplot2
 DEPENDS:
         dplyr (>= 1.1.2),
         GenomicRanges
@@ -45,7 +47,8 @@ Imports:
     tibble (>= 3.2.1),
     stats,
     IRanges,
-    rlang
+    rlang,
+    here
 URL:
 BugReports:
 Config/testthat/edition: 3
