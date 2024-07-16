@@ -180,6 +180,7 @@ cr_disjoin_filter <- function(data,
 #'
 #'
 #' @inheritParams combine_regions
+#' @inheritParams cr_disjoin_filter
 #'
 #' @return A tibble with the following columns: `chrom`, `start`, `end`,
 #' `width`, `strand`, `name`.
@@ -289,7 +290,8 @@ cr_reduce <- function(data) {
 #' be false positive.
 #'
 #' @inheritParams combine_regions
-#'
+#' @inheritParams cr_reduce
+#' #'
 #' @param input The original input file from `combine_regions` to extract center
 #' information
 #'
@@ -453,6 +455,7 @@ cr_overlap_with_summits <- function(data,
 #' In addition, the output data.frame columns `sample_name`, `name` and `score`
 #' will be updated.
 #'
+#' @inheritParams combine_regions
 #' @inheritParams cr_overlap_with_summits
 #'
 #' @return A tibble with the following columns: `chrom`, `start`, `end`, `name`,
