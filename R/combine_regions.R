@@ -94,8 +94,6 @@
 #'
 #' @export
 #'
-#' @importFrom rlang .data
-#'
 #' @examples
 #' # Define infolder
 #' infolder <- here::here()
