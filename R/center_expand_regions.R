@@ -94,10 +94,14 @@
 #'
 #' @export
 #'
+#' @importFrom rlang .data
+#'
 #' @examples
+#' # Define infolder
+#' infolder <- here::here()
 #' # Load in and prepare a an accepted tibble
 #' sample_sheet <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
+#'   paste0("/lists/synthetic_sample_sheet.tsv"),
 #'   show_col_types = FALSE
 #' )
 #' sample_sheet
