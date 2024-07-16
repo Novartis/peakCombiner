@@ -262,11 +262,13 @@ filter_by_blacklist <- function(data,
 
     # Load the blacklist corresponding to the character parameter hg38 or mm10
     if(exclude_by_blacklist == "hg38") {
-      utils::data(blacklist_hg38)
-      blacklist_data <- blacklist_hg38
+      #utils::data(blacklist_hg38)
+      #blacklist_data <- blacklist_hg38
+      blacklist_data <- utils::data(blacklist_hg38)
     } else if(exclude_by_blacklist == "mm10") {
-      utils::data(blacklist_mm10)
-      blacklist_data <- blacklist_mm10
+      #utils::data(blacklist_mm10)
+      #blacklist_data <- blacklist_mm10
+      blacklist_data <- utils::data(blacklist_hg38)
     }
     
     } else {
