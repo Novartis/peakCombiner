@@ -95,14 +95,8 @@
 #' @export
 #'
 #' @examples
-#' # Define infolder
-#' infolder <- here::here()
-#' 
-#' # Load in and prepare input data
-#' sample_sheet <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
-#'   show_col_types = FALSE
-#' )
+#' utils::data("syn_sample_sheet")
+#' sample_sheet <- syn_sample_sheet
 #' sample_sheet
 #'
 #' data_prepared <- prepare_input_regions(
