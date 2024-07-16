@@ -94,8 +94,12 @@
 #'
 #' @export
 #'
-#' @examples
+#' @importFrom rlang .data
 #'
+#' @examples
+#' # Define infolder
+#' infolder <- here::here()
+#' 
 #' # Load in and prepare input data
 #' sample_sheet <- readr::read_tsv(
 #'   paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
