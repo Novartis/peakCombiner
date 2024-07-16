@@ -97,10 +97,9 @@
 #' @importFrom rlang .data
 #'
 #' @examples
-#' # Define infolder
-#' infolder <- here::here()
 #' # Load in and prepare a an accepted tibble
-#' sample_sheet <- utils::data(syn_sample_sheet)
+#' utils::data(syn_sample_sheet)
+#' sample_sheet <- syn_sample_sheet
 #'
 #' # Prepare input data
 #' data_prepared <- prepare_input_regions(
