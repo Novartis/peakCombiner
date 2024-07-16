@@ -3,7 +3,7 @@
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' [peakCombiner].
+#' \pkg{peakCombiner}.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -171,7 +171,7 @@ cr_disjoin_filter <- function(data,
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' [peakCombiner].
+#' \pkg{peakCombiner}.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -180,7 +180,6 @@ cr_disjoin_filter <- function(data,
 #'
 #'
 #' @inheritParams combine_regions
-#' @inheritParams cr_disjoin_filter
 #'
 #' @return A tibble with the following columns: `chrom`, `start`, `end`,
 #' `width`, `strand`, `name`.
@@ -280,7 +279,7 @@ cr_reduce <- function(data) {
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' [peakCombiner].
+#' \pkg{peakCombiner}.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -290,8 +289,7 @@ cr_reduce <- function(data) {
 #' be false positive.
 #'
 #' @inheritParams combine_regions
-#' @inheritParams cr_reduce
-#' #'
+#'
 #' @param input The original input file from `combine_regions` to extract center
 #' information
 #'
@@ -430,7 +428,7 @@ cr_overlap_with_summits <- function(data,
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' [peakCombiner].
+#' \pkg{peakCombiner}.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -456,7 +454,6 @@ cr_overlap_with_summits <- function(data,
 #' will be updated.
 #'
 #' @inheritParams combine_regions
-#' @inheritParams cr_overlap_with_summits
 #'
 #' @return A tibble with the following columns: `chrom`, `start`, `end`, `name`,
 #' `score`, `strand`, `center`, `sample_name`.
