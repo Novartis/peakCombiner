@@ -43,13 +43,16 @@ DEPENDS:
 Imports: 
     stringr,
     tidyr,
+    dplyr,
     purrr (>= 1.0.1),
     readr (>= 2.1.2),
     tibble (>= 3.2.1),
     stats,
     IRanges,
     rlang,
-    here
+    here,
+    GenomicRanges, 
+    tidyselect
 URL:
 BugReports:
 Config/testthat/edition: 3
