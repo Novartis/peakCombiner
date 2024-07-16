@@ -452,8 +452,11 @@ cr_overlap_with_summits <- function(data,
 #'
 #' In addition, the output data.frame columns `sample_name`, `name` and `score`
 #' will be updated.
-#'
+#' 
 #' @inheritParams combine_regions
+#'
+#' @param input The original input file from `combine_regions` to extract center
+#' information
 #'
 #' @return A tibble with the following columns: `chrom`, `start`, `end`, `name`,
 #' `score`, `strand`, `center`, `sample_name`.
