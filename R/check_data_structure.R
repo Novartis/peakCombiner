@@ -1,7 +1,7 @@
 #' Control structure of peakCombiner data structure
 #'
 #' @description
-#' This is a general helper function for the package \\link[peakCombiner]{peakCombiner}. Aim of this
+#' This is a general helper function for the package \pkg{peakCombiner}. Aim of this
 #' function is to check a data frame for the correct column names and classes of
 #' each column to ensure to be an accepte inpuut for functions:
 #' [peakCombiner::center_expand_regions()], [peakCombiner::filter_regions()] and
