@@ -100,11 +100,7 @@
 #' # Define infolder
 #' infolder <- here::here()
 #' # Load in and prepare a an accepted tibble
-#' sample_sheet <- readr::read_tsv(
-#'   paste0("/lists/synthetic_sample_sheet.tsv"),
-#'   show_col_types = FALSE
-#' )
-#' sample_sheet
+#' sample_sheet <- utils::data(syn_sample_sheet)
 #'
 #' # Prepare input data
 #' data_prepared <- prepare_input_regions(
