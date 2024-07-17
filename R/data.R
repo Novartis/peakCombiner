@@ -4,7 +4,7 @@
 #' "file_path", "file_format", and "score_colname".
 #'
 #'
-#' @format ## `syn_sample_sheet` A tibble with 6 rows and 4 columns:
+#' @format `syn_sample_sheet` A tibble with 6 rows and 4 columns.
 #' 
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_sample_sheet)
@@ -15,7 +15,7 @@
 #' Synthetic example blacklisted regions file as tibble with columns "chrom", 
 #' "start", and "end".
 #'
-#' @format ## `syn_blacklist` A tibble with 2 rows and 3 columns:
+#' @format `syn_blacklist` A tibble with 2 rows and 3 columns:
 #' 
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_blacklist)
@@ -27,7 +27,7 @@
 #' "name", "score", "strand" , "center", and "sample_name".
 #'
 #'
-#' @format ## `syn_data_tibble` A tibble with 55 rows and 8 columns:
+#' @format `syn_data_tibble` A tibble with 55 rows and 8 columns:
 #' 
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_data_tibble)
@@ -39,7 +39,7 @@
 #'  "start", "end", "width", "strand", "score", "center", and "sample_name".
 #'
 #'
-#' @format ## `syn_data_granges` A data frame with 55 rows and 8 columns:
+#' @format `syn_data_granges` A data frame with 55 rows and 8 columns:
 #' 
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_data_granges)
@@ -51,7 +51,7 @@
 #' "chrom",  "start", "end", and "sample_name".
 #'
 #'
-#' @format ## `syn_data_bed` A tibble with 55 rows and 4 columns:
+#' @format `syn_data_bed` A tibble with 55 rows and 4 columns:
 #' 
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_data_bed)
@@ -64,7 +64,7 @@
 #' "chrom",  "start", "end", "score", "strand", and "center".
 #'
 #'
-#' @format ## `syn_data_control01` A tibble with 11 rows and 6 columns:
+#' @format `syn_data_control01` A tibble with 11 rows and 6 columns:
 #' 
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_data_control01)
@@ -76,7 +76,7 @@
 #' "chrom",  "start", "end", "score", "strand", and "center".
 #'
 #'
-#' @format ## `syn_data_treatment01` A tibble with 10 rows and 6 columns:
+#' @format `syn_data_treatment01` A tibble with 10 rows and 6 columns:
 #' 
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_data_treatment01)
@@ -89,11 +89,11 @@
 #' "pValue", "qValue" and "peak".
 #'
 #'
-#' @format ## `syn_control_rep1_narrowPeak` A tibble with 11 rows and 6 columns:
+#' @format `syn_control_rep1_narrowPeak` A tibble with 11 rows and 6 columns:
 #' 
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_control_rep1_narrowPeak)
-#syn_control_rep1_narrowPeak"
+"syn_control_rep1_narrowPeak"
 
 #' Synthetic data set for treatment rep 1 sample in narrowPeak file format
 #'
@@ -102,7 +102,7 @@
 #' "pValue", "qValue" and "peak".
 #'
 #'
-#' @format ## `syn_treatment_rep1_narrowPeak` A tibble with 11 rows and 6 columns:
+#' @format `syn_treatment_rep1_narrowPeak` A tibble with 11 rows and 6 columns:
 #' 
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_treatment_rep1_narrowPeak)
@@ -114,7 +114,7 @@
 #' column named "chrom", "start", and "end".
 #'
 #'
-#' @format ## `blacklist_hg38` A tibble with 910 rows and 3 columns:
+#' @format `blacklist_hg38` A tibble with 910 rows and 3 columns:
 #' 
 #' @source Downloaded from ENCODE https://www.encodeproject.org/files/ENCFF356LFX/
 #' @usage data(blacklist_hg38)
@@ -126,7 +126,7 @@
 #' column named "chrom", "start", and "end".
 #'
 #'
-#' @format ## `blacklist_mm10` A tibble with 164 rows and 3 columns:
+#' @format `blacklist_mm10` A tibble with 164 rows and 3 columns:
 #' 
 #' @source Downloaded from ENCODE https://www.encodeproject.org/files/ENCFF547MET/
 #' @usage data(blacklist_mm10)
