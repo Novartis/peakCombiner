@@ -108,40 +108,27 @@
 #' [peakCombiner::combine_regions()].
 #'
 #' @export
-#'
-#' @importFrom rlang .data
+#' 
+#' @import rlang
+#' @import tidyr
+#' @import here
+#' 
 #' 
 #' @examples
-#' utils::data(syn_sample_sheet)
-#' sample_sheet <- syn_sample_sheet
+#' #Load in and prepare a an accepted tibble
+#' input_data <- peakCombiner::syn_data_tibble
+#' input_data
 #'
 #' data_prepared <- prepare_input_regions(
-#'   data = sample_sheet,
+#'   data = input_data,
 #'   show_messages = TRUE
 #' )
 #' data_prepared
 #'
 #' # Or a pre-loaded tibble with genomic regions and named columns.
 #'
-#'
-#'
-#' control <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_data_C1.bed"),
-#'   show_col_types = FALSE,
-#'   col_names = c(
-#'     "chrom", "start", "end", "name",
-#'     "strand", "score", "summit"
-#'   )
-#' )
-#'
-#' treatment <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_data_T1.bed"),
-#'   show_col_types = FALSE,
-#'   col_names = c(
-#'     "chrom", "start", "end", "name",
-#'     "strand", "score", "summit"
-#'   )
-#' )
+#' control <- peakCombiner::syn_data_control01
+#' treatment <- peakCombiner::syn_data_treatment01
 #'
 #' combined_input <- control |>
 #'   dplyr::mutate(sample_name = "control-rep1") |>
@@ -157,7 +144,7 @@ prepare_input_regions <- function(data, show_messages = TRUE) {
   ### -----------------------------------------------------------------------###
   ### Define variables
   ### -----------------------------------------------------------------------###
-
+  
   required_samplesheet_colnames <- c(
     "sample_name", "file_path", "file_format"
   )
