@@ -93,14 +93,18 @@
 #' [peakCombiner::center_expand_regions] and [peakCombiner::filter_regions].
 #'
 #' @export
-#'
+#' 
+#' @import rlang
+#' @import tidyr
+#' @import here
+#' 
 #' @examples
-#' utils::data("syn_sample_sheet")
-#' sample_sheet <- syn_sample_sheet
-#' sample_sheet
+#' #Load in and prepare a an accepted tibble
+#' input_data <- peakCombiner::syn_data_bed
+#' input_data
 #'
 #' data_prepared <- prepare_input_regions(
-#'   data = sample_sheet,
+#'   data = input_data,
 #'   show_messages = FALSE
 #' )
 #'
