@@ -5,8 +5,7 @@
 \alias{syn_sample_sheet}
 \title{Synthetic sample sheet to load example data with peakCombiner}
 \format{
-\subsection{\code{syn_sample_sheet} A tibble with 6 rows and 4 columns:}{
-}
+\code{syn_sample_sheet} A tibble with 6 rows and 4 columns.
 }
 \source{
 Created for R package peakCombiner.

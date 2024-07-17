@@ -5,8 +5,7 @@
 \alias{syn_blacklist}
 \title{Synthetic file with blacklisted regions for peakCombiner}
 \format{
-\subsection{\code{syn_blacklist} A tibble with 2 rows and 3 columns:}{
-}
+\code{syn_blacklist} A tibble with 2 rows and 3 columns:
 }
 \source{
 Created for R package peakCombiner.

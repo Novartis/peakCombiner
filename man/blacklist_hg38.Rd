@@ -5,8 +5,7 @@
 \alias{blacklist_hg38}
 \title{Blacklisted regions from ENCODE for human hg38}
 \format{
-\subsection{\code{blacklist_hg38} A tibble with 910 rows and 3 columns:}{
-}
+\code{blacklist_hg38} A tibble with 910 rows and 3 columns:
 }
 \source{
 Downloaded from ENCODE https://www.encodeproject.org/files/ENCFF356LFX/
