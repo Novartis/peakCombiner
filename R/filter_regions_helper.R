@@ -159,7 +159,7 @@ filter_by_chromosome_names <- function(data,
 #' (default), this step will be skipped.
 #'
 #' @inheritParams filter_regions
-#'
+#' 
 #' @return Data frame filtered by blacklist based on the provided parameters.
 #'
 #' @noRd
@@ -262,11 +262,11 @@ filter_by_blacklist <- function(data,
 
     # Load the blacklist corresponding to the character parameter hg38 or mm10
     if(exclude_by_blacklist == "hg38") {
-      utils::data(blacklist_hg38)
-      blacklist_data <- blacklist_hg38
+      #utils::data(... = blacklist_hg38, package = "peakCombiner")
+      blacklist_data <- peakCombiner::blacklist_hg38
     } else if(exclude_by_blacklist == "mm10") {
-      utils::data(blacklist_mm10)
-      blacklist_data <- blacklist_mm10
+      #utils::data(peakCombiner::blacklist_mm10)
+      blacklist_data <- peakCombiner::blacklist_mm10
     }
     
     } else {
