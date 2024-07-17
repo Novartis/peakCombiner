@@ -109,15 +109,11 @@
 #'
 #' @export
 #'
+#' @importFrom rlang .data
+#' 
 #' @examples
-#' infolder <- here::here()
-#'
-#' # Load a tibble with path to region files  and required meta information
-#' sample_sheet <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
-#'   show_col_types = FALSE
-#' )
-#' sample_sheet
+#' utils::data(syn_sample_sheet)
+#' sample_sheet <- syn_sample_sheet
 #'
 #' data_prepared <- prepare_input_regions(
 #'   data = sample_sheet,
@@ -126,6 +122,8 @@
 #' data_prepared
 #'
 #' # Or a pre-loaded tibble with genomic regions and named columns.
+#'
+#'
 #'
 #' control <- readr::read_tsv(
 #'   paste0(infolder, "/lists/synthetic_data_C1.bed"),
