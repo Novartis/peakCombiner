@@ -9,6 +9,7 @@
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_sample_sheet)
 "syn_sample_sheet"
+
 #' Synthetic file with blacklisted regions for peakCombiner
 #'
 #' Synthetic example blacklisted regions file as tibble with columns "chrom", 
@@ -19,6 +20,7 @@
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_blacklist)
 "syn_blacklist"
+
 #' Synthetic data set of genomic coordinates and meta data columns as tibble
 #'
 #' Synthetic example data set as tibble with columns "chrom", "start", "end", 
@@ -30,6 +32,7 @@
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_data_tibble)
 "syn_data_tibble"
+
 #' Synthetic data set of genomic coordinates and meta data columns
 #'
 #' Synthetic example data set from GenomicRanges object with columns "seqnames",
@@ -41,6 +44,7 @@
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_data_granges)
 "syn_data_granges"
+
 #' Synthetic data set of genomic coordinates and meta data columns
 #'
 #' Synthetic example data set as minimal required input file with columns 
@@ -52,6 +56,7 @@
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_data_bed)
 "syn_data_bed"
+
 #' Synthetic data set of genomic coordinates and meta data columns filtered for 
 #' control rep 1 sample
 #'
@@ -76,6 +81,7 @@
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_data_treatment01)
 "syn_data_treatment01"
+
 #' Synthetic data set for control rep 1 sample in narrowPeak file format
 #'
 #' Synthetic example data set as minimal required input file with columns 
@@ -88,6 +94,7 @@
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_control_rep1_narrowPeak)
 #syn_control_rep1_narrowPeak"
+
 #' Synthetic data set for treatment rep 1 sample in narrowPeak file format
 #'
 #' Synthetic example data set as minimal required input file with columns 
@@ -100,6 +107,7 @@
 #' @source Created for R package peakCombiner.
 #' @usage data(syn_treatment_rep1_narrowPeak)
 "syn_treatment_rep1_narrowPeak"
+
 #' Blacklisted regions from ENCODE for human hg38
 #'
 #' BED file format with blacklisted regions for human annotation hg38 with
@@ -111,6 +119,7 @@
 #' @source Downloaded from ENCODE https://www.encodeproject.org/files/ENCFF356LFX/
 #' @usage data(blacklist_hg38)
 "blacklist_hg38"
+
 #' Blacklisted regions from ENCODE for mouse mm10
 #'
 #' BED file format with blacklisted regions for mouse annotation mm10 with
