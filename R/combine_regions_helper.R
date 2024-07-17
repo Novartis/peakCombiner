@@ -3,7 +3,7 @@
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' \pkg{peakCombiner}.
+#' peakCombiner package.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -171,7 +171,7 @@ cr_disjoin_filter <- function(data,
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' \pkg{peakCombiner}.
+#' peakCombiner package.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -279,7 +279,7 @@ cr_reduce <- function(data) {
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' \pkg{peakCombiner}.
+#' peakCombiner package.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -428,7 +428,7 @@ cr_overlap_with_summits <- function(data,
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' \pkg{peakCombiner}.
+#' peakCombiner package.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -453,8 +453,10 @@ cr_overlap_with_summits <- function(data,
 #' In addition, the output data.frame columns `sample_name`, `name` and `score`
 #' will be updated.
 #' 
-#' @inheritParams combine_regions
-#'
+#' @inheritParams combine_regions combined_center
+#' @inheritParams combine_regions annotate_with_input_names
+#' @inheritParams combine_regions combined_sample_name
+#' 
 #' @param input The original input file from `combine_regions` to extract center
 #' information
 #'
