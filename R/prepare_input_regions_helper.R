@@ -137,7 +137,6 @@ load_input_regions <- function(data) {
   if (!all(file.exists(data$file_path))) {
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
-
     cli::cli_abort(c(
       ">" = "`data` contains column with name 'file_path'.",
       "x" = "At least one file does not exist."
