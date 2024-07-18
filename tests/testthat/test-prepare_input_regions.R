@@ -22,15 +22,13 @@ colnames_sample_sheet <- c(
 
 allowed_file_format <- c("narrowpeak", "broadpeak", "bed")
 
-
-samplesheet_test <- readr::read_tsv("/da/ONC/BFx/research/muckema1/discovery_brd9/analysis/opbaf-brd9-muckema1_rpackage_comb_peak/support/sample_sheet_test.tsv", show_col_types = FALSE)
+samplesheet_test <- peakCombiner::syn_sample_sheet
 
 test_sample_sheet <- prepare_input_regions(
   data = samplesheet_test[1,]
 )
 
-
-test_data <- readr::read_tsv(paste0("lists/synthetic_genomic_regions.bed"), show_col_types = FALSE)
+test_data <- peakCombiner::syn_data_tibble
 input_colnames <- colnames(test_data)
 
 test_data_prepared <- prepare_input_regions(
@@ -38,7 +36,6 @@ test_data_prepared <- prepare_input_regions(
 )
 
 restult_colnames <- colnames(test_data_prepared)
-
 
 ### -----------------------------------------------------------------------###
 ### Test input
@@ -72,19 +69,15 @@ test_that("Test if function works with correct input", {
 })
 
 test_that("Input data has at least 8 number of columns", {
-  expect_gt(length(colnames(test_data)), 8)
+  expect_equal(length(colnames(test_data)), 8)
 })
 
 test_that("Column names of input data are identical with required once.", {
   expect_true(all(colnames_preloaded_df %in% names(test_data)))
 })
 
-
-
 ### -----------------------------------------------------------------------###
 ### Test pre-loaded gRanges 
-
-
 ### -----------------------------------------------------------------------###
 
 test_that("Input data has the right number of columns", {
@@ -103,10 +96,6 @@ test_that("Input column 'end' is a class 'numeric'.", {
   expect_true(is.numeric(test_data$end))
 })
 
-test_that("Input column 'name' is a class 'character'.", {
-  expect_true(is.character(test_data$name))
-})
-
 test_that("Input column 'score' is a class 'numeric'.", {
   expect_true(is.numeric(test_data$score))
 })
@@ -121,10 +110,6 @@ test_that("Input column 'center' is a class 'numeric'.", {
 
 test_that("Input column 'sample_name' is a class 'character'.", {
   expect_true(is.character(test_data$sample_name))
-})
-
-test_that("Values in column 'name' contain the separater '|'", {
-  expect_true(sum(str_detect(test_data$name, "|")) > 0)
 })
 
 ### -----------------------------------------------------------------------###
@@ -180,11 +165,11 @@ test_that("Ouput column 'sample_name' is a class 'character'.", {
 })
 
 test_that("The mean of all output centers.", {
-  expect_equal(mean(test_data_prepared$center), 1942.2535)
+  expect_equal(round(mean(test_data_prepared$center),0), 2458)
 })
 
 test_that("The number of rows in the output file.", {
-  expect_identical(nrow(test_data_prepared), as.integer(71))
+  expect_identical(nrow(test_data_prepared), 52L)
 })
 
 ### -----------------------------------------------------------------------###

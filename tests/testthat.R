@@ -9,4 +9,5 @@
 library(testthat)
 library(peakCombiner)
 
-testthat::test_check("peakCombiner")
+#testthat::test_check(package = "peakCombiner")
+testthat::test_package(package = "peakCombiner")
