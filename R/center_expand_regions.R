@@ -159,7 +159,7 @@ center_expand_regions <- function(data,
       "i" = "Argument {.arg show_messages} is {.val {show_messages}}."
     ))
   }
-
+  
   ### -----------------------------------------------------------------------###
   ### Prepare parameters
   ### -----------------------------------------------------------------------###
