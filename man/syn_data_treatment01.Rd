@@ -6,8 +6,7 @@
 \title{Synthetic data set of genomic coordinates and meta data columns filtered for
 treatment rep 1 sample}
 \format{
-\subsection{\code{syn_data_treatment01} A tibble with 10 rows and 6 columns:}{
-}
+\code{syn_data_treatment01} A tibble with 10 rows and 6 columns:
 }
 \source{
 Created for R package peakCombiner.

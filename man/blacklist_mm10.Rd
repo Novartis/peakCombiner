@@ -5,8 +5,7 @@
 \alias{blacklist_mm10}
 \title{Blacklisted regions from ENCODE for mouse mm10}
 \format{
-\subsection{\code{blacklist_mm10} A tibble with 164 rows and 3 columns:}{
-}
+\code{blacklist_mm10} A tibble with 164 rows and 3 columns:
 }
 \source{
 Downloaded from ENCODE https://www.encodeproject.org/files/ENCFF547MET/

@@ -19,7 +19,7 @@ A tibble with the following columns: \code{chrom}, \code{start}, \code{end},
 \description{
 Helper function for main function \link{combine_regions}.
 Requires in memory data frame in the standard accepted format for the
-\link{peakCombiner}.
+peakCombiner package.
 For details see the details for \link{combine_regions}.
 }
 \details{

@@ -16,7 +16,7 @@ Authors@R: c(person("Markus", "Muckenhuber",
                 comment = c(ORCID = "0000-0002-2269-4934")))
 Depends: R (>= 4.2)
 License: MIT + file LICENSE
-LazyData: FALSE
+LazyData: TRUE
 biocViews:
     WorkflowStep,
     Preprocessing,
@@ -38,18 +38,27 @@ Suggests:
     ggplot2
 DEPENDS:
         dplyr (>= 1.1.2),
-        GenomicRanges
+        GenomicRanges,
+        tidyr,
+        dplyr,
+        tidyselect,
+        stringr,
+        usethis,
+        utils
 Imports: 
-    stringr,
-    tidyr,
     purrr (>= 1.0.1),
     readr (>= 2.1.2),
     tibble (>= 3.2.1),
     stats,
     IRanges,
     rlang,
+    GenomicRanges, 
+    tidyselect,
+    dplyr,
+    tidyr,
     here
-URL:
-BugReports:
+URL:https://github.com/novartis/peakCombiner/, 
+    https://bioconductor.org/packages/peakCombiner
+BugReports:https://github.com/novartis/peakCombiner/issues
 Config/testthat/edition: 3
 VignetteBuilder: knitr

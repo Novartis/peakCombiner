@@ -122,40 +122,20 @@ enriched (based on the values in the column \code{score}). This step is mantory
 to quaranty an optimal result.
 }
 \examples{
-infolder <- here::here()
-
-# Load a tibble with path to region files  and required meta information
-sample_sheet <- readr::read_tsv(
-  paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
-  show_col_types = FALSE
-)
-sample_sheet
+#Load in and prepare a an accepted tibble
+input_data <- peakCombiner::syn_data_tibble
+input_data
 
 data_prepared <- prepare_input_regions(
-  data = sample_sheet,
+  data = input_data,
   show_messages = TRUE
 )
 data_prepared
 
 # Or a pre-loaded tibble with genomic regions and named columns.
 
-control <- readr::read_tsv(
-  paste0(infolder, "/lists/synthetic_data_C1.bed"),
-  show_col_types = FALSE,
-  col_names = c(
-    "chrom", "start", "end", "name",
-    "strand", "score", "summit"
-  )
-)
-
-treatment <- readr::read_tsv(
-  paste0(infolder, "/lists/synthetic_data_T1.bed"),
-  show_col_types = FALSE,
-  col_names = c(
-    "chrom", "start", "end", "name",
-    "strand", "score", "summit"
-  )
-)
+control <- peakCombiner::syn_data_control01
+treatment <- peakCombiner::syn_data_treatment01
 
 combined_input <- control |>
   dplyr::mutate(sample_name = "control-rep1") |>

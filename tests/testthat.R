@@ -7,6 +7,7 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(combpeaksr)
+library(peakCombiner)
 
-test_check("combpeaksr")
+#testthat::test_check(package = "peakCombiner")
+testthat::test_package(package = "peakCombiner")

@@ -5,8 +5,7 @@
 \alias{syn_treatment_rep1_narrowPeak}
 \title{Synthetic data set for treatment rep 1 sample in narrowPeak file format}
 \format{
-\subsection{\code{syn_treatment_rep1_narrowPeak} A tibble with 11 rows and 6 columns:}{
-}
+\code{syn_treatment_rep1_narrowPeak} A tibble with 11 rows and 6 columns:
 }
 \source{
 Created for R package peakCombiner.

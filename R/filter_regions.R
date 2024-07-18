@@ -120,17 +120,18 @@
 #'
 #' @export
 #'
+#' @import rlang
+#' @import tidyr
+#' @import here
+#'
 #' @examples
 #'
-#' # Load in and prepare the input data
-#' sample_sheet <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
-#'   show_col_types = FALSE
-#' )
-#' sample_sheet
+#' #Load in and prepare a an accepted tibble
+#' input_data <- peakCombiner::syn_data_bed
+#' input_data
 #'
 #' data_prepared <- prepare_input_regions(
-#'   data = sample_sheet,
+#'   data = input_data,
 #'   show_messages = TRUE
 #' )
 #'

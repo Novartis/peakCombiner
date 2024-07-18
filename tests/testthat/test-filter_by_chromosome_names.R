@@ -1,7 +1,3 @@
-# Example
-# test_that("multiplication works", {
-#  expect_equal(2 * 2, 4)
-# })
 ##
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
@@ -14,20 +10,20 @@ devtools::load_all()
 ### -----------------------------------------------------------------------###
 ##
 required_colnames <- c(
-  "chr", "start", "end", "name", "score", "strand",
+  "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
 )
 ##
-test_data <- readr::read_tsv("/da/ONC/BFx/research/muckema1/discovery_brd9/analysis/combpeaksr/lists/synthetic_genomic_regions.bed", show_col_types = FALSE)
+test_data <- peakCombiner::syn_data_tibble
 input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- prepare_input_regions(
-  input_data = test_data,
-  score_colname = "qValue"
+  data = test_data
 )
+##
 test_data_center_expand <- center_expand_regions(
   data = test_data_prepared,
-  center_by = "summit",
+  center_by = "center_column",
   expand_by = NULL
 )
 ##
@@ -36,8 +32,8 @@ input_colnames <- colnames(test_data_center_expand)
 keep_chromosomes <- c("chr1", "chr10", "chr42")
 ##
 test_data_filtered <- filter_by_chromosome_names(
-  data_filtered = test_data_center_expand,
-  filter_by_chromosome_names = keep_chromosomes
+  data = test_data_center_expand,
+  include_by_chromosome_name = keep_chromosomes
 )
 ##
 result_colnames <- colnames(test_data_filtered)
@@ -48,8 +44,8 @@ result_colnames <- colnames(test_data_filtered)
 ##
 test_that("Test if function works with correct input", {
   expect_no_error(filter_by_chromosome_names(
-    data_filtered = test_data_center_expand,
-    filter_by_chromosome_names = keep_chromosomes
+    data = test_data_center_expand,
+    include_by_chromosome_name = keep_chromosomes
   ))
 })
 ##
@@ -60,7 +56,7 @@ test_that("Input data frame has the expected structure", {
   ##
   expect_equal(length(input_colnames), 8)
   expect_identical(names(data), required_colnames)
-  expect_true(is.character(data$chr))
+  expect_true(is.character(data$chrom))
   expect_true(is.numeric(data$start))
   expect_true(is.numeric(data$end))
   expect_true(is.character(data$name))
@@ -68,28 +64,29 @@ test_that("Input data frame has the expected structure", {
   expect_true(is.character(data$strand))
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
-  expect_true(sum(str_detect(data$name, "|")) > 0)
+  expect_true(sum(stringr::str_detect(data$name, "|")) > 0)
 })
 ##
 ### -----------------------------------------------------------------------###
 ##
-test_that("Required parameter 'filter_by_chromosome_names' has expected structure", {
+test_that("Required parameter 'filter_by_chromosome_names' has expected 
+          structure", {
   expect_no_error(filter_by_chromosome_names(
-    data_filtered = test_data_filtered,
-    filter_by_chromosome_names = NULL
-  )) |> suppressWarnings()
+    data = test_data_filtered,
+    include_by_chromosome_name = NULL
+  ))
   expect_no_error(filter_by_chromosome_names(
-    data_filtered = test_data_filtered,
-    filter_by_chromosome_names = "chr1"
-  )) |> suppressWarnings()
+    data = test_data_filtered,
+    include_by_chromosome_name = "chr1"
+  ))
   expect_no_error(filter_by_chromosome_names(
-    data_filtered = test_data_filtered,
-    filter_by_chromosome_names = keep_chromosomes
-  )) |> suppressWarnings()
+    data = test_data_filtered,
+    include_by_chromosome_name = keep_chromosomes
+  ))
   ##
   expect_error(filter_by_chromosome_names(
-    data_filtered = test_data_filtered,
-    filter_by_chromosome_names = NA
+    data = test_data_filtered,
+    include_by_chromosome_name = NA
   ))
 })
 ##
@@ -105,7 +102,7 @@ test_that("Output data frame is correct", {
   ##
   expect_identical(class(data)[2], "tbl")
   ##
-  expect_true(is.character(data$chr))
+  expect_true(is.character(data$chrom))
   expect_true(is.numeric(data$start))
   expect_true(is.numeric(data$end))
   expect_true(is.character(data$name))
@@ -114,8 +111,8 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
   ##
-  expect_equal(mean(data$center), 2992.68293)
-  expect_identical(nrow(data), as.integer(41))
+  expect_equal(round(mean(data$center),2), 3168.42)
+  expect_identical(nrow(data), 38L)
   expect_identical(data$start[1], 250)
 })
 ##
