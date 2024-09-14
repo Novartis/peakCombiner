@@ -312,7 +312,7 @@ In memory GenomicRanges object listing the genomic regions in a sample. This obj
     syn_data_granges
     ```
     
-    The column names are based on its orginal GenomicRanges file format. This allows us to easily transform it into a GenomicRanges object. Note that normally we expect you to have the GenomicObject pre-loaded and want to use the `r Biocpkg("peakCombiner")` on this data set. For the purpose of showing you how a accepted GenomicRanges object has be structured we transform it here.
+    The column names are based on its original GRanges file format. This allows us to easily transform it into a GRanges object. Note that normally we expect you to have the GRanges object pre-loaded and want to use the `r Biocpkg("peakCombiner")` on this data set. For the purpose of showing you how a accepted GRanges object has to be structured we transform it here.
      
     ```{r, eval=TRUE}
     GenomicRanges_data <- GenomicRanges::makeGRangesFromDataFrame(syn_data_granges, keep.extra.columns = TRUE)
@@ -321,7 +321,7 @@ In memory GenomicRanges object listing the genomic regions in a sample. This obj
 
 + **Prepare input from GenomicRanges object**
 
-    You can simply use your GenomicRanges object in the parameter ‘data’ and load it in. The output tibble from prepare_input_data can now be used for your next steps with `r Biocpkg("peakCombiner")`. For details about the accepted file structure see section "[Standard genomic regions format]".
+    You can simply use your GRanges object in the parameter ‘data’ and load it in. The output tibble from `prepare_input_data` can now be used for your next steps with `r Biocpkg("peakCombiner")`. For details about the accepted file structure see section "[Standard genomic regions format]".
     
     ```{r, eval=TRUE}
     prepare_input_regions(
@@ -331,7 +331,7 @@ In memory GenomicRanges object listing the genomic regions in a sample. This obj
     ```
     
 ## Explained in detail
-We recommend to use the function `prepare_input_regions` to prepare the input data in the format needed for all of the following steps in `r Biocpkg("peakCombiner")`. In theory you can also manually provided an expected input data when preparing your data following the descriptions in the section "[Standard genomic regions format]".
+We recommend to use the function `prepare_input_regions` to prepare the input data in the format needed for all of the following steps in `r Biocpkg("peakCombiner")`. In theory you can also manually provide an expected input data when preparing your data following the descriptions in the section "[Standard genomic regions format]".
 
 ### Load from BED file
 
@@ -440,7 +440,7 @@ In all cases, the input regions are altered. If you are unsure how to define thi
 
 In this section we want to go into more detail to help you define the ideal parameters for the function `center_expand_regions`. The expected input data structure we described early in this section "[Standard genomic regions format]". 
 
-After the preparation of the input data, the first step, we recommend to do is to center and expand the genomic regions by using `center_expand_regions`. It is useful if you want all of your peaks to be the same size for your downstream analyses or if you want to use the information about the maximum enrichment in each reach (often called 'summit') (stored in the column 'center'), normally obtained by some peak callers (e.g., MACS2). The function allows you to automatically center your regions of interest on these summits to capture information about the most important part within a genomic region (e.g., TF-binding site or highest peak). 
+After the preparation of the input data, the first step, we recommend to center and expand the genomic regions by using `center_expand_regions`. It is useful if you want all of your peaks to be the same size for your downstream analyses or if you want to use the information about the maximum enrichment in each reach (often called 'summit') (stored in the column 'center'), normally obtained by some peak callers (e.g., MACS2). The function allows you to automatically center your regions of interest on these summits to capture information about the most important part within a genomic region (e.g., TF-binding site or highest peak). 
 
 There are two concepts that are relevant to understand the function `center_expand_regions`:
 
@@ -513,6 +513,7 @@ filter_regions(
 ```
 
 The filtering occurred in the order of the parameters and can be described as following: 
+
 1. The data set is filtered to only include chromosomes with the names 'chr1', 'chr2' and 'chr4',
 2. Any remaining regions overlapping with blacklisted human regions are removed,
 3. Regions having a ‘score’ above ‘2.5’ are retained, and 
@@ -589,9 +590,9 @@ data_filtered_chr |>
 
 It is often recommended to exclude blacklisted genomic regions from your analyses, and the `exclude_by_blacklist`  parameter allows you to do that easily. Genomic regions that overlap a blacklisted region with at least 1 base are removed. We provide blacklisted regions from ENCODE for human ([hg38](https://www.encodeproject.org/files/ENCFF356LFX/)) and mouse ([mm10](https://www.encodeproject.org/files/ENCFF547MET/)). The blacklists were manually curated by ENCODE by combing several published blacklisted regions.
 
-While we recommend to use the provided ENCODE blacklists, you can alternatively provide your own blacklist as a tibble containing genomic regions with columns named 'chrom', 'start' and 'end'. In more general terms, you can use any file with genomic locations here to remove overlapping regions, for instance if you want to remove regions oberlapping with promoters you can use this functions here to remove these. 
+While we recommend to use the provided ENCODE blacklists, you can alternatively provide your own blacklist as a tibble containing genomic regions with columns named 'chrom', 'start' and 'end'. In more general terms, you can use any file with genomic locations here to remove overlapping regions, for instance if you want to remove regions overlapping with promoters you can use this functions here to remove these. 
 
-If you would like to remove blacklisted regions from multiple sources, you can run `filter_regions` repeatedly times, for example first to remove the ENCODE blacklisted regions and then to remove your own blacklisted sites. We show how to do this below. 
+If you would like to remove blacklisted regions from multiple sources, you can run `filter_regions` repeatedly, for example first to remove the ENCODE blacklisted regions and then to remove your own blacklisted sites. We show how to do this below. 
 
 #### Filter for enrichment value
 Setting this parameter allows you to retain any peak that has a bigger score than the `include_above_score_cutoff` value based on the values in the column 'score'. Recall that [`prepare_input_regions`][Prepare input data] defines the 'score' by default if possible (e.g., it takes the value of -log10(FDR) using a ‘narrowPeak’ file from MACS2 as input). As scores might differ between experiments, we recommend that you look at the distribution of the values in 'score' to help you choose the best threshold value for `include_above_score_cutoff` for your data set.
@@ -633,7 +634,7 @@ range(data_filtered_cutoff |>
 Again, we see that sites with 'score' 2.5 and below are removed.
 
 #### Select a defined number of regions
-You can also select a fixed number of highest scoring regions per sample to extract the top enriched sites. An information message is shown if any sample does not have the required number of regions left in your input data. If your 'score' values vary widely between samples you may select widely different numbers of regions using the `include_above_cutoff`. In this case, using this approach will help you select the similar numbers of regions for each sample. The exact same number of regions may not be selected for each sample because sometimes multiple genomic regions may have the same 'score' value. In this case, all of the tied genomic regions are retained.
+You can also select a fixed number of highest scoring regions per sample to extract the top enriched sites. An information message is shown if any sample does not have the required number of regions left in your input data. If your 'score' values vary widely between samples you may select widely different numbers of regions using the `include_above_cutoff`. In this case, using this approach will help you select similar numbers of regions for each sample. The exact same number of regions may not be selected for each sample because sometimes multiple genomic regions may have the same 'score' value. In this case, all of the tied genomic regions are retained.
 ```{r, eval=TRUE}
 data_center_expand |>
   dplyr::group_by(sample_name) |> 
@@ -646,14 +647,14 @@ filter_regions(
   dplyr::group_by(sample_name) |> 
   dplyr::summarize(num_regions = dplyr::n())
 ```
-We requested that only the top 8 genomic regions would be retained for each sample, and we can see in the information messages that `r Biocpkg("peakCombiner")` that one samples (‘control03’) contains less then the required 8 site. For the remaining samples, we select the expected 8 regions per sample.
+We requested that only the top 8 genomic regions would be retained for each sample, and we can see in the information messages that `r Biocpkg("peakCombiner")` that one sample (‘control03’) contains less then the required 8 sites. For the remaining samples, we select the expected 8 regions per sample.
 
 # Combine regions
 After loading and preparing the regions from your samples, you can use them to build your set of consensus regions using `combine_regions`.
 
-The most important parameter that affects the final set of consensus regions is 'found_in_samples', which allows you to retain a genomic region based on how many samples it was found in (Counting the unique entries in 'sample_name'). It is up to you to define this parameter based on your input data and analysis goals. The default is '2' samples, as we assume that each condition has three biological replicates and most users would like to focus on regions to be found in at lest two of these replicates. See the explained in detail section "[Define parameter to best combine regions]" for more considerations on setting this parameter.
+The most important parameter that affects the final set of consensus regions is 'found_in_samples', which allows you to retain a genomic region based on how many samples it was found in (counting the unique entries in 'sample_name'). It is up to you to define this parameter based on your input data and analysis goals. The default is '2' samples, as we assume that each condition has three biological replicates and most users would like to focus on regions to be found in at lest two of these replicates. See the explained in detail section "[Define parameter to best combine regions]" for more considerations on setting this parameter.
 
-The other parameters allow you to configure how the new consensus regions are annotated. For example, you can define how the 'center' column is populated ('combined_center') and what new 'sample_name' should be used for the new consensus regions ('combined_sample_name'). Based on the selected value for the parameter 'combined_center', the new column 'score' is filled (For details see section [Which center to select for the consensus regions?]). If you want to trace which samples and genomic regions contributed to a new consensus region, you can use 'annotate_with_input_names' to create a new column ‘input_name’ describing links to the input genomic regions.
+The other parameters allow you to configure how the new consensus regions are annotated. For example, you can define how the 'center' column is populated ('combined_center') and what new 'sample_name' should be used for the new consensus regions ('combined_sample_name'). Based on the selected value for the parameter 'combined_center', the new column 'score' is filled (for details see section [Which center to select for the consensus regions?]). If you want to trace which samples and genomic regions contributed to a new consensus region, you can use 'annotate_with_input_names' to create a new column ‘input_name’ describing links to the input genomic regions.
 
 ## Quick start
 Following is a quick example that uses default parameters.
@@ -667,7 +668,7 @@ combine_regions(
 ```
 
 ## Run to combine regions
-We run the function `combine_regions` and give the value 'consensus' to the parameter `combined_sample_name` and we want to have the link to our input regions by setting `annotattion_with_input_name` to 'TRUE'. 
+We run the function `combine_regions` and give the value 'consensus' to the parameter `combined_sample_name` and we want to have the link to our input regions by setting `annotate_with_input_name` to 'TRUE'. 
 
 In brief, a description what the parameter you can define do. For more details please see below section "[Define parameter to best combine regions]". 
 
@@ -695,22 +696,22 @@ Here we briefly describe what is happening under the hood.
 
 + **Binning and counting of each genomic input region:** 
     
-    First step is to apply the GenomicRanges function `disjoin` to split up peaks depending on the number of input samples contributing. This numbers are counted to get the coverage of each genomic regions. These counts are then used for filtering using the parameter `found_in_samples`, which is defined by the user. If `found_in_samples` is a fraction between 0 and 1, then only include genomic regions that are found in at least this fraction of input samples. Default value is 2. *Please note* if `found_in_samples` is set to 1 all genomic regions covered in at least one sample are included, this makes this function to simply merge all input regions.
+    First step is to apply the GenomicRanges function `disjoin` to split up peaks depending on the number of input samples contributing. These numbers are counted to get the coverage of each genomic region. These counts are then used for filtering using the parameter `found_in_samples`, which is defined by the user. If `found_in_samples` is a fraction between 0 and 1, then only include genomic regions that are found in at least this fraction of input samples. Default value is 2. *Please note* if `found_in_samples` is set to 1 all genomic regions covered in at least one sample are included, this makes this function to simply merge all input regions.
 
 + **Recombine separated genomic regions:** 
 
-    As next step we perform `reduce`, another GRangers operation, to combine regions adjesent to each other. If regions are separated by at least a single nucelotide, we keep them separatly.  
+    As next step we perform `reduce`, another GRanges operation, to combine regions adjacent to each other. If regions are separated by at least a single nucelotide, we keep them separately.  
 
 + **Overlap with summits:** 
 
-    This is a quality control function for the resulting genomic regions specifically developed for `peakCombiner` package. To remove potenial false posotive sites, we designed the function `combine_regions` to check for an overlap between newly combined regions and input summits. If at least one overlap is found, the new region will be maintained, othrwise it is removed.
+    This is a quality control function for the resulting genomic regions specifically developed for `r Biocpkg("peakCombiner")`. To remove potential false positive sites, we designed the function `combine_regions` to check for an overlap between newly combined regions and input summits. If at least one overlap is found, the new region will be maintained, otherwise it is removed.
 
 + **Restore data structure**: 
 
-    In this final step, we restore the accepted data structure for working with `r Biocpkg("peakCombiner")` functions ensure the modularity of the package. This allows a user to apply the functions `center_expand_resgions` and `filter_resgions` to the combined consensus region file. Therefore, 'center', 'score' and 'sample_name' columns are created and populated based on the user defined parameters.
+    In this final step, we restore the accepted data structure for working with `r Biocpkg("peakCombiner")` functions to ensure the modularity of the package. This allows a user to apply the functions `center_expand_resgions` and `filter_resgions` to the combined consensus region file. Therefore, 'center', 'score' and 'sample_name' columns are created and populated based on the user defined parameters.
     
 ### Define parameter to best combine regions
-Here we explain the parameter you can set for the function `combine_regions` and the defaults we recommend. 
+Here we explain the parameters you can set for the function `combine_regions` and the defaults we recommend. 
 
 #### In how many samples should a region be found?
 
