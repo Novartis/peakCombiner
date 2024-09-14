@@ -13,7 +13,9 @@ Authors@R: c(person("Markus", "Muckenhuber",
              person("Michael", "Stadler",
                 email = "",
                 role = c("aut"),
-                comment = c(ORCID = "0000-0002-2269-4934")))
+                comment = c(ORCID = "0000-0002-2269-4934")),
+             person("Novartis Biomedical Research", 
+                role = c("cph")))
 Depends: R (>= 4.2)
 License: MIT + file LICENSE
 LazyData: FALSE
