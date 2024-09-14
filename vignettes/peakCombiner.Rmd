@@ -27,7 +27,7 @@ library(BiocStyle)
 ```
 
 # Introduction
-This vignette for the R package `peakCombiner` guides you through the preparation of all accepted input files and how to define the best parameters for your analysis. Our goal is to provide you with easy to understand, transparent and modular framework to create the consensus regions file you need to address your scientific question.
+This vignette for the R package `r Biocpkg("peakCombiner")` guides you through the preparation of all accepted input files and how to define the best parameters for your analysis. Our goal is to provide you with an easy to understand, transparent and modular framework to create the consensus regions file you need to address your scientific question.
 
 ## Abstract
 Genome-wide epigenomic data sets like ChIP-seq and ATAC-seq typically use tools (e.g. MACS [@macs]) to identify genomic regions of interest, so-called peaks, usually for multiple sample replicates and across experimental conditions. Many downstream analyses require a consensus set of genomic regions relevant to the experiment, but current tools within the R ecosystem to easily and flexibly create combined peak sets from conditions and replicates are limited. Here, we describe `r Biocpkg("peakCombiner")`, a fully R-based, user-friendly, transparent, and flexible tool that allows even novice R users to create a high-quality consensus peak list. The modularity of its functions allows an easy way to filter and recenter input and output data. A broad range of accepted input data formats can be used as input to `r Biocpkg("peakCombiner")`, and the resulting consensus regions set can be exported to a file or used immediately as the starting point for most downstream peak analyses.
@@ -44,13 +44,13 @@ The package `r Biocpkg("peakCombiner")` contains four main functions to curate a
 | [`filter_regions`][Filter regions]        | Allows you to filter your genomic regions.                            | See in section [Filter regions].
 | [`combine_regions`][Combine Regions]       | Combine overlapping genomic regions to create a single set of consensus genomic regions.              | See in section [Combine regions].
 
-Each `r Biocpkg("peakCombiner")` function has the parameter`show_messages` that by default prints feedback messages as functions run. If you plan to use `r Biocpkg("peakCombiner")` non-interactively in a workflow, you can silence these messages by setting `show_messages = FALSE`. Note that error messages will still be printed to help you to troubleshoot potential problems.
+Each `r Biocpkg("peakCombiner")` function has the parameter `show_messages` that by default prints feedback messages as functions run. If you plan to use `r Biocpkg("peakCombiner")` non-interactively in a workflow, you can silence these messages by setting `show_messages = FALSE`. Note that error messages will still be printed to help you to troubleshoot potential problems.
 
 ## Standard genomic regions format
 The modularity of `r Biocpkg("peakCombiner")` is enabled by standardizing how the genomic regions and samples are represented in the input and output of all its functions. We chose to use a tibble because this allows you to easily plot and explore the data. 
 The columns are described in the table below. Only ‘chrom’, ‘start’, ‘end’, ‘sample_name’ are required to use `r Biocpkg("peakCombiner")`, but you have more possibilities for [`center_expand_regions`][Center and expand regions] and [`filter_regions`][Filter regions] if you can provide the optional ‘score’ and ‘center’ columns.
-If you can’t provide data for the optional columns, prepare_input_regions adds sensible defaults for you (see “Relevant Section”).
-We recommend that you create this standard tibble using prepare_input_regions (see section “Prepare input data”), but you can also prepare it yourself (see section "[Load from pre-loaded tibble]")
+If you can’t provide data for the optional columns, `prepare_input_regions` adds sensible defaults for you (see “Relevant Section”).
+We recommend that you create this standard tibble using `prepare_input_regions` (see section “Prepare input data”), but you can also prepare it yourself (see section "[Load from pre-loaded tibble]")
 
 
 |Column name |Requirement |Content     |Details 
@@ -74,8 +74,8 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("peakCombiner")
 ```
 
-# A fast start for a complete run
-Here you find a fast start with `r Biocpkg("peakCombiner")` and all function how we do recommend using it.
+# An overview of a complete run
+Here you find an overview of a complete run of the `r Biocpkg("peakCombiner")` recommended workflow.
 ```{r, eval=TRUE}
 devtools::load_all()
 #library("peakCombiner")
@@ -113,9 +113,8 @@ consensus_final <- center_expand_regions(
 consensus_final
 ```
 
-Please not that the message occurring during the [`filter_regions`][Filter regions] is expected if chromosome names between input sample and blacklist are not absolutely identical.
+Please note that the message occurring during the [`filter_regions`][Filter regions] is expected if chromosome names between input sample and blacklist are not absolutely identical.
 
-* Export regions
 Finally we export the resulting consensus regions tibble and save it as BED-file. To establish a classical BED-file we remove here the column names. 
 
 ```{r, eval=FALSE}
@@ -124,14 +123,15 @@ rtracklayer::export.bed(consensus_final, paste0(here::here(),"/lists/consensus_r
 
 
 # Prepare input data
-In this section, we explain how to prepare the accepted, standardized input files and how to add needed features to these files. `prepare_input_regions` is the mandatory first step to prepare your input data in the format needed for all of the following steps in `r Biocpkg("peakCombiner")` (For details see section "[Standard genomic regions format]"). This function accepts three types of input formats: 
+In this section, we explain how to prepare the accepted, standardized input files and how to add needed features to these files. `prepare_input_regions` is the mandatory first step to prepare your input data in the format needed for all of the following steps in `r Biocpkg("peakCombiner")` (for details see section "[Standard genomic regions format]"). This function accepts three types of input formats: 
+
 + a tibble of genomic regions and specifically named columns, 
 + a GenomicRanges object of genomic regions and specifically named columns, or 
 + a tibble (sample sheet) that specifies file paths of BED-like files for a set of samples (e.g. standard output files from peak callers like ‘narrowPeak’ files).
 
-*Please note* that the function `prepare_input_regions` also has a filtering step, which automatically checks for genomic regions with the same values in the columns 'chrom', 'start', 'end' and 'sample_name' and filter for the strongest enriched summit (based on the 'score' values) per region. Additional summits are removed. Regions from peak callers can have multiple summits annotated per enriched genomic regions. This step is *not optional*.
+*Please note* that the function `prepare_input_regions` also has a filtering step, which automatically checks for genomic regions with the same values in the columns 'chrom', 'start', 'end' and 'sample_name' and filters for the strongest enriched summit (based on the 'score' values) per region. Additional summits are removed. Regions from peak callers can have multiple summits annotated per enriched genomic regions. This step is *not optional*.
 
-`prepare_input_regions` returns the data that you need for all your future work as a tibble having the structure as described in section "[Standard genomic regions format]".
+`prepare_input_regions` returns the data that you need for all your future work as a tibble having the structure as described in the section "[Standard genomic regions format]".
 
 ## Quick start
 This is for you if you want to jump right in with some code. 
@@ -142,9 +142,9 @@ utils::data("syn_sample_sheet")
 syn_sample_sheet
 ```
 
-This is the expected structure of an sample_sheet.
+This is the expected structure of a sample_sheet.
 
-If you already have your BED-like region files loaded into your R session, you can alternatively provide them to `prepare_input_regions` as a single GRanges or tibble object with genomic regions and named columns (see section "[Standard genomic regions format]") that, importantly, include a unique sample identifier ('sample_name'). Here, we show as an example the GRanges object.
+If you already have your BED-like region files loaded into your R session, you can alternatively provide them to `prepare_input_regions` as a single GRanges or tibble object with genomic regions and named columns (see section "[Standard genomic regions format]") that, importantly, include a unique sample identifier ('sample_name'). Here, we show as an example the tibble object.
 
 ```{r, eval=TRUE}
 utils::data("syn_data_control01")
@@ -175,7 +175,7 @@ prepare_input_regions(data = combined_input,
 ```
 
 ## Load from sample sheet
-We recommend that you use a sample sheet to prepare your data, especially if you have 'narrowPeak' or 'broadPeak' files. `prepare_input_regions` loads in the genomic regions file and formats them so that they are read to be used in peakCombiner’s other functions. The sample sheet has three required columns and one optional column, and is described as follows.
+We recommend that you use a sample sheet to prepare your data, especially if you have 'narrowPeak' or 'broadPeak' files. `prepare_input_regions` loads in the genomic regions file and formats them so that they are ready to be used in peakCombiner’s other functions. The sample sheet has three required columns and one optional column, and is described as follows.
 
 |Column name |Requirement |Column content      |Details
 |:-----------|:-----------|:-------------------|:-------------------
@@ -229,9 +229,9 @@ The following code illustrates how you prepare an accepted sample sheet in R.
 This returned value is a tibble that contains all required information formatted correctly in order to use the downstream functions within `r Biocpkg("peakCombiner")`. For more information about its structure, go back to the "[Standard genomic regions format]" section. 
 
 ## Load from pre-loaded tibble 
-If you have already been working with your genomic regions from within an R session, you may have them pre-loaded as a tibble (this section) or as a GRanges object (next section: [Load from GenomicRanges object]). This could be either that per sample one tibble exists or that you ran `r Biocpkg("peakCombiner")` before on two data sets and now want to combine these. In this section we show you prepare your input data from pre-loaded tibbles.
+If you have already been working with your genomic regions from within an R session, you may have them pre-loaded as a tibble (this section) or as a GRanges object (next section: [Load from GenomicRanges object]). This could be either that per sample one tibble exists or that you ran `r Biocpkg("peakCombiner")` before on two data sets and now want to combine these. In this section we show how you prepare your input data from pre-loaded tibbles.
 
-When we start by loading in two of our synthetic data sets in 'narrowPeak' format, a common format generated by peak callers like MACS. Most BED-like files (including 'narrowPeak' files) don’t include column names in the file so you will have to name them yourself using the standard naming conventions from as described by UCSC for [BED](https://genome.ucsc.edu/FAQ/FAQformat.html#format1) or [narrowPeak](https://genome.ucsc.edu/FAQ/FAQformat.html#format12) or [broadPeak](https://genome.ucsc.edu/FAQ/FAQformat.html#format13). As we know what to expect in each column we can name the columns correctly: 'chrom' (X1), 'start' (X2), 'end' (X3), 'name' (X4), 'score' (X5) and the 'strand' (X6). To be clear, the names that you define for the columns are used by `prepare_input_regions` to property format the data.
+We start by loading in two of our synthetic data sets in 'narrowPeak' format, a common format generated by peak callers like MACS. Most BED-like files (including 'narrowPeak' files) don’t include column names in the file so you will have to name them yourself using the standard naming conventions as described by UCSC for [BED](https://genome.ucsc.edu/FAQ/FAQformat.html#format1) or [narrowPeak](https://genome.ucsc.edu/FAQ/FAQformat.html#format12) or [broadPeak](https://genome.ucsc.edu/FAQ/FAQformat.html#format13). As we know what to expect in each column we can name the columns correctly: 'chrom' (X1), 'start' (X2), 'end' (X3), 'name' (X4), 'score' (X5) and the 'strand' (X6). To be clear, the names that you define for the columns are used by `prepare_input_regions` to property format the data.
     
 Columns named 'chrom', 'start', 'end', 'name', 'score', 'strand', 'center' and 'sample_name' are maintained. *Please note* that within `r Biocpkg("peakCombiner")` we call columns with relative information about the peak summit 'summit' and with absolute values 'center'. So, if a column named 'summit' is provided, it is used to populate a column named 'center'. All other columns are dropped at the end of `prepare_input_regions`. 
 
@@ -298,7 +298,7 @@ Columns named 'chrom', 'start', 'end', 'name', 'score', 'strand', 'center' and '
         )
     ```
 
-The output tibble from prepare_input_data can now be used for your next steps with `r Biocpkg("peakCombiner")`. For details about the accepted file structure see section "[Standard genomic regions format]".
+The output tibble from `prepare_input_data` can now be used for your next steps with `r Biocpkg("peakCombiner")`. For details about the accepted file structure see section "[Standard genomic regions format]".
 
 ## Load from GenomicRanges object
 In memory GenomicRanges object listing the genomic regions in a sample. This object is very similar to the tibble above, except that `chrom`, `start`, and `end` are instead described using the `GenomicRanges` nomenclature (See [here](https://bioconductor.org/packages/devel/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.html) for details ).
