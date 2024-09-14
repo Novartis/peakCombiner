@@ -792,3 +792,5 @@ This vignette was built using:
 ```{r, session, eval=TRUE}
 sessionInfo()
 ```
+
+# References
