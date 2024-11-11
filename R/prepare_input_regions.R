@@ -108,14 +108,14 @@
 #' [peakCombiner::combine_regions()].
 #'
 #' @export
-#' 
-#' @import rlang
+#'
+#' @importFrom rlang .data
 #' @import tidyr
 #' @import here
-#' 
-#' 
+#'
+#'
 #' @examples
-#' #Load in and prepare a an accepted tibble
+#' # Load in and prepare a an accepted tibble
 #' input_data <- peakCombiner::syn_data_tibble
 #' input_data
 #'
@@ -144,7 +144,7 @@ prepare_input_regions <- function(data, show_messages = TRUE) {
   ### -----------------------------------------------------------------------###
   ### Define variables
   ### -----------------------------------------------------------------------###
-  
+
   required_samplesheet_colnames <- c(
     "sample_name", "file_path", "file_format"
   )
@@ -192,7 +192,6 @@ prepare_input_regions <- function(data, show_messages = TRUE) {
   } else if (isFALSE(show_messages)) {
     options("rlib_message_verbosity" = "quiet")
   } else {
-
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
@@ -246,6 +245,7 @@ prepare_input_regions <- function(data, show_messages = TRUE) {
   } else {
     # show error independend of show_messages
     options("rlib_message_verbosity" = "default")
+
     cli::cli_abort(c(
       "x" = "Provide input {.arg data} does not have the required format.",
       "!" = "Please check your column names in {.arg data}."

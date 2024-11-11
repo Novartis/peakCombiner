@@ -21,7 +21,7 @@ input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- prepare_input_regions(
   data = test_data
-  )
+)
 ##
 ### -----------------------------------------------------------------------###
 ### Test input
@@ -38,18 +38,18 @@ test_that("Test if function works with correct input", {
 ##
 test_that("Required colnumn names has the expected structure", {
   data <- test_data
-  
+
   expect_equal(length(input_colnames), 8)
   expect_identical(names(data), required_colnames)
   expect_true(is.character(data$chrom))
   expect_true(is.numeric(data$start))
   expect_true(is.numeric(data$end))
-  expect_true(length(data$name)>0)
+  expect_true(length(data$name) > 0)
   expect_true(is.numeric(data$score))
   expect_true(is.character(data$strand))
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
-  #expect_true(sum(stringr::str_detect(data$name, "|")) > 0)
+  # expect_true(sum(stringr::str_detect(data$name, "|")) > 0)
 })
 ##
 test_that("Required colnumn names has the expected structure", {

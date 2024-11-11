@@ -11,18 +11,18 @@ devtools::load_all()
 ##
 input_colnames <- c(
   "chrom", "start", "end", "width", "strand", "name", "center", "score"
-  )
+)
 ##
 required_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
 )
 output_colnames <- c(
-  "chrom", "start", "end", "strand", "name", "score",  "center",
+  "chrom", "start", "end", "strand", "name", "score", "center",
   "sample_name", "input_names"
 )
 ##
-#test_data <- readr::read_tsv("/da/ONC/BFx/research/muckema1/discovery_brd9/analysis/combpeaksr/lists/synthetic_genomic_regions.bed", show_col_types = FALSE)
+# test_data <- readr::read_tsv("/da/ONC/BFx/research/muckema1/discovery_brd9/analysis/combpeaksr/lists/synthetic_genomic_regions.bed", show_col_types = FALSE)
 test_data <- peakCombiner::syn_sample_sheet
 ##
 test_data_prepared <- prepare_input_regions(
@@ -152,7 +152,7 @@ test_that("Output data frame is correct", {
   ##
   expect_identical(nrow(data), as.integer(8))
   expect_identical(data$center[1], 501)
-  expect_identical(round(sum(data$score),2), 30.17)
+  expect_identical(round(sum(data$score), 2), 30.17)
   ##
 })
 ##

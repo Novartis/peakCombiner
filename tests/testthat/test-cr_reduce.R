@@ -16,7 +16,7 @@ input_colnames <- c(
 ##
 output_colnames <- c("chr", "start", "end", "width", "strand", "input_names")
 ##
-#test_data <- readr::read_tsv("/da/ONC/BFx/research/muckema1/discovery_brd9/analysis/combpeaksr/lists/synthetic_genomic_regions.bed", show_col_types = FALSE)
+# test_data <- readr::read_tsv("/da/ONC/BFx/research/muckema1/discovery_brd9/analysis/combpeaksr/lists/synthetic_genomic_regions.bed", show_col_types = FALSE)
 test_data <- peakCombiner::syn_data_tibble
 ##
 test_data_prepared <- prepare_input_regions(
@@ -39,22 +39,23 @@ test_data_filtered <- filter_regions(
 ##
 test_data_disjoin_filter <- cr_disjoin_filter(
   data = test_data_filtered,
-  found_in_samples = 2)
+  found_in_samples = 2
+)
 ##
 test_data_reduce <- cr_reduce(
   data = test_data_disjoin_filter
-  )
+)
 ##
 output_colnames <- colnames(
   test_data_reduce
-  )
+)
 ##
 ### -----------------------------------------------------------------------###
 ### Test input
 ### -----------------------------------------------------------------------###
 ##
 test_that("Input data frame has the expected structure", {
-  data <- test_data_disjoin_filter |> 
+  data <- test_data_disjoin_filter |>
     dplyr::mutate(chrom = as.character(chrom))
   ##
   expect_equal(length(names(data)), 12)
@@ -71,7 +72,7 @@ test_that("Input data frame has the expected structure", {
 ### -----------------------------------------------------------------------###
 ##
 test_that("Output data frame is correct", {
-  data <- test_data_reduce |> 
+  data <- test_data_reduce |>
     dplyr::mutate(chrom = as.character(chrom))
   ##
   expect_setequal(colnames(data), output_colnames)

@@ -47,10 +47,10 @@
 #'                                    to 'NULL' (default), this step will be
 #'                                    skipped (optional).
 #'                                    Please note that if there are not matching
-#'                                    entries in the 'chrom' columns of input 
-#'                                    and blacklist, an information message is 
-#'                                    displayed. This can happend und does not 
-#'                                    cause any problems with the script. 
+#'                                    entries in the 'chrom' columns of input
+#'                                    and blacklist, an information message is
+#'                                    displayed. This can happend und does not
+#'                                    cause any problems with the script.
 #' * `include_above_score_cutoff` -   Single numeric value that defines the
 #'                                    `score` threshold above which all genomic
 #'                                    regions will be retained. The `score`
@@ -120,13 +120,13 @@
 #'
 #' @export
 #'
-#' @import rlang
+#' @importFrom rlang .data
 #' @import tidyr
 #' @import here
 #'
 #' @examples
 #'
-#' #Load in and prepare a an accepted tibble
+#' # Load in and prepare a an accepted tibble
 #' input_data <- peakCombiner::syn_data_bed
 #' input_data
 #'
@@ -152,7 +152,6 @@ filter_regions <- function(data,
                            include_above_score_cutoff = NULL,
                            include_top_n_scoring = NULL,
                            show_messages = TRUE) {
-
   ### -----------------------------------------------------------------------###
   ### Define parameters
   ### -----------------------------------------------------------------------###

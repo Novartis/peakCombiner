@@ -122,7 +122,7 @@ enriched (based on the values in the column \code{score}). This step is mantory
 to quaranty an optimal result.
 }
 \examples{
-#Load in and prepare a an accepted tibble
+# Load in and prepare a an accepted tibble
 input_data <- peakCombiner::syn_data_tibble
 input_data
 

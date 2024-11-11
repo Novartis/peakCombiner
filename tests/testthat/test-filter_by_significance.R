@@ -114,7 +114,7 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
   ##
-  expect_equal(round(mean(data$center),2), 2547.37)
+  expect_equal(round(mean(data$center), 2), 2547.37)
   expect_identical(nrow(data), 38L)
   expect_identical(data$start[1], 4550)
 })

@@ -34,30 +34,30 @@ Suggests:
     knitr,
     devtools,
     qpdf,
-    BiocStyle,
-    ggplot2
+    BiocStyle
 DEPENDS:
         dplyr (>= 1.1.2),
         GenomicRanges,
         tidyr,
-        dplyr,
         tidyselect,
         stringr,
         usethis,
-        utils
+        utils,
+        stats
 Imports: 
+        tidyr,
+        dplyr,
+         IRanges,
+        GenomicRanges,
+        tidyselect,
+        ggplot2,
     purrr (>= 1.0.1),
     readr (>= 2.1.2),
     tibble (>= 3.2.1),
-    stats,
-    IRanges,
     rlang,
-    GenomicRanges, 
-    tidyselect,
-    dplyr,
-    tidyr,
     here
-URL:https://github.com/novartis/peakCombiner/, 
+URL:
+    https://github.com/novartis/peakCombiner/, 
     https://bioconductor.org/packages/peakCombiner
 BugReports:https://github.com/novartis/peakCombiner/issues
 Config/testthat/edition: 3

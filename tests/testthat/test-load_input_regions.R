@@ -69,7 +69,7 @@ test_that("Input column 'file_format' is a class 'character'", {
 test_that("Error occurs when 'data' does not exist.", {
   expect_error(load_input_regions(
     data = "nonexisting"
-  ),)
+  ), )
 })
 ##
 test_that("Error occurs when 'data' has the wrong structure.", {
@@ -80,17 +80,20 @@ test_that("Error occurs when 'data' has the wrong structure.", {
 ##
 test_that("Error occurs when 'data' is a vector.", {
   expect_error(load_input_regions(
-    data = as.vector(1:10)),)
+    data = as.vector(1:10)
+  ), )
 })
 ##
 test_that("Error occurs when 'data' is 'NULL'.", {
   expect_error(load_input_regions(
-    data = NULL),)
+    data = NULL
+  ), )
 })
 ##
 test_that("Error occurs when 'data' is 'NA'.", {
   expect_error(load_input_regions(
-    data = NA),)
+    data = NA
+  ), )
 })
 ##
 ### -----------------------------------------------------------------------###
@@ -112,7 +115,7 @@ test_that("Output data has the right class.", {
 })
 ##
 test_that("Output data has in column 'score', row 1 the correct value.", {
-  expect_identical(round(data_prepared$score[1],0), 4)
+  expect_identical(round(data_prepared$score[1], 0), 4)
 })
 ##
 test_that("Output data has the correct number of rows.", {

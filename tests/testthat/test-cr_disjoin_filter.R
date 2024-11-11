@@ -80,7 +80,7 @@ test_that("Parameter 'found_in_samples' has the correct structure", {
   expect_error(cr_disjoin_filter(
     data = test_data_filtered,
     found_in_samples = NA
-  ),)
+  ), )
   expect_error(cr_disjoin_filter(
     data = test_data_filtered,
     found_in_samples = c(1, 2, 3)
@@ -95,7 +95,7 @@ test_that("Parameter 'found_in_samples' has the correct structure", {
 ### -----------------------------------------------------------------------###
 ##
 test_that("Output data frame is correct", {
-  data <- test_data_disjoin_filter |> 
+  data <- test_data_disjoin_filter |>
     dplyr::mutate(chrom = as.character(chrom))
   ##
   expect_setequal(colnames(data), result_colnames)

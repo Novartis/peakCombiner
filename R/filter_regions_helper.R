@@ -15,7 +15,6 @@
 #'
 filter_by_chromosome_names <- function(data,
                                        include_by_chromosome_name = NULL) {
-
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
@@ -159,14 +158,13 @@ filter_by_chromosome_names <- function(data,
 #' (default), this step will be skipped.
 #'
 #' @inheritParams filter_regions
-#' 
+#'
 #' @return Data frame filtered by blacklist based on the provided parameters.
 #'
 #' @noRd
 #'
 filter_by_blacklist <- function(data,
                                 exclude_by_blacklist = NULL) {
-
   ### -----------------------------------------------------------------------###
   ### Define parameters
   ### -----------------------------------------------------------------------###
@@ -200,7 +198,6 @@ filter_by_blacklist <- function(data,
 
     return(data)
   } else if (is.data.frame(exclude_by_blacklist)) {
-
     ## Check for correct colnames
     colnames(exclude_by_blacklist) <- tolower(colnames(exclude_by_blacklist))
 
@@ -261,15 +258,14 @@ filter_by_blacklist <- function(data,
     ))
 
     # Load the blacklist corresponding to the character parameter hg38 or mm10
-    if(exclude_by_blacklist == "hg38") {
-      #utils::data(... = blacklist_hg38, package = "peakCombiner")
+    if (exclude_by_blacklist == "hg38") {
+      # utils::data(... = blacklist_hg38, package = "peakCombiner")
       blacklist_data <- peakCombiner::blacklist_hg38
-    } else if(exclude_by_blacklist == "mm10") {
-      #utils::data(peakCombiner::blacklist_mm10)
+    } else if (exclude_by_blacklist == "mm10") {
+      # utils::data(peakCombiner::blacklist_mm10)
       blacklist_data <- peakCombiner::blacklist_mm10
     }
-    
-    } else {
+  } else {
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
@@ -298,8 +294,8 @@ filter_by_blacklist <- function(data,
     dplyr::pull(.data$chrom) |>
     unique()
 
-  not_found_blacklist <- setdiff(data_chr, blacklist_chr)
-  not_found_input <- setdiff(blacklist_chr, data_chr)
+  not_found_blacklist <- dplyr::setdiff(data_chr, blacklist_chr)
+  not_found_input <- dplyr::setdiff(blacklist_chr, data_chr)
 
   if (length(not_found_blacklist) > 0) {
     cli::cli_inform(c(
@@ -327,11 +323,12 @@ filter_by_blacklist <- function(data,
   data <-
     data |>
     GenomicRanges::makeGRangesFromDataFrame(keep.extra.columns = TRUE) |>
-    IRanges::subsetByOverlaps(blacklist_data |>
-      GenomicRanges::makeGRangesFromDataFrame(
-        keep.extra.columns = TRUE
-      ),
-    invert = TRUE
+    IRanges::subsetByOverlaps(
+      blacklist_data |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE
+        ),
+      invert = TRUE
     ) |>
     tibble::as_tibble() |>
     dplyr::rename(chrom = .data$seqnames) |>
@@ -455,8 +452,7 @@ filter_by_significance <- function(data,
 #' @noRd
 #'
 filter_by_top_enriched <- function(data,
-                                   include_top_n_scoring = include_top_n_scoring
-                                   ) {
+                                   include_top_n_scoring = include_top_n_scoring) {
   if (is.null(include_top_n_scoring)) {
     cli::cli_inform(c(
       "i" = "The argument {.arg include_top_n_scoring} is {.val NULL}.",
@@ -468,7 +464,6 @@ filter_by_top_enriched <- function(data,
     return(data)
   } else if (is.numeric(include_top_n_scoring) &&
     include_top_n_scoring > 0) {
-
     ### ---------------------------------------------------------------------###
 
     cli::cli_inform(c(

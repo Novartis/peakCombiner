@@ -69,7 +69,7 @@ test_that("Input data frame has the expected structure", {
 ##
 ### -----------------------------------------------------------------------###
 ##
-test_that("Required parameter 'filter_by_chromosome_names' has expected 
+test_that("Required parameter 'filter_by_chromosome_names' has expected
           structure", {
   expect_no_error(filter_by_chromosome_names(
     data = test_data_filtered,
@@ -111,7 +111,7 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
   ##
-  expect_equal(round(mean(data$center),2), 3168.42)
+  expect_equal(round(mean(data$center), 2), 3168.42)
   expect_identical(nrow(data), 38L)
   expect_identical(data$start[1], 250)
 })

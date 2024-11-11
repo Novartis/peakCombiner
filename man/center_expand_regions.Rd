@@ -111,16 +111,16 @@ asymmetrically.
 }
 }
 \examples{
-#Load in and prepare a an accepted tibble
+# Load in and prepare a an accepted tibble
 input_data <- peakCombiner::syn_data_bed
 input_data
 
-#Prepare input data
+# Prepare input data
 data_prepared <- prepare_input_regions(
   data = input_data,
   show_messages = TRUE
 )
-#Run center and expand
+# Run center and expand
 data_center_expand <- center_expand_regions(
   data = data_prepared,
   center_by = "center_column",
@@ -130,7 +130,7 @@ data_center_expand <- center_expand_regions(
 
 data_center_expand
 
-#You can choose to use the midpoint and predefined values to expand
+# You can choose to use the midpoint and predefined values to expand
 
 data_center_expand <- center_expand_regions(
   data = data_prepared,
