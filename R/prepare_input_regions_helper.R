@@ -132,14 +132,14 @@ load_input_regions <- function(data) {
   ### -----------------------------------------------------------------------###
   ## Test if provided file paths in input do exist
 
-  if (!all(file.exists(data$file_path))) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-    cli::cli_abort(c(
-      ">" = "`data` contains column with name 'file_path'.",
-      "x" = "At least one file does not exist."
-    ), call. = FALSE)
-  }
+  #if (!all(file.exists(data$file_path))) {
+  #  # show error message independent of parameter show_messages
+  #  options("rlib_message_verbosity" = "default")
+  #  cli::cli_abort(c(
+  #    ">" = "`data` contains column with name 'file_path'.",
+  #    "x" = "At least one file does not exist."
+  #  ), call. = FALSE)
+  #}
 
   ### -----------------------------------------------------------------------###
   ## Test if sample names are unique
@@ -237,7 +237,7 @@ load_input_regions <- function(data) {
       ) |> stats::setNames(data$sample_name)
     ) |>
     dplyr::select(-"file_path") |>
-    filter(map_int(input_file, nrow) > 0) |>
+    dplyr::filter(purrr::map_int(.data$input_file, nrow) > 0) |>
     tidyr::unnest(cols = c("input_file"))
   
   #table(data_readin$sample_name)
