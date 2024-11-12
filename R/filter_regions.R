@@ -155,6 +155,9 @@ filter_regions <- function(data,
   ### -----------------------------------------------------------------------###
   ### Define parameters
   ### -----------------------------------------------------------------------###
+  ##
+  set.seed(1234)
+  ##
   ## Pass data into new variable
   data_filtered <- data
 
@@ -237,7 +240,7 @@ filter_regions <- function(data,
   ### -----------------------------------------------------------------------###
 
   data_filtered <- data_filtered |>
-    dplyr::relocate(.data$strand, .after = .data$score) |>
+    dplyr::relocate("strand", .after = "score") |>
     dplyr::mutate(strand = ifelse(.data$strand == "*", ".", .data$strand)) |>
     dplyr::ungroup()
 
