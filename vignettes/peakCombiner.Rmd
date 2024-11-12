@@ -73,13 +73,15 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 }
 
 BiocManager::install("peakCombiner")
+
+library("ggplot2")
 ```
 
 # A fast start for a complete run
 Here you find a fast start with `r Biocpkg("peakCombiner")` and all function how we do recommend using it.
 ```{r, eval=TRUE}
 devtools::load_all()
-# library("peakCombiner")
+#library("peakCombiner")
 ```
 
 ```{r, eval=TRUE}
@@ -196,13 +198,13 @@ The following code illustrates how you prepare an accepted sample sheet in R.
 
     First, let's get the paths to the peak files we want to use and save it.
 
-    ```{r, eval=TRUE}
-file_names <- list.files(
-  paste0(here::here(), "/inst/syndata"),
-  pattern = ".narrowPeak$",
-  full.names = TRUE
-)
-file_names
+    ```{r, eval=FALSE}
+#file_names <- list.files(
+#  paste0(here::here(), "/inst/syndata"),
+#  pattern = ".narrowPeak$",
+#  full.names = TRUE
+#)
+file_names 
     ```
 
 + **Create a sample sheet.**
@@ -210,13 +212,7 @@ file_names
     Next, we create a tibble (named 'sample_sheet') with the correct column names ('sample_name', 'file_path', 'file_format', 'score_colname') to load in our data.
 
     ```{r, eval=TRUE}
-sample_sheet <- tibble::tibble(
-  sample_name = c("control01", "control02", "control03", "treatment01", "treatment02", "treatment03"),
-  file_path = file_names,
-  file_format = "narrowPeak",
-  score_colname = "qValue",
-  .rows = 6
-)
+sample_sheet <- peakCombiner::syn_sample_sheet
 
 sample_sheet
     ```
@@ -227,7 +223,7 @@ sample_sheet
 
     Now we use the prepared tibble (sample_sheet) and add it as argument `data` into the function `prepare_input_regions`. 
 
-    ```{r, eval=TRUE}
+    ```{r, eval = FALSE}
 prepare_input_regions(
   data = sample_sheet,
   show_messages = FALSE
