@@ -108,7 +108,7 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$end))
   expect_true(is.character(data$sample_name))
   ##
-  expect_identical(nrow(data), as.integer(106))
+  expect_identical(nrow(data), as.integer(113))
   expect_identical(data$start[1], 150)
   ##
   test_counts_left <- test_data_filtered |>
