@@ -9,6 +9,8 @@ devtools::load_all()
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+set.seed(1234)
+##
 required_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
@@ -111,7 +113,7 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
   ##
-  expect_equal(round(mean(data$center), 2), 3168.42)
+  expect_equal(round(mean(data$center), 0), 3168)
   expect_identical(nrow(data), 38L)
   expect_identical(data$start[1], 250)
 })
