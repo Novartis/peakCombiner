@@ -95,6 +95,7 @@
 #' @export
 #'
 #' @importFrom rlang .data
+#' @import stringr
 #' @import tidyr
 #' @import here
 #'
@@ -127,7 +128,9 @@ combine_regions <- function(data,
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
   ### -----------------------------------------------------------------------###
@@ -203,7 +206,7 @@ combine_regions <- function(data,
 
 
   data_combined_with_summit <- data_combined_with_summit |>
-    dplyr::relocate(.data$strand, .after = .data$score) |>
+    dplyr::relocate("strand", .after = "score") |>
     dplyr::mutate(strand = ifelse(.data$strand == "*", ".", .data$strand)) |>
     dplyr::ungroup()
 
