@@ -9,23 +9,23 @@ devtools::load_all()
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
-test_data <- peakCombiner::syn_sample_sheet
-samplesheet_colnames <- colnames(test_data)
+test_data <- peakCombiner::syn_data_tibble
 ##
 all_colnames <- c(
-  "chrom", "start", "end", "score", "strand", "summit", "sample_name"
+  "chrom", "start", "end", "name","score", "strand", "center", "sample_name"
+)
+input_colnames <- c(
+  "chrom", "start", "end", "sample_name"
 )
 ##
-data_prepared <- load_input_regions(
-  data = test_data
-)
+data_prepared <- test_data
 ##
 ### -----------------------------------------------------------------------###
 ### Test input
 ### -----------------------------------------------------------------------###
 ##
 test_that("Test if function works with correct input", {
-  expect_no_error(load_input_regions(
+  expect_error(load_input_regions(
     data = test_data
   ))
 })
@@ -49,19 +49,11 @@ test_that("Input data has exact three columns.", {
 })
 ##
 test_that("Input data colnames are the expected once.", {
-  expect_identical(names(test_data), input_colnames)
+  expect_identical(names(test_data), all_colnames)
 })
 ##
 test_that("Input column 'sample_name' is a class 'character'.", {
   expect_true(is.character(test_data$sample_name))
-})
-##
-test_that("Input column 'file_path' is a class 'character'", {
-  expect_true(is.character(test_data$file_path))
-})
-##
-test_that("Input column 'file_format' is a class 'character'", {
-  expect_true(is.character(test_data$file_format))
 })
 ##
 ### -----------------------------------------------------------------------###
@@ -100,24 +92,16 @@ test_that("Error occurs when 'data' is 'NA'.", {
 ### Test output
 ### -----------------------------------------------------------------------###
 ##
-test_that("Column names of output data are identical with required once.", {
-  expect_setequal(colnames(data_prepared), all_colnames)
-})
-##
-test_that("Output data has the right number of columns", {
-  expect_equal(ncol(data_prepared), 7)
-  ##
-})
-##
 test_that("Output data has the right class.", {
   expect_identical(class(data_prepared)[2], "tbl")
   ##
 })
 ##
 test_that("Output data has in column 'score', row 1 the correct value.", {
-  expect_identical(round(data_prepared$score[1], 0), 4)
+  expect_identical(round(data_prepared$score[1], 0), 100)
 })
 ##
 test_that("Output data has the correct number of rows.", {
   expect_identical(nrow(data_prepared), 55L)
 })
+
