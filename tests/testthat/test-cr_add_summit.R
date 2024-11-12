@@ -9,6 +9,8 @@ devtools::load_all()
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+set.seed(1234)
+##
 input_colnames <- c(
   "chrom", "start", "end", "width", "strand", "name", "center", "score"
 )
@@ -22,8 +24,7 @@ output_colnames <- c(
   "sample_name", "input_names"
 )
 ##
-# test_data <- readr::read_tsv("/da/ONC/BFx/research/muckema1/discovery_brd9/analysis/combpeaksr/lists/synthetic_genomic_regions.bed", show_col_types = FALSE)
-test_data <- peakCombiner::syn_sample_sheet
+test_data <- peakCombiner::syn_data_tibble
 ##
 test_data_prepared <- prepare_input_regions(
   data = test_data
@@ -151,8 +152,8 @@ test_that("Output data frame is correct", {
   expect_true(is.character(data$input_names))
   ##
   expect_identical(nrow(data), as.integer(8))
-  expect_identical(data$center[1], 501)
-  expect_identical(round(sum(data$score), 2), 30.17)
+  expect_identical(data$center[1], 500)
+  expect_identical(round(sum(data$score), 0), 660)
   ##
 })
 ##
@@ -162,21 +163,21 @@ test_that("Output data results with different summits", {
     input = test_data_filtered,
     combined_center = "nearest"
   )
-  expect_identical(data$center[7], 501)
+  expect_identical(data$center[7], 500)
   ##
   data <- cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = "strongest"
   )
-  expect_identical(data$center[7], 601)
+  expect_identical(data$center[7], 600)
   ##
   data <- cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = "middle"
   )
-  expect_identical(data$center[7], 551)
+  expect_identical(data$center[7], 550)
   ##
 })
 ##
