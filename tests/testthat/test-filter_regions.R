@@ -9,6 +9,8 @@ devtools::load_all()
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+set.seed(1234)
+##
 required_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
@@ -97,7 +99,7 @@ test_that("Output data frame is correct", {
   ##
   test_counts_left <- test_data_filtered |>
     dplyr::group_by(sample_name) |>
-    dplyr::summarise(counts = n()) |>
+    dplyr::summarise(counts = dplyr::n()) |>
     dplyr::filter(sample_name == "treatment_rep1") |>
     dplyr::pull(counts)
   expect_identical(test_counts_left, 9L)
