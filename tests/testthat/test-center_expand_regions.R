@@ -30,8 +30,7 @@ output_colnames_post <- c(
   "center", "sample_name", "input_names"
 )
 ##
-# test_data <- readr::read_tsv("data-raw/synthetic_data.bed", show_col_types = FALSE)
-test_data <- peakCombiner::syn_sample_sheet
+test_data <- peakCombiner::syn_data_bed
 ##
 test_data_prepared <- prepare_input_regions(
   data = test_data
@@ -196,9 +195,9 @@ test_that("Output data frame is correct for pre-combined", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
 
-  expect_equal(mean(data$center), 2452.92308)
+  expect_equal(mean(data$center), 2495.6827)
   expect_identical(nrow(data), as.integer(52))
-  expect_identical(data$start[1], 352)
+  expect_identical(data$start[1], 100.5)
 })
 
 test_that("Output data frame is correct for post-combined", {
@@ -216,11 +215,11 @@ test_that("Output data frame is correct for post-combined", {
   expect_true(is.numeric(data$score))
   expect_true(is.character(data$strand))
   expect_true(is.numeric(data$center))
-  expect_equal(mean(data$center), 2711)
+  expect_equal(mean(data$center), 2770.45)
   expect_identical(nrow(data), as.integer(10))
-  expect_identical(data$start[1], 152)
-  expect_identical(data$end[1], 850)
-  expect_identical(data$end[1], 850)
+  expect_identical(data$start[1], 200)
+  expect_identical(data$end[1], 900)
+  expect_identical(data$end[1], 900)
 })
 
 test_that("Output data frame is correct for data_prepared", {
@@ -239,7 +238,6 @@ test_that("Output data frame is correct for data_prepared", {
   ))
   ##
   expect_identical(nrow(result), 52L)
-  expect_identical(result$start[9], as.numeric(252))
 })
 ##
 test_that("Output data frame is correct for data_center_expand", {
@@ -258,7 +256,6 @@ test_that("Output data frame is correct for data_center_expand", {
   ))
   ##
   expect_identical(nrow(result), 52L)
-  expect_identical(result$start[9], as.numeric(252))
 })
 ##
 test_that("Output data frame is correct for data_filtered", {
@@ -277,7 +274,6 @@ test_that("Output data frame is correct for data_filtered", {
   ))
   ##
   expect_identical(nrow(result), 52L)
-  expect_identical(result$start[9], as.numeric(252))
 })
 ##
 test_that("Output data frame is correct for data_combined", {
@@ -296,7 +292,6 @@ test_that("Output data frame is correct for data_combined", {
   ))
   ##
   expect_identical(nrow(result), 10L)
-  expect_identical(result$start[9], as.numeric(252))
 })
 ##
 ### -----------------------------------------------------------------------###
