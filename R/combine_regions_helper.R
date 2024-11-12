@@ -21,6 +21,9 @@ cr_disjoin_filter <- function(data,
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
+  ##
+  set.seed(1234)
+  ##
   ## Check if expansion exists
   if (!exists("data")) {
     # show error message independent of parameter show_messages
@@ -190,7 +193,9 @@ cr_reduce <- function(data) {
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
   required_colnames <- c(
     "chrom", "start", "end", "width", "strand", "revmap",
     "ranking_comb_ref", "rowname_disjoin", "name"
@@ -253,7 +258,7 @@ cr_reduce <- function(data) {
     ) |>
     dplyr::select(-"revmap") |>
     dplyr::arrange(.data$seqnames, .data$start, .data$name) |>
-    dplyr::rename(chrom = .data$seqnames) |>
+    dplyr::rename(chrom = "seqnames") |>
     unique() |>
     dplyr::ungroup()
 
@@ -301,7 +306,9 @@ cr_overlap_with_summits <- function(data,
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
   required_colnames <- c(
     "chrom", "start", "end", "strand", "name", "score",
     "center", "sample_name"
@@ -468,7 +475,9 @@ cr_add_summit <- function(data,
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
   center_values <- c("nearest", "strongest", "middle")
 
   combined_center <- tolower(combined_center)
