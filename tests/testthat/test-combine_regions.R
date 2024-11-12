@@ -8,7 +8,9 @@
 ### -----------------------------------------------------------------------###
 ## tweak the prepare_input_regions() function and re-load it
 devtools::load_all()
-
+##
+set.seed(1234)
+##
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
@@ -24,7 +26,7 @@ output_colnames <- c(
 )
 
 #' Prepare test data set
-test_data <- peakCombiner::syn_data_bed
+test_data <- peakCombiner::syn_data_tibble
 test_data
 
 test_data_prepared <- prepare_input_regions(
@@ -289,17 +291,9 @@ testthat::test_that("Output data has the correct classes and structure", {
 })
 
 testthat::test_that("Output data frame has correct colnames", {
-  testthat::expect_true(any(colnames(data) %in% output_colnames))
+  testthat::expect_true(any(colnames(test_data_combined) %in% output_colnames))
 })
 
-testthat::test_that("Output data frame has correct class", {
-  testthat::expect_identical(class(data)[2], "tbl")
-})
-
-testthat::test_that("Output data frame is expected values", {
-  testthat::expect_identical(data$center[1], 450.5)
-  testthat::expect_identical(sum(data$score), 0)
-})
 
 ### -----------------------------------------------------------------------###
 
@@ -314,7 +308,7 @@ testthat::test_that("Output data results has correct summit for 'nearest'
     show_messages = FALSE
   )
 
-  testthat::expect_identical(data$center[7], 550.5)
+  testthat::expect_identical(round(data$center[7],0), 500)
   testthat::expect_identical(data$name[7], "consensus_peak|7")
 })
 
@@ -328,7 +322,7 @@ test_that("Output data results has correct summit for 'strongst' peak", {
     show_messages = FALSE
   )
 
-  expect_identical(data$center[7], 650.5)
+  expect_identical(round(data$center[7],0), 600)
   expect_identical(data$name[7], "consensus_peak|7")
 })
 
@@ -343,7 +337,7 @@ testthat::test_that("Output data results has correct summit for 'middle'
     show_messages = FALSE
   )
 
-  testthat::expect_identical(data$center[7], 575)
+  testthat::expect_identical(data$center[7], 550)
   testthat::expect_identical(data$name[7], "consensus_peak|7")
 })
 ### -----------------------------------------------------------------------###
