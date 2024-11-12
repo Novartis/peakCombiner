@@ -224,10 +224,10 @@ sample_sheet
     Now we use the prepared tibble (sample_sheet) and add it as argument `data` into the function `prepare_input_regions`. 
 
     ```{r, eval = FALSE}
-prepare_input_regions(
-  data = sample_sheet,
-  show_messages = FALSE
-)
+#prepare_input_regions(
+#  data = sample_sheet,
+#  show_messages = FALSE
+#)
     ```
 
 This returned value is a tibble that contains all required information formatted correctly in order to use the downstream functions within `r Biocpkg("peakCombiner")`. For more information about its structure, go back to the "[Standard genomic regions format]" section. 
