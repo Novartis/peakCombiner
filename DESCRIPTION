@@ -40,6 +40,7 @@ Suggests:
 DEPENDS:
         dplyr (>= 1.1.2),
         GenomicRanges,
+        IRanges,
         tidyr,
         tidyselect,
         usethis,
