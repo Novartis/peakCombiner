@@ -52,7 +52,7 @@ Imports:
         IRanges,
         GenomicRanges,
         tidyselect,
-        purrr (>= 1.0.1),
+        purrr,
         readr (>= 2.1.2),
         tibble (>= 3.2.1),
         rlang,
