@@ -36,7 +36,6 @@ Suggests:
     devtools,
     qpdf,
     ggplot2,
-    stringr,
     BiocStyle
 DEPENDS:
         dplyr (>= 1.1.2),
@@ -56,6 +55,7 @@ Imports:
         readr (>= 2.1.2),
         tibble (>= 3.2.1),
         rlang,
+        stringr,
         here
 URL:
     https://github.com/novartis/peakCombiner/, 
