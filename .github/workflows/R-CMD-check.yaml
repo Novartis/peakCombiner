@@ -111,13 +111,13 @@ jobs:
       - name: Show testthat output (windows)
         if: always() && runner.os == 'Windows'
         run: |
-            type ${{ steps.build-install-check.outputs.check-dir }}\tests\testthat\testthat.Rout
+            type ${{ steps.build-install-check.outputs.check-dir }}\tests\testthat.Rout
         shell: cmd
 
       - name: Show testthat output (non-windows)
         if: always() && runner.os != 'Windows'
         run: |
-            cat ${{ steps.build-install-check.outputs.check-dir }}/tests/testthat/testthat.Rout
+            cat ${{ steps.build-install-check.outputs.check-dir }}/tests/testthat.Rout
         shell: bash
 
       - name: Upload check results
