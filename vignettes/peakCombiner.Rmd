@@ -6,7 +6,7 @@ bibliography: peakCombiner-refs.bib
 output: 
 #word_document
     BiocStyle::html_document: 
-      toc_float: true
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{peakCombiner}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,13 +15,13 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-    collapse = TRUE,
-    comment = "#>",
-    fig.width = 7,
-    fig.height = 5,
-    out.width = "80%",
-    fig.align = "center",
-    crop = NULL # suppress "The magick package is required to crop" issue
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5,
+  out.width = "80%",
+  fig.align = "center",
+  crop = NULL # suppress "The magick package is required to crop" issue
 )
 library(BiocStyle)
 ```
@@ -68,10 +68,13 @@ We recommend that you create this standard tibble using `prepare_input_regions` 
 `r Biocpkg("peakCombiner")` can be installed from Bioconductor using the `r CRANpkg("BiocManager")` package:
 
 ```{r, eval=FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
 
 BiocManager::install("peakCombiner")
+
+library("ggplot2")
 ```
 
 # An overview of a complete run
@@ -87,16 +90,19 @@ syn_data_tibble
 
 data_prepared <- prepare_input_regions(
   data = syn_data_tibble,
-  show_messages = FALSE)
+  show_messages = FALSE
+)
 
 data_center_expand <- center_expand_regions(
   data = data_prepared,
-  show_message = FALSE)
+  show_message = FALSE
+)
 
 data_filtered <- filter_regions(
   data = data_center_expand,
   exclude_by_blacklist = "hg38",
-  show_messages = FALSE)
+  show_messages = FALSE
+)
 
 consensus_peak <- combine_regions(
   data = data_filtered,
@@ -105,7 +111,7 @@ consensus_peak <- combine_regions(
 )
 
 consensus_final <- center_expand_regions(
-  data = consensus_peak, 
+  data = consensus_peak,
   expand_by = 350,
   show_messages = FALSE
 )
@@ -118,7 +124,7 @@ Please note that the message occurring during the [`filter_regions`][Filter regi
 Finally we export the resulting consensus regions tibble and save it as BED-file. To establish a classical BED-file we remove here the column names. 
 
 ```{r, eval=FALSE}
-rtracklayer::export.bed(consensus_final, paste0(here::here(),"/lists/consensus_regions.bed"), format = "bed")
+rtracklayer::export.bed(consensus_final, paste0(here::here(), "/lists/consensus_regions.bed"), format = "bed")
 ```
 
 
@@ -159,19 +165,21 @@ syn_data_treatment01
 Let's combine the two tibbles.
 
 ```{r, eval=TRUE}
-combined_input <- syn_data_control01 |> 
-  dplyr::mutate(sample_name = "control-rep1") |> 
-  rbind(syn_data_treatment01 |> 
-          dplyr::mutate(sample_name = "treatment-rep1"))
+combined_input <- syn_data_control01 |>
+  dplyr::mutate(sample_name = "control-rep1") |>
+  rbind(syn_data_treatment01 |>
+    dplyr::mutate(sample_name = "treatment-rep1"))
 
-combined_input |> 
+combined_input |>
   dplyr::group_by(sample_name) |>
   dplyr::summarize(num_regions = dplyr::n())
 ```
 
 ```{r, eval=TRUE}
-prepare_input_regions(data = combined_input,
-                      show_messages = FALSE)
+prepare_input_regions(
+  data = combined_input,
+  show_messages = FALSE
+)
 ```
 
 ## Load from sample sheet
@@ -190,12 +198,13 @@ The following code illustrates how you prepare an accepted sample sheet in R.
 
     First, let's get the paths to the peak files we want to use and save it.
 
-    ```{r, eval=TRUE}
-    file_names <- list.files(
-      paste0(here::here(),"/inst/syndata"), 
-      pattern = ".narrowPeak$", 
-      full.names = TRUE)
-    file_names
+    ```{r, eval=FALSE}
+#file_names <- list.files(
+#  paste0(here::here(), "/inst/syndata"),
+#  pattern = ".narrowPeak$",
+#  full.names = TRUE
+#)
+file_names 
     ```
 
 + **Create a sample sheet.**
@@ -203,14 +212,9 @@ The following code illustrates how you prepare an accepted sample sheet in R.
     Next, we create a tibble (named 'sample_sheet') with the correct column names ('sample_name', 'file_path', 'file_format', 'score_colname') to load in our data.
 
     ```{r, eval=TRUE}
-    sample_sheet <- tibble::tibble(
-      sample_name = c("control01","control02","control03","treatment01","treatment02","treatment03"), 
-      file_path = file_names, 
-      file_format = "narrowPeak", 
-      score_colname = "qValue", 
-      .rows = 6) 
-    
-    sample_sheet
+sample_sheet <- peakCombiner::syn_sample_sheet
+
+sample_sheet
     ```
 
     With this step you create a new tibble containing all the required information to run `prepare_input_regions`.
@@ -219,11 +223,11 @@ The following code illustrates how you prepare an accepted sample sheet in R.
 
     Now we use the prepared tibble (sample_sheet) and add it as argument `data` into the function `prepare_input_regions`. 
 
-    ```{r, eval=TRUE}
-    prepare_input_regions(
-      data = sample_sheet,
-      show_messages = FALSE
-      )
+    ```{r, eval = FALSE}
+#prepare_input_regions(
+#  data = sample_sheet,
+#  show_messages = FALSE
+#)
     ```
 
 This returned value is a tibble that contains all required information formatted correctly in order to use the downstream functions within `r Biocpkg("peakCombiner")`. For more information about its structure, go back to the "[Standard genomic regions format]" section. 
@@ -241,15 +245,15 @@ Columns named 'chrom', 'start', 'end', 'name', 'score', 'strand', 'center' and '
     Now let's load the first narrowPeak file. Note that the columns are named already correctly and we expect this from your data as well. 
 
     ```{r, eval=TRUE}
-    utils::data(syn_control_rep1_narrowPeak)
-    syn_control_rep1_narrowPeak
+utils::data(syn_control_rep1_narrowPeak)
+syn_control_rep1_narrowPeak
     ```
 
     And the second file.
     
     ```{r, eval=TRUE}
-    utils::data(syn_treatment_rep1_narrowPeak)
-    syn_treatment_rep1_narrowPeak
+utils::data(syn_treatment_rep1_narrowPeak)
+syn_treatment_rep1_narrowPeak
     ```
 
 + **Add column 'sample_name'**
@@ -257,15 +261,15 @@ Columns named 'chrom', 'start', 'end', 'name', 'score', 'strand', 'center' and '
     Now we add a column named 'sample_name' to each of our tibbles. 
     
     ```{r, eval=TRUE}
-    control <- syn_control_rep1_narrowPeak |> 
-      dplyr::mutate(sample_name = "control-rep1")
-    control
+control <- syn_control_rep1_narrowPeak |>
+  dplyr::mutate(sample_name = "control-rep1")
+control
     ```
 
     ```{r, eval=TRUE}
-    treatment <- syn_treatment_rep1_narrowPeak |> 
-      dplyr::mutate(sample_name = "treatment-rep1")
-    treatment
+treatment <- syn_treatment_rep1_narrowPeak |>
+  dplyr::mutate(sample_name = "treatment-rep1")
+treatment
     ```
 
 + **Combine multiple tibbles**
@@ -273,16 +277,17 @@ Columns named 'chrom', 'start', 'end', 'name', 'score', 'strand', 'center' and '
     Finally, combine the multiple input tibbles into one.
     
     ```{r, eval=TRUE}
-    combined_input <- control |> rbind(treatment)
-    combined_input
+combined_input <- control |>
+  rbind(treatment)
+combined_input
     ```
 
       And check how many rows we have now for each sample.
     
     ```{r, eval=TRUE}
-    combined_input |> 
-      dplyr::group_by(sample_name) |> 
-      dplyr::count(name = "number_of_entries")
+combined_input |>
+  dplyr::group_by(sample_name) |>
+  dplyr::count(name = "number_of_entries")
     ```
 
     Both 'sample_name's are found, so we know that we have successfully combined the data sets.
@@ -292,10 +297,10 @@ Columns named 'chrom', 'start', 'end', 'name', 'score', 'strand', 'center' and '
     After preparing the pre-loaded tibble, we run the function `prepare_input_regions` and use the tibble in the parameter `data`.
     
     ```{r, eval=TRUE}
-    prepare_input_regions(
-        data = combined_input,
-        show_messages = FALSE
-        )
+prepare_input_regions(
+  data = combined_input,
+  show_messages = FALSE
+)
     ```
 
 The output tibble from `prepare_input_data` can now be used for your next steps with `r Biocpkg("peakCombiner")`. For details about the accepted file structure see section "[Standard genomic regions format]".
@@ -308,15 +313,18 @@ In memory GenomicRanges object listing the genomic regions in a sample. This obj
     As first step we load the provided synthetic data originating from a GenomicRanges object.
 
     ```{r, eval=TRUE}
-    utils::data("syn_data_granges")
-    syn_data_granges
+utils::data("syn_data_granges")
+syn_data_granges
     ```
     
     The column names are based on its original GRanges file format. This allows us to easily transform it into a GRanges object. Note that normally we expect you to have the GRanges object pre-loaded and want to use the `r Biocpkg("peakCombiner")` on this data set. For the purpose of showing you how a accepted GRanges object has to be structured we transform it here.
      
     ```{r, eval=TRUE}
-    GenomicRanges_data <- GenomicRanges::makeGRangesFromDataFrame(syn_data_granges, keep.extra.columns = TRUE)
-    GenomicRanges_data
+GenomicRanges_data <- GenomicRanges::makeGRangesFromDataFrame(
+  syn_data_granges,
+  keep.extra.columns = TRUE
+)
+GenomicRanges_data
     ```
 
 + **Prepare input from GenomicRanges object**
@@ -324,10 +332,10 @@ In memory GenomicRanges object listing the genomic regions in a sample. This obj
     You can simply use your GRanges object in the parameter ‘data’ and load it in. The output tibble from `prepare_input_data` can now be used for your next steps with `r Biocpkg("peakCombiner")`. For details about the accepted file structure see section "[Standard genomic regions format]".
     
     ```{r, eval=TRUE}
-    prepare_input_regions(
-      data = GenomicRanges_data,
-      show_messages = FALSE
-      )
+prepare_input_regions(
+  data = GenomicRanges_data,
+  show_messages = FALSE
+)
     ```
     
 ## Explained in detail
@@ -347,7 +355,7 @@ syn_data_bed |> dplyr::arrange(sample_name)
 When we pull the 'sample_name' column we see the different number of entries for each sample name.
 
 ```{r, eval=TRUE}
-syn_data_bed |> 
+syn_data_bed |>
   dplyr::group_by(sample_name) |>
   dplyr::summarize(num_regions = dplyr::n())
 ```
@@ -358,7 +366,7 @@ And now we use it as input for `prepare_input_regions`.
 prepare_input_regions(
   data = syn_data_bed,
   show_messages = TRUE
-  )
+)
 ```
 
 Please note here that the information messages are informing you about all missing values and with which default values these columns are populated. The 'score' is set to 0 as no information can be obtained from a classical BED file about enrichment values. The column 'strand' is populated with the value '.', representing that no strand information is known. The 'center' is calculated based on the arithmetical midpoint of each region as no 'summit' input column was found. The resulting tibble can be used with all functions ([`center_expand_regions`][Center and expand regions], [`filter_regions`][Filter regions], [`combine_regions`][Combine Regions]) of the package but certain option are limited due to the missing information in the input. 
@@ -380,7 +388,8 @@ The quickest way to get started is to call `center_expand_regions` using just th
 ```{r, eval=TRUE}
 center_expand_regions(
   data = data_prepared,
-  show_message = FALSE)
+  show_message = FALSE
+)
 ```
 
 The tibble you obtained has altered coordinates for the genomic region. The center of the region is defined as the value found in the column 'center' and the expansion is based on the median region size of all input regions.
@@ -402,12 +411,12 @@ The expected input is the standard tibble as described previously (See section "
 + **Center & expanding the regions**
 
     ```{r, eval=TRUE}
-    center_expand_regions(
-      data = data_prepared, 
-      center_by = "center_column",
-      expand_by = NULL,
-      show_messages = TRUE
-      )
+center_expand_regions(
+  data = data_prepared,
+  center_by = "center_column",
+  expand_by = NULL,
+  show_messages = TRUE
+)
     ```
 
     You can appreciate that values for 'start' and 'end' are changed, while the number of input regions stays the same.
@@ -418,7 +427,7 @@ The expected input is the standard tibble as described previously (See section "
   
 ```{r, eval=TRUE}
 center_expand_regions(
-  data = data_prepared, 
+  data = data_prepared,
   center_by = "center_column",
   expand_by = c(500),
   show_messages = FALSE
@@ -427,7 +436,7 @@ center_expand_regions(
 
 ```{r, eval=TRUE}
 center_expand_regions(
-  data = data_prepared, 
+  data = data_prepared,
   center_by = "center_column",
   expand_by = c(100, 1000),
   show_messages = FALSE
@@ -482,7 +491,8 @@ As a quick first example, you can easily exclude blacklisted hg38 regions as fol
 data_filtered <- filter_regions(
   data = data_center_expand,
   exclude_by_blacklist = "hg38",
-  show_messages = FALSE)
+  show_messages = FALSE
+)
 
 data_filtered
 ```
@@ -508,8 +518,8 @@ filter_regions(
   exclude_by_blacklist = "hg38",
   include_above_score_cutoff = 2.5,
   include_top_n_scoring = 6,
-  show_messages = TRUE)
-
+  show_messages = TRUE
+)
 ```
 
 The filtering occurred in the order of the parameters and can be described as following: 
@@ -537,24 +547,24 @@ In this subsection, we provide an example to identify “canonical” human chro
     First we extract all chromosome names from the input data.
     
     ```{r, eval=TRUE}
-    input_chrom <- 
-      data_center_expand |> 
-      dplyr::select(chrom) |> 
-      unique()
-    input_chrom
+input_chrom <-
+  data_center_expand |>
+  dplyr::select(chrom) |>
+  unique()
+input_chrom
     ```
 
     Here we see that in this data set we have some unexpected values for chromosome names like "chr4 2", "chr4|2" or "chr42". Let’s modify this vector to only keep what we consider to be the "canonical" chromosomes. In real world human data sets, you may find names like "chr11_KI270721v1_random" or "chrUn_GL000195v1" that you might want to remove for your downstream analyses
     
     To do so, the next step is to filter with regular expressions to maintain only wanted chromosome names. 
     ```{r, eval=TRUE}
-    include_chrom <- input_chrom |> 
-      dplyr::filter(grepl("^chr[0-9]$|^chr[1-2][0-9]$|^chr[XYM]", chrom)) |> 
-      dplyr::pull(chrom) |>
-      unique() |>
-      sort()
-    
-    include_chrom
+include_chrom <- input_chrom |>
+  dplyr::filter(grepl("^chr[0-9]$|^chr[1-2][0-9]$|^chr[XYM]", chrom)) |>
+  dplyr::pull(chrom) |>
+  unique() |>
+  sort()
+
+include_chrom
     ```
 
 Finally, we can use this vector of good names in filter_regions for the parameter `include_by_chromosome_name`
@@ -566,7 +576,8 @@ data_filtered_chr <- filter_regions(
   exclude_by_blacklist = NULL,
   include_above_score_cutoff = NULL,
   include_top_n_scoring = NULL,
-  show_messages = FALSE)
+  show_messages = FALSE
+)
 data_filtered_chr
 ```
 
@@ -601,7 +612,7 @@ Here is some code to do that on our small, fake dataset. The distribution you se
 
 ```{r, eval=TRUE}
 data_center_expand |>
-ggplot2::ggplot(ggplot2::aes(x = score)) +
+  ggplot2::ggplot(ggplot2::aes(x = score)) +
   ggplot2::geom_histogram(bins = 10)
 ```
 
@@ -625,10 +636,10 @@ dim(data_filtered_cutoff)
 When we check the range of the values in 'score' columns we see the effects of the filtering. 
 
 ```{r, eval=TRUE}
-range(data_center_expand |> 
-        dplyr::pull(score))
-range(data_filtered_cutoff |> 
-        dplyr::pull(score))
+range(data_center_expand |>
+  dplyr::pull(score))
+range(data_filtered_cutoff |>
+  dplyr::pull(score))
 ```
 
 Again, we see that sites with 'score' 2.5 and below are removed.
@@ -637,14 +648,15 @@ Again, we see that sites with 'score' 2.5 and below are removed.
 You can also select a fixed number of highest scoring regions per sample to extract the top enriched sites. An information message is shown if any sample does not have the required number of regions left in your input data. If your 'score' values vary widely between samples you may select widely different numbers of regions using the `include_above_cutoff`. In this case, using this approach will help you select similar numbers of regions for each sample. The exact same number of regions may not be selected for each sample because sometimes multiple genomic regions may have the same 'score' value. In this case, all of the tied genomic regions are retained.
 ```{r, eval=TRUE}
 data_center_expand |>
-  dplyr::group_by(sample_name) |> 
+  dplyr::group_by(sample_name) |>
   dplyr::summarize(num_regions = dplyr::n())
 
 filter_regions(
   data = data_center_expand,
   include_top_n_scoring = 8,
-  show_messages = FALSE) |> 
-  dplyr::group_by(sample_name) |> 
+  show_messages = FALSE
+) |>
+  dplyr::group_by(sample_name) |>
   dplyr::summarize(num_regions = dplyr::n())
 ```
 We requested that only the top 8 genomic regions would be retained for each sample, and we can see in the information messages that `r Biocpkg("peakCombiner")` that one sample (‘control03’) contains less then the required 8 sites. For the remaining samples, we select the expected 8 regions per sample.
@@ -664,7 +676,7 @@ combine_regions(
   data = data_filtered,
   combined_sample_name = "my_new_sample_name",
   show_message = FALSE
-) 
+)
 ```
 
 ## Run to combine regions
@@ -730,7 +742,7 @@ combine_regions(
   found_in_samples = 2,
   show_messages = FALSE,
   combined_sample_name = "found_in_samples_2_example"
-) 
+)
 ```
 
 If the parameter `found_in_samples` is set to '1', this function basically merges all input regions.

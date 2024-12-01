@@ -93,13 +93,14 @@
 #' [peakCombiner::center_expand_regions] and [peakCombiner::filter_regions].
 #'
 #' @export
-#' 
-#' @import rlang
+#'
+#' @importFrom rlang .data
+#' @import stringr
 #' @import tidyr
 #' @import here
-#' 
+#'
 #' @examples
-#' #Load in and prepare a an accepted tibble
+#' # Load in and prepare a an accepted tibble
 #' input_data <- peakCombiner::syn_data_bed
 #' input_data
 #'
@@ -124,11 +125,12 @@ combine_regions <- function(data,
                             annotate_with_input_names = FALSE,
                             combined_sample_name = NULL,
                             show_messages = TRUE) {
-
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
   ### -----------------------------------------------------------------------###
@@ -204,7 +206,7 @@ combine_regions <- function(data,
 
 
   data_combined_with_summit <- data_combined_with_summit |>
-    dplyr::relocate(.data$strand, .after = .data$score) |>
+    dplyr::relocate("strand", .after = "score") |>
     dplyr::mutate(strand = ifelse(.data$strand == "*", ".", .data$strand)) |>
     dplyr::ungroup()
 

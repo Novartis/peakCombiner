@@ -6,6 +6,7 @@
 devtools::load_all()
 library("tidyverse")
 library("GenomicRanges")
+set.seed(1234)
 ##
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
@@ -16,16 +17,12 @@ colnames_preloaded_df <- c(
   "center", "sample_name"
 )
 
-colnames_sample_sheet <- c(
-  "sample_name", "file_path", "file_format", "score_colname"
-  )
-
 allowed_file_format <- c("narrowpeak", "broadpeak", "bed")
 
-samplesheet_test <- peakCombiner::syn_sample_sheet
+samplesheet_test <- peakCombiner::syn_data_bed
 
 test_sample_sheet <- prepare_input_regions(
-  data = samplesheet_test[1,]
+  data = samplesheet_test[1, ]
 )
 
 test_data <- peakCombiner::syn_data_tibble
@@ -40,28 +37,7 @@ restult_colnames <- colnames(test_data_prepared)
 ### -----------------------------------------------------------------------###
 ### Test input
 ### -----------------------------------------------------------------------###
-### Test sample sheet
-test_that("Input data has all required columns", {
-  expect_true(all(colnames(samplesheet_test) %in% colnames_sample_sheet)
-)
-})
-
-test_that("Check if all entries in sample_names are unique", {
-  expect_true(samplesheet_test |> 
-                dplyr::pull("sample_name") |>
-                unique() |> 
-                length() == nrow(samplesheet_test))
-})
-
-test_that("Check if all entries in sample_names are unique", {
-  expect_true(samplesheet_test |> 
-                dplyr::pull("file_format") |>
-                unique() |> 
-                length() == 1)
-})
-
-### -----------------------------------------------------------------------###
-### Test pre-loaded data frame 
+### Test pre-loaded data frame
 test_that("Test if function works with correct input", {
   expect_no_error(prepare_input_regions(
     data = test_data
@@ -77,7 +53,7 @@ test_that("Column names of input data are identical with required once.", {
 })
 
 ### -----------------------------------------------------------------------###
-### Test pre-loaded gRanges 
+### Test pre-loaded gRanges
 ### -----------------------------------------------------------------------###
 
 test_that("Input data has the right number of columns", {
@@ -165,7 +141,7 @@ test_that("Ouput column 'sample_name' is a class 'character'.", {
 })
 
 test_that("The mean of all output centers.", {
-  expect_equal(round(mean(test_data_prepared$center),0), 2458)
+  expect_equal(round(mean(test_data_prepared$center), 0), 2452)
 })
 
 test_that("The number of rows in the output file.", {

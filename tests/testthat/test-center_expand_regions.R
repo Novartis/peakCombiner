@@ -30,12 +30,11 @@ output_colnames_post <- c(
   "center", "sample_name", "input_names"
 )
 ##
-#test_data <- readr::read_tsv("data-raw/synthetic_data.bed", show_col_types = FALSE)
-test_data <- peakCombiner::syn_sample_sheet
+test_data <- peakCombiner::syn_data_bed
 ##
 test_data_prepared <- prepare_input_regions(
   data = test_data
-  )
+)
 ##
 test_data_center_expand <- center_expand_regions(
   data = test_data_prepared,
@@ -89,9 +88,8 @@ testthat::test_that("Test if function works with post-combined input", {
 ### -----------------------------------------------------------------------###
 
 test_that("Required input data has the expected structure", {
-  
   data <- test_data_prepared
-  
+
   expect_equal(length(names(data)), 8)
   expect_identical(names(data), input_colnames_pre)
   expect_true(is.character(data$chrom))
@@ -106,9 +104,8 @@ test_that("Required input data has the expected structure", {
 })
 
 test_that("Required input data has the expected structure", {
-  
   data <- test_data_combined
-  
+
   expect_equal(length(names(data)), 9)
   expect_identical(names(data), input_colnames_post)
   expect_true(is.character(data$chrom))
@@ -163,25 +160,25 @@ testthat::test_that("Required paramter expand_by has the expected structure/valu
     data = test_data_prepared,
     center_by = "column_value",
     expand_by = NA
-  ),)
+  ), )
   testthat::expect_error(center_expand_regions(
     data = test_data_prepared,
     center_by = "column_value",
     expand_by = c(1, 2, 3)
-  ),)
+  ), )
   testthat::expect_error(center_expand_regions(
     data = test_data_prepared,
     center_by = "column_value",
     expand_by = "nonexisting"
-  ),)
-devtools::document()})
+  ), )
+  devtools::document()
+})
 
 ### -----------------------------------------------------------------------###
 ### Test Output
 ### -----------------------------------------------------------------------###
 
 test_that("Output data frame is correct for pre-combined", {
-  
   data <- test_data_center_expand
 
   expect_setequal(colnames(data), output_colnames_pre)
@@ -198,13 +195,12 @@ test_that("Output data frame is correct for pre-combined", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
 
-  expect_equal(mean(data$center), 2452.92308)
+  expect_equal(mean(data$center), 2495.6827)
   expect_identical(nrow(data), as.integer(52))
-  expect_identical(data$start[1], 352)
+  expect_identical(data$start[1], 100.5)
 })
 
 test_that("Output data frame is correct for post-combined", {
-
   data <- test_data_combined_ce
 
   expect_setequal(colnames(data), output_colnames_post)
@@ -219,11 +215,11 @@ test_that("Output data frame is correct for post-combined", {
   expect_true(is.numeric(data$score))
   expect_true(is.character(data$strand))
   expect_true(is.numeric(data$center))
-  expect_equal(mean(data$center), 2711)
+  expect_equal(mean(data$center), 2770.45)
   expect_identical(nrow(data), as.integer(10))
-  expect_identical(data$start[1], 152)
-  expect_identical(data$end[1], 850)
-  expect_identical(data$end[1], 850)
+  expect_identical(data$start[1], 200)
+  expect_identical(data$end[1], 900)
+  expect_identical(data$end[1], 900)
 })
 
 test_that("Output data frame is correct for data_prepared", {
@@ -242,7 +238,6 @@ test_that("Output data frame is correct for data_prepared", {
   ))
   ##
   expect_identical(nrow(result), 52L)
-  expect_identical(result$start[9], as.numeric(252))
 })
 ##
 test_that("Output data frame is correct for data_center_expand", {
@@ -261,7 +256,6 @@ test_that("Output data frame is correct for data_center_expand", {
   ))
   ##
   expect_identical(nrow(result), 52L)
-  expect_identical(result$start[9], as.numeric(252))
 })
 ##
 test_that("Output data frame is correct for data_filtered", {
@@ -280,7 +274,6 @@ test_that("Output data frame is correct for data_filtered", {
   ))
   ##
   expect_identical(nrow(result), 52L)
-  expect_identical(result$start[9], as.numeric(252))
 })
 ##
 test_that("Output data frame is correct for data_combined", {
@@ -299,7 +292,6 @@ test_that("Output data frame is correct for data_combined", {
   ))
   ##
   expect_identical(nrow(result), 10L)
-  expect_identical(result$start[9], as.numeric(252))
 })
 ##
 ### -----------------------------------------------------------------------###

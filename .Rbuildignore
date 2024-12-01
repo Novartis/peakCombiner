@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^data-raw$
+.github$
+combpeaksr.Rproj
+LICENSE.txt

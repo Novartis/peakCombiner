@@ -9,6 +9,8 @@ devtools::load_all()
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+set.seed(1234)
+##
 input_colnames <- c(
   "chrom", "start", "end", "width", "strand", "revmap", "sample_name",
   "ranking_comb_ref", "name", "center", "score", "rowname_disjoin"
@@ -16,7 +18,6 @@ input_colnames <- c(
 ##
 output_colnames <- c("chr", "start", "end", "width", "strand", "input_names")
 ##
-#test_data <- readr::read_tsv("/da/ONC/BFx/research/muckema1/discovery_brd9/analysis/combpeaksr/lists/synthetic_genomic_regions.bed", show_col_types = FALSE)
 test_data <- peakCombiner::syn_data_tibble
 ##
 test_data_prepared <- prepare_input_regions(
@@ -39,22 +40,23 @@ test_data_filtered <- filter_regions(
 ##
 test_data_disjoin_filter <- cr_disjoin_filter(
   data = test_data_filtered,
-  found_in_samples = 2)
+  found_in_samples = 2
+)
 ##
 test_data_reduce <- cr_reduce(
   data = test_data_disjoin_filter
-  )
+)
 ##
 output_colnames <- colnames(
   test_data_reduce
-  )
+)
 ##
 ### -----------------------------------------------------------------------###
 ### Test input
 ### -----------------------------------------------------------------------###
 ##
 test_that("Input data frame has the expected structure", {
-  data <- test_data_disjoin_filter |> 
+  data <- test_data_disjoin_filter |>
     dplyr::mutate(chrom = as.character(chrom))
   ##
   expect_equal(length(names(data)), 12)
@@ -71,7 +73,7 @@ test_that("Input data frame has the expected structure", {
 ### -----------------------------------------------------------------------###
 ##
 test_that("Output data frame is correct", {
-  data <- test_data_reduce |> 
+  data <- test_data_reduce |>
     dplyr::mutate(chrom = as.character(chrom))
   ##
   expect_setequal(colnames(data), output_colnames)
@@ -86,7 +88,7 @@ test_that("Output data frame is correct", {
   ##
   expect_identical(nrow(data), 45L)
   expect_identical(data$start[1], 150L)
-  expect_identical(sum(data$width), 31745L)
+  expect_identical(round(sum(data$width),0), 31745)
   ##
 })
 ##

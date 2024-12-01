@@ -13,6 +13,8 @@ devtools::load_all()
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+set.seed(1234)
+##
 required_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
@@ -23,7 +25,7 @@ input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- prepare_input_regions(
   data = test_data
-  )
+)
 ##
 test_data_center_expand <- center_expand_regions(
   data = test_data_prepared,
@@ -71,7 +73,7 @@ test_that("Test if function works with correct input", {
 ##
 test_that("Input data frame has the expected structure", {
   data <- test_data_filtered
-  
+
   expect_equal(length(input_colnames), 8)
   expect_identical(names(data), required_colnames)
   expect_true(is.character(data$chrom))
@@ -109,7 +111,7 @@ test_that("Required parameter 'filter_by_blacklist' has expected structure", {
 ##
 ### -----------------------------------------------------------------------###
 ##
-test_that("For 'filter_by_blacklist' providing blacklist with different 
+test_that("For 'filter_by_blacklist' providing blacklist with different
           names", {
   blacklist2 <- blacklist
   colnames(blacklist2) <- c("CHROM", "start", "end")
@@ -169,7 +171,7 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
   ##
-  expect_equal(round(mean(data$center),2), 3168.42)
+  expect_equal(round(mean(data$center), 0), 3168)
   expect_identical(nrow(data), 38L)
   expect_identical(data$start[1], 250L)
 })

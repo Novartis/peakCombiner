@@ -57,13 +57,13 @@
 #'                      named `chrom`, `start`, `end`, `name`,
 #'                      `score`, `strand`, `center`, `sample_name`. Additional
 #'                      columns will be maintained.
-#' @param center_by   Allowed values are 'center_column' (default) or 
+#' @param center_by   Allowed values are 'center_column' (default) or
 #'                    'midpoint'.
 #' * 'center_column' uses the value stored in the column `center` to center.
-#' * 'midpoint' replaces the value stored in the column `center` with the 
-#'    mathematical mean of each genomic region (e.g., round(end - start / 2)), 
+#' * 'midpoint' replaces the value stored in the column `center` with the
+#'    mathematical mean of each genomic region (e.g., round(end - start / 2)),
 #'    which is then used.
-#'    
+#'
 #' @param expand_by   Allowed values a numeric vector of length 1 or 2,
 #'                      or 'NULL' (default).
 #' * The value from the numeric vector of length 1
@@ -94,21 +94,21 @@
 #'
 #' @export
 #'
-#' @import rlang
+#' @importFrom rlang .data
 #' @import tidyr
 #' @import here
 #'
 #' @examples
-#' #Load in and prepare a an accepted tibble
+#' # Load in and prepare a an accepted tibble
 #' input_data <- peakCombiner::syn_data_bed
 #' input_data
 #'
-#' #Prepare input data
+#' # Prepare input data
 #' data_prepared <- prepare_input_regions(
 #'   data = input_data,
 #'   show_messages = TRUE
 #' )
-#' #Run center and expand
+#' # Run center and expand
 #' data_center_expand <- center_expand_regions(
 #'   data = data_prepared,
 #'   center_by = "center_column",
@@ -118,7 +118,7 @@
 #'
 #' data_center_expand
 #'
-#' #You can choose to use the midpoint and predefined values to expand
+#' # You can choose to use the midpoint and predefined values to expand
 #'
 #' data_center_expand <- center_expand_regions(
 #'   data = data_prepared,
@@ -133,7 +133,6 @@ center_expand_regions <- function(data,
                                   center_by = "center_column",
                                   expand_by = NULL,
                                   show_messages = TRUE) {
-
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
   ### -----------------------------------------------------------------------###
@@ -159,7 +158,7 @@ center_expand_regions <- function(data,
       "i" = "Argument {.arg show_messages} is {.val {show_messages}}."
     ))
   }
-  
+
   ### -----------------------------------------------------------------------###
   ### Prepare parameters
   ### -----------------------------------------------------------------------###
@@ -229,12 +228,12 @@ center_expand_regions <- function(data,
   ### -----------------------------------------------------------------------###
   ### Center and expand
   ### -----------------------------------------------------------------------###
-  
+
   cli::cli_inform(c(
     ">" = "Genomic regions will be centered and expanded.",
     " " = " "
   ))
-  
+
   if (center_by == "center_column") {
     cli::cli_inform(c(
       ">" = "Starting with expanding genomic regions from the column {.field

@@ -144,7 +144,7 @@ skipped (optional).
 }
 \examples{
 
-#Load in and prepare a an accepted tibble
+# Load in and prepare a an accepted tibble
 input_data <- peakCombiner::syn_data_bed
 input_data
 

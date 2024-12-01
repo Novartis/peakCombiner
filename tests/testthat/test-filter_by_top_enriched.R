@@ -9,6 +9,8 @@ devtools::load_all()
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+set.seed(1234)
+##
 required_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
@@ -117,13 +119,13 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
   ##
-  expect_equal(round(mean(data$center),0), 2458)
+  expect_equal(round(mean(data$center), 0), 2458)
   expect_identical(nrow(data), 52L)
   expect_identical(data$start[1], 350)
   ##
   test_counts_left <- test_data_filtered |>
     dplyr::group_by(sample_name) |>
-    dplyr::summarise(counts = n()) |>
+    dplyr::summarise(counts = dplyr::n()) |>
     dplyr::filter(sample_name == "treatment_rep1") |>
     dplyr::pull(counts)
   expect_identical(test_counts_left, 9L)

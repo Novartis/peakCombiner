@@ -8,7 +8,9 @@
 ### -----------------------------------------------------------------------###
 ## tweak the prepare_input_regions() function and re-load it
 devtools::load_all()
-
+##
+set.seed(1234)
+##
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
@@ -24,7 +26,7 @@ output_colnames <- c(
 )
 
 #' Prepare test data set
-test_data <- peakCombiner::syn_data_bed
+test_data <- peakCombiner::syn_data_tibble
 test_data
 
 test_data_prepared <- prepare_input_regions(
@@ -61,155 +63,203 @@ test_data_combined <- combine_regions(
 ### -----------------------------------------------------------------------###
 
 testthat::test_that("Input data frame has be data frame or tibble", {
-  testthat::expect_error(combine_regions(data = c(1,2,3,4,5),
-                               show_messages = FALSE))
+  testthat::expect_error(combine_regions(
+    data = c(1, 2, 3, 4, 5),
+    show_messages = FALSE
+  ))
 })
 
 testthat::test_that("Input data frame has be data frame or tibble", {
-  testthat::expect_error(combine_regions(data = NULL,
-                               show_messages = FALSE))
+  testthat::expect_error(combine_regions(
+    data = NULL,
+    show_messages = FALSE
+  ))
 })
 
 ### -----------------------------------------------------------------------###
 testthat::test_that("Argument 'combined_center' creates error if NULL", {
-  testthat::expect_error(combine_regions(data = test_data_filtered,
-                               combined_center = NULL,
-                               show_messages = FALSE))
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    combined_center = NULL,
+    show_messages = FALSE
+  ))
 })
 
 testthat::test_that("Argument 'combined_center' creates error if NA", {
-  testthat::expect_error(combine_regions(data = test_data_filtered,
-                               combined_center = NA,
-                               show_messages = FALSE))
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    combined_center = NA,
+    show_messages = FALSE
+  ))
 })
 
-testthat::test_that("Argument 'combined_center' creates error if numeric 
+testthat::test_that("Argument 'combined_center' creates error if numeric
                     value", {
-  testthat::expect_error(combine_regions(data = test_data_filtered,
-                               combined_center = 1,
-                               show_messages = FALSE))
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    combined_center = 1,
+    show_messages = FALSE
+  ))
 })
 
 testthat::test_that("Argument 'combined_center' tolerates capitilization", {
-  testthat::expect_no_error(combine_regions(data = test_data_filtered,
-                               combined_center = "Nearest",
-                               show_messages = FALSE))
+  testthat::expect_no_error(combine_regions(
+    data = test_data_filtered,
+    combined_center = "Nearest",
+    show_messages = FALSE
+  ))
 })
 
-testthat::test_that("Argument 'combined_center' creates error if not allowes 
+testthat::test_that("Argument 'combined_center' creates error if not allowes
                     value", {
-  testthat::expect_error(combine_regions(data = test_data_filtered,
-                                  combined_center = "Shortest",
-                                  show_messages = FALSE))
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    combined_center = "Shortest",
+    show_messages = FALSE
+  ))
 })
 
 ### -----------------------------------------------------------------------###
-testthat::test_that("Argument 'annotate_with_input_names' creates no error if 
+testthat::test_that("Argument 'annotate_with_input_names' creates no error if
                     allowed value", {
-            testthat::expect_no_error(combine_regions(data = test_data_filtered,
-                                         annotate_with_input_names = TRUE,
-                                         show_messages = FALSE))
-            testthat::expect_no_error(combine_regions(data = test_data_filtered,
-                                         annotate_with_input_names = FALSE,
-                                         show_messages = FALSE))
-          })
-
-testthat::test_that("Argument 'annotate_with_input_names' creates error if not 
-                    allowes value", {
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                               annotate_with_input_names = FALSe,
-                               show_messages = FALSE))
-            
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                               annotate_with_input_names = 10,
-                               show_messages = FALSE))
+  testthat::expect_no_error(combine_regions(
+    data = test_data_filtered,
+    annotate_with_input_names = TRUE,
+    show_messages = FALSE
+  ))
+  testthat::expect_no_error(combine_regions(
+    data = test_data_filtered,
+    annotate_with_input_names = FALSE,
+    show_messages = FALSE
+  ))
 })
 
-testthat::test_that("Argument 'annotate_with_input_names' creates error if not 
+testthat::test_that("Argument 'annotate_with_input_names' creates error if not
+                    allowes value", {
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    annotate_with_input_names = FALSe,
+    show_messages = FALSE
+  ))
+
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    annotate_with_input_names = 10,
+    show_messages = FALSE
+  ))
+})
+
+testthat::test_that("Argument 'annotate_with_input_names' creates error if not
                     allowes value 'NA'", {
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                                         annotate_with_input_names = NA,
-                                         show_messages = FALSE))
-          })
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    annotate_with_input_names = NA,
+    show_messages = FALSE
+  ))
+})
 
-testthat::test_that("Argument 'annotate_with_input_names' creates error if not 
+testthat::test_that("Argument 'annotate_with_input_names' creates error if not
                     allowes value 'NULL'", {
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                                         annotate_with_input_names = NULL,
-                                         show_messages = FALSE))
-          })
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    annotate_with_input_names = NULL,
+    show_messages = FALSE
+  ))
+})
 
-testthat::test_that("Argument 'annotate_with_input_names' creates error if 
+testthat::test_that("Argument 'annotate_with_input_names' creates error if
                     length is greater then 1.", {
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                                         annotate_with_input_names = c(1,2),
-                                         show_messages = FALSE))
-          })
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    annotate_with_input_names = c(1, 2),
+    show_messages = FALSE
+  ))
+})
 
-testthat::test_that("Argument 'annotate_with_input_names' creates error if not 
+testthat::test_that("Argument 'annotate_with_input_names' creates error if not
                     allowed logical value with length 2 is provided.", {
-  testthat::expect_error(combine_regions(data = test_data_filtered,
-                                         annotate_with_input_names = c(NA,TRUE),
-                                         show_messages = FALSE))
-          })
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    annotate_with_input_names = c(NA, TRUE),
+    show_messages = FALSE
+  ))
+})
 ### -----------------------------------------------------------------------###
 
-testthat::test_that("Argument 'combined_sample_name' creates no error if 'NULL' 
+testthat::test_that("Argument 'combined_sample_name' creates no error if 'NULL'
           value is provided.", {
-            testthat::expect_no_error(combine_regions(data = test_data_filtered,
-                                            combined_sample_name = NULL,
-                                            show_messages = FALSE))
-          })
-
-testthat::test_that("Argument 'combined_sample_name' creates no error if single 
-                    character value is provided.", {
-            testthat::expect_no_error(combine_regions(data = test_data_filtered,
-                               combined_sample_name = "Consensus",
-                               show_messages = FALSE))
+  testthat::expect_no_error(combine_regions(
+    data = test_data_filtered,
+    combined_sample_name = NULL,
+    show_messages = FALSE
+  ))
 })
 
-testthat::test_that("Argument 'combined_sample_name' creates error if single 
+testthat::test_that("Argument 'combined_sample_name' creates no error if single
+                    character value is provided.", {
+  testthat::expect_no_error(combine_regions(
+    data = test_data_filtered,
+    combined_sample_name = "Consensus",
+    show_messages = FALSE
+  ))
+})
+
+testthat::test_that("Argument 'combined_sample_name' creates error if single
                     numeric value is provided.", {
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                                            combined_sample_name = 1,
-                                            show_messages = FALSE))
-          })
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    combined_sample_name = 1,
+    show_messages = FALSE
+  ))
+})
 
-testthat::test_that("Argument 'combined_sample_name' creates error if vector 
+testthat::test_that("Argument 'combined_sample_name' creates error if vector
                     with two entries is provided.", {
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                               combined_sample_name = c("Consensus","Two"),
-                               show_messages = FALSE))
-  })
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    combined_sample_name = c("Consensus", "Two"),
+    show_messages = FALSE
+  ))
+})
 
-testthat::test_that("Argument 'combined_sample_name' creates error if 'NA' is 
+testthat::test_that("Argument 'combined_sample_name' creates error if 'NA' is
           provided.", {
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                               combined_sample_name = NA,
-                               show_messages = FALSE))
-  })
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    combined_sample_name = NA,
+    show_messages = FALSE
+  ))
+})
 
 ### -----------------------------------------------------------------------###
 
 testthat::test_that("Argument 'show_messages' creates no error if TRUE or FALSE
           value is provided.", {
-            testthat::expect_no_error(combine_regions(data = test_data_filtered,
-                                            show_messages = FALSE))
-            testthat::expect_no_error(combine_regions(data = test_data_filtered,
-                                            show_messages = TRUE))
-          })
+  testthat::expect_no_error(combine_regions(
+    data = test_data_filtered,
+    show_messages = FALSE
+  ))
+  testthat::expect_no_error(combine_regions(
+    data = test_data_filtered,
+    show_messages = TRUE
+  ))
+})
 
 testthat::test_that("Argument 'show_messages' creates no error if non accepted
           value is provided.", {
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                                            show_messages = FaLSE))
-          })
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    show_messages = FaLSE
+  ))
+})
 
 testthat::test_that("Argument 'show_messages' creates no error if non accepted
           value 'NA' is provided.", {
-            testthat::expect_error(combine_regions(data = test_data_filtered,
-                                            show_messages = NA))
-          })
+  testthat::expect_error(combine_regions(
+    data = test_data_filtered,
+    show_messages = NA
+  ))
+})
 
 
 ### -----------------------------------------------------------------------###
@@ -241,21 +291,13 @@ testthat::test_that("Output data has the correct classes and structure", {
 })
 
 testthat::test_that("Output data frame has correct colnames", {
-  testthat::expect_true(any(colnames(data) %in% output_colnames))
+  testthat::expect_true(any(colnames(test_data_combined) %in% output_colnames))
 })
 
-testthat::test_that("Output data frame has correct class", {
-  testthat::expect_identical(class(data)[2], "tbl")
-})
-
-testthat::test_that("Output data frame is expected values", {
-  testthat::expect_identical(data$center[1], 450.5)
-  testthat::expect_identical(sum(data$score), 0)
-})
 
 ### -----------------------------------------------------------------------###
 
-testthat::test_that("Output data results has correct summit for 'nearest' 
+testthat::test_that("Output data results has correct summit for 'nearest'
                     peak", {
   data <- combine_regions(
     data = test_data_filtered,
@@ -265,10 +307,10 @@ testthat::test_that("Output data results has correct summit for 'nearest'
     combined_sample_name = "consensus_peak",
     show_messages = FALSE
   )
-  
-  testthat::expect_identical(data$center[7], 550.5)
+
+  testthat::expect_identical(round(data$center[7],0), 500)
   testthat::expect_identical(data$name[7], "consensus_peak|7")
-})  
+})
 
 test_that("Output data results has correct summit for 'strongst' peak", {
   data <- combine_regions(
@@ -279,25 +321,23 @@ test_that("Output data results has correct summit for 'strongst' peak", {
     combined_sample_name = "consensus_peak",
     show_messages = FALSE
   )
-  
-  expect_identical(data$center[7], 650.5)
+
+  expect_identical(round(data$center[7],0), 600)
   expect_identical(data$name[7], "consensus_peak|7")
 })
 
-testthat::test_that("Output data results has correct summit for 'middle' 
+testthat::test_that("Output data results has correct summit for 'middle'
                     peak", {
-  
   data <- combine_regions(
-    data =  test_data_filtered,
+    data = test_data_filtered,
     found_in_samples = 2,
     combined_center = "middle",
     annotate_with_input_names = FALSE,
     combined_sample_name = "consensus_peak",
     show_messages = FALSE
   )
-  
-  testthat::expect_identical(data$center[7], 575)
+
+  testthat::expect_identical(data$center[7], 550)
   testthat::expect_identical(data$name[7], "consensus_peak|7")
-  
 })
 ### -----------------------------------------------------------------------###

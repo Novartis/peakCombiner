@@ -11,46 +11,46 @@ devtools::load_all()
 ##
 reduced_colnames <- c(
   "chrom", "start", "end", "width", "strand", "name", "center", "score"
-  )
+)
 ##
 required_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
-  )
+)
 output_colnames <- c(
   "chrom", "start", "end", "width", "strand", "input_names"
-  )
+)
 ##
 test_data <- peakCombiner::syn_data_tibble
 input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- prepare_input_regions(
   data = test_data
-  )
+)
 test_data_center_expand <- center_expand_regions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL
-  )
+)
 test_data_filtered <- filter_regions(
   data = test_data_center_expand,
   exclude_by_blacklist = "hg38",
   include_by_chromosome_name = c("chr1", "chr10", "chr2", "chr42"),
   include_above_score_cutoff = NULL,
   include_top_n_scoring = NULL
-  )
+)
 test_data_disjoin_filter <- cr_disjoin_filter(
   data = test_data_filtered,
   found_in_samples = 2
-  )
+)
 test_data_reduce <- cr_reduce(
   data = test_data_disjoin_filter
-  )
+)
 ##
 test_data_overlap <- cr_overlap_with_summits(
   data = test_data_reduce,
   input = test_data_filtered
-  )
+)
 ##
 ### -----------------------------------------------------------------------###
 ### Test input
@@ -58,7 +58,7 @@ test_data_overlap <- cr_overlap_with_summits(
 ##
 test_that("Input data frame has the expected structure", {
   ##
-  data <- test_data_reduce |> 
+  data <- test_data_reduce |>
     dplyr::mutate(chrom = as.character(chrom))
   ##
   expect_equal(length(colnames(data)), 8)
@@ -74,7 +74,7 @@ test_that("Input data frame has the expected structure", {
 ##
 test_that("Input data frame has the expected structure", {
   ##
-  data <- test_data_filtered |> 
+  data <- test_data_filtered |>
     dplyr::mutate(chrom = as.character(chrom))
   ##
   expect_equal(length(colnames(data)), 8)
@@ -96,7 +96,7 @@ test_that("Input data frame has the expected structure", {
 ##
 test_that("Output data frame is correct", {
   ##
-  data <- test_data_overlap |> 
+  data <- test_data_overlap |>
     dplyr::mutate(chrom = as.character(chrom))
   ##
   expect_setequal(colnames(data), reduced_colnames)
