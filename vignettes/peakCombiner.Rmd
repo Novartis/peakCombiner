@@ -49,8 +49,8 @@ Each `r Biocpkg("peakCombiner")` function has the parameter`show_messages` that 
 ## Standard genomic regions format
 The modularity of `r Biocpkg("peakCombiner")` is enabled by standardizing how the genomic regions and samples are represented in the input and output of all its functions. We chose to use a tibble because this allows you to easily plot and explore the data. 
 The columns are described in the table below. Only ‘chrom’, ‘start’, ‘end’, ‘sample_name’ are required to use `r Biocpkg("peakCombiner")`, but you have more possibilities for [`center_expand_regions`][Center and expand regions] and [`filter_regions`][Filter regions] if you can provide the optional ‘score’ and ‘center’ columns.
-If you can’t provide data for the optional columns, prepare_input_regions adds sensible defaults for you.
-We recommend that you create this standard tibble using prepare_input_regions (see section “Prepare input data”), but you can also prepare it yourself (see section "[Load from pre-loaded tibble]")
+If you can’t provide data for the optional columns, `prepare_input_regions` adds sensible defaults for you (see “Relevant Section”).
+We recommend that you create this standard tibble using `prepare_input_regions` (see section “Prepare input data”), but you can also prepare it yourself (see section "[Load from pre-loaded tibble]")
 
 
 |Column name |Requirement |Content     |Details 
