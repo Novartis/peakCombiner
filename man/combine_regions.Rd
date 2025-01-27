@@ -116,11 +116,10 @@ will be updated.
 }
 \examples{
 # Load in and prepare a an accepted tibble
-input_data <- peakCombiner::syn_data_bed
-input_data
+utils::data(syn_data_bed)
 
 data_prepared <- prepare_input_regions(
-  data = input_data,
+  data = syn_data_bed,
   show_messages = FALSE
 )
 
