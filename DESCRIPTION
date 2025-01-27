@@ -34,7 +34,6 @@ Suggests:
     rtracklayer,
     knitr,
     devtools,
-    qpdf,
     ggplot2,
     BiocStyle
 DEPENDS:
