@@ -37,7 +37,9 @@ Suggests:
     knitr,
     devtools,
     ggplot2,
-    BiocStyle
+    BiocStyle,
+    usethis,
+    utils
 Imports: 
     tidyr,
     dplyr (>= 1.1.2),
@@ -50,8 +52,6 @@ Imports:
     rlang,
     stringr,
     here,
-    usethis,
-    utils,
     stats
 URL:
     https://github.com/novartis/peakCombiner/, 
