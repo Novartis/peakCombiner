@@ -39,8 +39,7 @@ Suggests:
     ggplot2,
     BiocStyle,
     usethis,
-    utils, 
-    qpdf
+    utils
 Imports: 
     tidyr,
     dplyr (>= 1.1.2),
@@ -53,7 +52,8 @@ Imports:
     rlang,
     stringr,
     here,
-    stats
+    stats, 
+    qpdf
 URL:
     https://github.com/novartis/peakCombiner/, 
     https://bioconductor.org/packages/peakCombiner
