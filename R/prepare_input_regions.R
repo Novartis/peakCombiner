@@ -116,8 +116,7 @@
 #'
 #' @examples
 #' # Load in and prepare a an accepted tibble
-#' input_data <- peakCombiner::syn_data_tibble
-#' input_data
+#' utils::data(syn_data_tibble)
 #'
 #' data_prepared <- prepare_input_regions(
 #'   data = input_data,
