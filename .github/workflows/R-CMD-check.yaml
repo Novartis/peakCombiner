@@ -149,7 +149,7 @@ jobs:
           error-on: 'error'
 
       #- name: Test coverage
-      #  if: matrix.config.os == 'macOS-12' && matrix.config.bioc == 'devel'
+      #  if: matrix.config.os == 'macOS-14' && matrix.config.bioc == 'devel'
       #  run: |
       #    install.packages("covr")
       #    covr::codecov(token = "${{secrets.CODECOV_TOKEN}}")
