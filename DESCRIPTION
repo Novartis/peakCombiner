@@ -16,7 +16,7 @@ Authors@R: c(person("Markus", "Muckenhuber",
                 comment = c(ORCID = "0000-0002-2269-4934")))
 Depends: R (>= 4.3.0)
 License: MIT + file LICENSE
-LazyData: TRUE
+LazyData: FALSE
 biocViews:
     WorkflowStep,
     Preprocessing,
