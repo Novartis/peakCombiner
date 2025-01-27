@@ -126,19 +126,19 @@ to quaranty an optimal result.
 utils::data(syn_data_tibble)
 
 data_prepared <- prepare_input_regions(
-  data = input_data,
+  data = syn_data_tibble,
   show_messages = TRUE
 )
 data_prepared
 
 # Or a pre-loaded tibble with genomic regions and named columns.
 
-control <- peakCombiner::syn_data_control01
-treatment <- peakCombiner::syn_data_treatment01
+utils::data(syn_data_control01)
+utils::data(syn_data_treatment01)
 
-combined_input <- control |>
+combined_input <- syn_data_control01 |>
   dplyr::mutate(sample_name = "control-rep1") |>
-  rbind(treatment |>
+  rbind(syn_data_treatment01 |>
     dplyr::mutate(sample_name = "treatment-rep1"))
 
 prepare_input_regions(
