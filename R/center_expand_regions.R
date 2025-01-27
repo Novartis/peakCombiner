@@ -102,7 +102,6 @@
 #' # Load in and prepare a an accepted tibble
 #' utils::data(syn_data_bed)
 #'
-#'
 #' # Prepare input data
 #' data_prepared <- prepare_input_regions(
 #'   data = syn_data_bed,
