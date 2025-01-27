@@ -49,7 +49,7 @@ Each `r Biocpkg("peakCombiner")` function has the parameter `show_messages` that
 ## Standard genomic regions format
 The modularity of `r Biocpkg("peakCombiner")` is enabled by standardizing how the genomic regions and samples are represented in the input and output of all its functions. We chose to use a tibble because this allows you to easily plot and explore the data. 
 The columns are described in the table below. Only ‘chrom’, ‘start’, ‘end’, ‘sample_name’ are required to use `r Biocpkg("peakCombiner")`, but you have more possibilities for [`center_expand_regions`][Center and expand regions] and [`filter_regions`][Filter regions] if you can provide the optional ‘score’ and ‘center’ columns.
-If you can’t provide data for the optional columns, `prepare_input_regions` adds sensible defaults for you (see “Relevant Section”).
+If you can’t provide data for the optional columns, `prepare_input_regions` adds sensible defaults for you.
 We recommend that you create this standard tibble using `prepare_input_regions` (see section “Prepare input data”), but you can also prepare it yourself (see section "[Load from pre-loaded tibble]")
 
 
@@ -348,7 +348,7 @@ Unlike 'narrowPeak' files, BED files typically do not include columns for summit
 Lets load a BED file.
 
 ```{r, eval=TRUE}
-utils::data(syn_data_bed)
+utils::data("syn_data_bed")
 syn_data_bed |> dplyr::arrange(sample_name)
 ```
 
@@ -614,7 +614,7 @@ Here is some code to do that on our small, synthetic dataset. The distribution y
 data_center_expand |>
   ggplot2::ggplot(ggplot2::aes(x = score)) +
   ggplot2::geom_histogram(binwidth = 10) +
-  xlim(0,NA)
+  ggplot2::xlim(0,NA)
 ```
 
 See that we have very few sites with low values. We use a cutoff of 35 to remove lowly enriched sites and apply this value to the filtering step.
@@ -649,7 +649,7 @@ Again, we see that sites with 'score' 35 and below are removed.
 data_filtered_cutoff |>
   ggplot2::ggplot(ggplot2::aes(x = score)) +
   ggplot2::geom_histogram(binwidth = 10) +
-  xlim(0, NA)
+  ggplot2::xlim(0, NA)
 ```
 
 #### Select a defined number of regions
