@@ -39,7 +39,8 @@ Suggests:
     ggplot2,
     BiocStyle,
     usethis,
-    utils
+    utils, 
+    qpdf
 Imports: 
     tidyr,
     dplyr (>= 1.1.2),
