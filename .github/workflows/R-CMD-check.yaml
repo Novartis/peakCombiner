@@ -116,7 +116,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          'install.packages("testthat")'
+          install.packages("testthat")
         shell: Rscript {0}
 
 
