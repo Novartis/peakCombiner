@@ -1,13 +1,3 @@
-# Example
-# test_that("multiplication works", {
-#  expect_equal(2 * 2, 4)
-# })
-##
-### -----------------------------------------------------------------------###
-### Prepare data for testing
-### -----------------------------------------------------------------------###
-## tweak the prepare_input_regions() function and re-load it
-#devtools::load_all()
 ##
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing

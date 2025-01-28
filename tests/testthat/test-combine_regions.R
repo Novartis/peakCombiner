@@ -1,20 +1,10 @@
-# Example
-# test_that("multiplication works", {
-#  expect_equal(2 * 2, 4)
-# })
 ##
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
-## tweak the prepare_input_regions() function and re-load it
-#devtools::load_all()
 ##
 set.seed(1234)
 ##
-### -----------------------------------------------------------------------###
-### Prepare data for testing
-### -----------------------------------------------------------------------###
-
 input_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
