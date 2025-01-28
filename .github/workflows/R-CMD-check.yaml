@@ -116,9 +116,9 @@ jobs:
 
       - name: Install dependencies
         run: |
+          install.packages("rlang")
           install.packages("testthat")
         shell: Rscript {0}
-
 
       - name: Run tests and capture output
         run: |
