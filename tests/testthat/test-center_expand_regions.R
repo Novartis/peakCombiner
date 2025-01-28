@@ -6,12 +6,6 @@
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
-## tweak the prepare_input_regions() function and re-load it
-#devtools::load_all(path = here::here())
-##
-### -----------------------------------------------------------------------###
-### Prepare data for testing
-### -----------------------------------------------------------------------###
 ##
 input_colnames_pre <- c(
   "chrom", "start", "end", "name", "score", "strand",
@@ -89,7 +83,7 @@ testthat::test_that("Test if function works with post-combined input", {
 
 test_that("Required input data has the expected structure", {
   data <- test_data_prepared
-
+  
   expect_equal(length(names(data)), 8)
   expect_identical(names(data), input_colnames_pre)
   expect_true(is.character(data$chrom))
@@ -105,7 +99,7 @@ test_that("Required input data has the expected structure", {
 
 test_that("Required input data has the expected structure", {
   data <- test_data_combined
-
+  
   expect_equal(length(names(data)), 9)
   expect_identical(names(data), input_colnames_post)
   expect_true(is.character(data$chrom))
@@ -180,12 +174,12 @@ testthat::test_that("Required paramter expand_by has the expected structure/valu
 
 test_that("Output data frame is correct for pre-combined", {
   data <- test_data_center_expand
-
+  
   expect_setequal(colnames(data), output_colnames_pre)
   expect_equal(ncol(data), 8)
-
+  
   expect_identical(class(data)[2], "tbl")
-
+  
   expect_true(is.character(data$chrom))
   expect_true(is.numeric(data$start))
   expect_true(is.numeric(data$end))
@@ -194,7 +188,7 @@ test_that("Output data frame is correct for pre-combined", {
   expect_true(is.character(data$strand))
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
-
+  
   expect_equal(mean(data$center), 2495.6827)
   expect_identical(nrow(data), as.integer(52))
   expect_identical(data$start[1], 100.5)
@@ -202,12 +196,12 @@ test_that("Output data frame is correct for pre-combined", {
 
 test_that("Output data frame is correct for post-combined", {
   data <- test_data_combined_ce
-
+  
   expect_setequal(colnames(data), output_colnames_post)
   expect_equal(ncol(data), 9)
-
+  
   expect_identical(class(data)[2], "tbl")
-
+  
   expect_true(is.character(data$chrom))
   expect_true(is.numeric(data$start))
   expect_true(is.numeric(data$end))
