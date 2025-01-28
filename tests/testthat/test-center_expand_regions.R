@@ -1,7 +1,3 @@
-# Example
-# test_that("multiplication works", {
-#  expect_equal(2 * 2, 4)
-# })
 ##
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
@@ -24,7 +20,8 @@ output_colnames_post <- c(
   "center", "sample_name", "input_names"
 )
 ##
-test_data <- peakCombiner::syn_data_bed
+data(syn_data_bed)
+test_data <- syn_data_bed
 ##
 test_data_prepared <- prepare_input_regions(
   data = test_data
@@ -165,7 +162,6 @@ testthat::test_that("Required paramter expand_by has the expected structure/valu
     center_by = "column_value",
     expand_by = "nonexisting"
   ), )
-  devtools::document()
 })
 
 ### -----------------------------------------------------------------------###
