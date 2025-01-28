@@ -3,8 +3,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ## tweak the prepare_input_regions() function and re-load it
-library("tidyverse")
-library("GenomicRanges")
+#library("tidyverse")
+#library("GenomicRanges")
 set.seed(1234)
 ##
 ### -----------------------------------------------------------------------###
