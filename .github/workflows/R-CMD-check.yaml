@@ -116,12 +116,14 @@ jobs:
 
       - name: Install dependencies
         run: Rscript -e 'install.packages("testthat")'
+        shell: Rscript {0}
 
       - name: Run tests and capture output
         run: |
           sink("tests/testthat/testthat.Rout")
           testthat::test_dir("tests/testthat")
           sink()
+        shell: Rscript {0}
 
       - name: Show testthat output (windows)
         if: always() && runner.os == 'Windows'
