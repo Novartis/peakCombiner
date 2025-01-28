@@ -18,7 +18,8 @@ input_colnames <- c(
 ##
 output_colnames <- c("chr", "start", "end", "width", "strand", "input_names")
 ##
-test_data <- peakCombiner::syn_data_tibble
+data(syn_data_tibble)
+test_data <- syn_data_tibble
 ##
 test_data_prepared <- prepare_input_regions(
   data = test_data

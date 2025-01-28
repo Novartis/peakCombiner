@@ -20,7 +20,8 @@ required_colnames <- c(
   "center", "sample_name"
 )
 ##
-test_data <- peakCombiner::syn_data_tibble
+data(syn_data_tibble)
+test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- prepare_input_regions(
@@ -40,7 +41,8 @@ test_data_filtered <- filter_by_chromosome_names(
 ##
 input_colnames <- colnames(test_data_filtered)
 ##
-blacklist <- peakCombiner::blacklist_hg38
+data(blacklist_hg38)
+blacklist <- blacklist_hg38
 ##
 test_data_filtered_bl <- filter_by_blacklist(
   data = test_data_filtered,

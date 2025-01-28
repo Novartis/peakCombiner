@@ -9,7 +9,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
-test_data <- peakCombiner::syn_data_tibble
+data(syn_data_tibble)
+
 ##
 all_colnames <- c(
   "chrom", "start", "end", "name","score", "strand", "center", "sample_name"
@@ -18,7 +19,7 @@ input_colnames <- c(
   "chrom", "start", "end", "sample_name"
 )
 ##
-data_prepared <- test_data
+data_prepared <- syn_data_tibble
 ##
 ### -----------------------------------------------------------------------###
 ### Test input

@@ -26,7 +26,8 @@ output_colnames <- c(
 )
 
 #' Prepare test data set
-test_data <- peakCombiner::syn_data_tibble
+data(syn_data_tibble)
+test_data <- syn_data_tibble
 test_data
 
 test_data_prepared <- prepare_input_regions(

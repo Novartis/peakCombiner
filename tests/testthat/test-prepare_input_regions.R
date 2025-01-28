@@ -19,7 +19,8 @@ colnames_preloaded_df <- c(
 
 allowed_file_format <- c("narrowpeak", "broadpeak", "bed")
 
-samplesheet_test <- peakCombiner::syn_data_bed
+data(syn_data_bed)
+samplesheet_test <- syn_data_bed
 
 test_sample_sheet <- prepare_input_regions(
   data = samplesheet_test[1, ]
