@@ -10,7 +10,7 @@
 ### -----------------------------------------------------------------------###
 ##
 data(syn_data_tibble)
-
+test_data <- syn_data_tibble
 ##
 all_colnames <- c(
   "chrom", "start", "end", "name","score", "strand", "center", "sample_name"
@@ -19,7 +19,7 @@ input_colnames <- c(
   "chrom", "start", "end", "sample_name"
 )
 ##
-data_prepared <- syn_data_tibble
+data_prepared <- test_data
 ##
 ### -----------------------------------------------------------------------###
 ### Test input
