@@ -3,7 +3,7 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ## tweak the prepare_input_regions() function and re-load it
-devtools::load_all()
+#devtools::load_all()
 ##
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
