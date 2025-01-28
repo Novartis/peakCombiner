@@ -87,7 +87,6 @@ jobs:
           print(deps)
           BiocManager::install(local_deps[local_deps %in% deps$package[deps$diff != 0]], Ncpu = 2L)
           remotes::install_cran('rcmdcheck', Ncpu = 2L)
-        shell: Rscript {0}
 
       - name: Session info
         run: |
