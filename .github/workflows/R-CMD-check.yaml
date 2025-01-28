@@ -122,7 +122,7 @@ jobs:
 
       - name: Run tests and capture output
         run: |
-          sink("tests/testthat/testthat.Rout")
+          sink(file = "tests/testthat/testthat.Rout")
           testthat::test_dir("tests/testthat")
           sink()
         shell: Rscript {0}
