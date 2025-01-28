@@ -2,14 +2,9 @@
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
-## tweak the prepare_input_regions() function and re-load it
-#library("tidyverse")
-#library("GenomicRanges")
-set.seed(1234)
 ##
-### -----------------------------------------------------------------------###
-### Prepare data for testing
-### -----------------------------------------------------------------------###
+set.seed(1234)
+
 
 colnames_preloaded_df <- c(
   "chrom", "start", "end", "name", "score", "strand",
