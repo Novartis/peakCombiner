@@ -3,7 +3,7 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
-library(peakCombiner)
+set.seed(1234)
 ##
 data(syn_data_tibble)
 test_data <- syn_data_tibble

@@ -3,7 +3,6 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
-library(peakCombiner)
 set.seed(1234)
 ##
 required_colnames <- c(

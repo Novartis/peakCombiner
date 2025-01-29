@@ -3,6 +3,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+set.seed(1234)
+##
 input_colnames_pre <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"

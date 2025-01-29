@@ -3,9 +3,7 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
-library(peakCombiner)
-##
-set.seed(123)
+set.seed(1234)
 ##
 required_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand",

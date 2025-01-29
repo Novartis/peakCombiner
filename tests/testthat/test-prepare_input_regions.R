@@ -3,11 +3,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
-library(peakCombiner)
-##
 set.seed(1234)
-
-
+##
 colnames_preloaded_df <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
