@@ -27,7 +27,7 @@ test_data_prepared <- peakCombiner::prepare_input_regions(
 ### -----------------------------------------------------------------------###
 ##
 test_that("Test if function works with correct input", {
-  expect_no_error(define_expansion(
+  expect_no_error(peakCombiner:::define_expansion(
     data = test_data,
     expand_by = NULL
   ))

@@ -26,7 +26,7 @@ test_data_center_expand <- peakCombiner::center_expand_regions(
   expand_by = NULL
 )
 ##
-test_data_filtered <- peakCombiner::filter_by_chromosome_names(
+test_data_filtered <- peakCombiner:::filter_by_chromosome_names(
   data = test_data_center_expand,
   include_by_chromosome_name = c("chr1", "chr10", "chr42")
 )

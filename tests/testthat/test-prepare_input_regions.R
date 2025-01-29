@@ -91,7 +91,7 @@ test_that("Input column 'sample_name' is a class 'character'.", {
 ### -----------------------------------------------------------------------###
 
 test_that("Output data frame has the correct structure.", {
-  expect_no_error(peakCombiner::check_data_structure(test_data_prepared))
+  expect_no_error(peakCombiner:::check_data_structure(test_data_prepared))
 })
 
 test_that("Column names of output data are identical with required once.", {
