@@ -17,7 +17,7 @@ output_colnames <- c(
   "chrom", "start", "end", "width", "strand", "input_names"
 )
 ##
-data(syn_data_tibble)
+data(syn_data_tibble, package = "peakCombiner")
 test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 ##

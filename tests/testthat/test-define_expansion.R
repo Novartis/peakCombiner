@@ -12,7 +12,7 @@ required_colnames <- c(
 ##
 test_expansion_value <- 350
 ##
-data(syn_data_tibble)
+data(syn_data_tibble, package = "peakCombiner")
 test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 ##

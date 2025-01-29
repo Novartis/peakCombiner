@@ -16,7 +16,7 @@ output_colnames <- c(
 )
 
 #' Prepare test data set
-data(syn_data_tibble)
+data(syn_data_tibble, package = "peakCombiner")
 test_data <- syn_data_tibble
 test_data
 

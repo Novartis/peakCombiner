@@ -10,7 +10,7 @@ required_colnames <- c(
   "center", "sample_name"
 )
 ##
-data(syn_data_tibble)
+data(syn_data_tibble, package = "peakCombiner")
 test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 ##
@@ -31,7 +31,7 @@ test_data_filtered <- peakCombiner:::filter_by_chromosome_names(
 ##
 input_colnames <- colnames(test_data_filtered)
 ##
-data(blacklist_hg38)
+data(blacklist_hg38, package = "peakCombiner")
 blacklist <- blacklist_hg38
 ##
 test_data_filtered_bl <- peakCombiner:::filter_by_blacklist(

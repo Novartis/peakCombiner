@@ -22,7 +22,7 @@ output_colnames_post <- c(
   "center", "sample_name", "input_names"
 )
 ##
-data(syn_data_bed)
+data(syn_data_bed, package = "peakCombiner")
 test_data <- syn_data_bed
 ##
 test_data_prepared <- peakCombiner::prepare_input_regions(
@@ -217,13 +217,13 @@ test_that("Output data frame is correct for post-combined", {
 test_that("Output data frame is correct for data_prepared", {
   ##
   data <- test_data_prepared
-  result <- center_expand_regions(
+  result <- peakCombiner::center_expand_regions(
     data = data,
     center_by = "center_column",
     expand_by = NULL
   )
   ##
-  expect_no_error(center_expand_regions(
+  expect_no_error(peakCombiner::center_expand_regions(
     data = data,
     center_by = "center_column",
     expand_by = NULL

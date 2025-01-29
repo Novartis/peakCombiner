@@ -5,7 +5,7 @@
 ##
 set.seed(1234)
 ##
-data(syn_data_tibble)
+data(syn_data_tibble, package = "peakCombiner")
 test_data <- syn_data_tibble
 ##
 all_colnames <- c(

@@ -12,14 +12,14 @@ colnames_preloaded_df <- c(
 
 allowed_file_format <- c("narrowpeak", "broadpeak", "bed")
 
-data(syn_data_bed)
+data(syn_data_bed, package = "peakCombiner")
 samplesheet_test <- syn_data_bed
 
 test_sample_sheet <- peakCombiner::prepare_input_regions(
   data = samplesheet_test[1, ]
 )
 
-data(syn_data_tibble)
+data(syn_data_tibble, package = "peakCombiner")
 test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 
