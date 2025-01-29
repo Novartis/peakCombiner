@@ -3,6 +3,10 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+library(peakCombiner)
+##
+set.seed(123)
+##
 required_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
@@ -14,7 +18,7 @@ data(syn_data_tibble)
 test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 ##
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
 ##

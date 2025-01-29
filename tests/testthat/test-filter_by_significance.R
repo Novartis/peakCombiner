@@ -3,6 +3,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+library(peakCombiner)
+##
 set.seed(1234)
 ##
 required_colnames <- c(
@@ -14,10 +16,10 @@ data(syn_data_tibble)
 test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 ##
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
-test_data_center_expand <- center_expand_regions(
+test_data_center_expand <- peakCombiner::center_expand_regions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL
@@ -27,7 +29,7 @@ input_colnames <- colnames(test_data_center_expand)
 ##
 filter_by_significance <- 40
 ##
-test_data_filtered <- filter_by_significance(
+test_data_filtered <- peakCombiner:::filter_by_significance(
   data = test_data_center_expand,
   include_above_score_cutoff = filter_by_significance
 )
@@ -39,7 +41,7 @@ result_colnames <- colnames(test_data_filtered)
 ### -----------------------------------------------------------------------###
 ##
 test_that("Test if function works with correct input", {
-  expect_no_error(filter_by_significance(
+  expect_no_error(peakCombiner:::filter_by_significance(
     data = test_data_center_expand,
     include_above_score_cutoff = filter_by_significance
   ))
@@ -66,24 +68,24 @@ test_that("Input data frame has the expected structure", {
 ### -----------------------------------------------------------------------###
 ##
 test_that("Required parameter 'filter_by_significance' has expected structure", {
-  expect_no_error(filter_by_significance(
+  expect_no_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
     include_above_score_cutoff = NULL
   ))
-  expect_no_error(filter_by_significance(
+  expect_no_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
     include_above_score_cutoff = 0
   ))
   ##
-  expect_error(filter_by_significance(
+  expect_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
     include_above_score_cutoff = NA
   ))
-  expect_error(filter_by_significance(
+  expect_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
     include_above_score_cutoff = "nonexisting"
   ))
-  expect_error(filter_by_significance(
+  expect_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
     include_above_score_cutoff = c(1, 2, 3)
   ))

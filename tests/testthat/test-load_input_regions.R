@@ -3,6 +3,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+library(peakCombiner)
+##
 data(syn_data_tibble)
 test_data <- syn_data_tibble
 ##
@@ -20,7 +22,7 @@ data_prepared <- test_data
 ### -----------------------------------------------------------------------###
 ##
 test_that("Test if function works with correct input", {
-  expect_error(load_input_regions(
+  expect_error(peakCombiner::load_input_regions(
     data = test_data
   ))
 })
@@ -54,31 +56,31 @@ test_that("Input column 'sample_name' is a class 'character'.", {
 ### -----------------------------------------------------------------------###
 ##
 test_that("Error occurs when 'data' does not exist.", {
-  expect_error(load_input_regions(
+  expect_error(peakCombiner::load_input_regions(
     data = "nonexisting"
   ), )
 })
 ##
 test_that("Error occurs when 'data' has the wrong structure.", {
-  expect_error(load_input_regions(
+  expect_error(peakCombiner::load_input_regions(
     data = tibble(1:10)
   ))
 })
 ##
 test_that("Error occurs when 'data' is a vector.", {
-  expect_error(load_input_regions(
+  expect_error(peakCombiner::load_input_regions(
     data = as.vector(1:10)
   ), )
 })
 ##
 test_that("Error occurs when 'data' is 'NULL'.", {
-  expect_error(load_input_regions(
+  expect_error(peakCombiner::load_input_regions(
     data = NULL
   ), )
 })
 ##
 test_that("Error occurs when 'data' is 'NA'.", {
-  expect_error(load_input_regions(
+  expect_error(peakCombiner::load_input_regions(
     data = NA
   ), )
 })

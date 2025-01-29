@@ -3,6 +3,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+library(peakCombiner)
+##
 set.seed(1234)
 ##
 input_colnames <- c(
@@ -21,17 +23,17 @@ output_colnames <- c(
 data(syn_data_tibble)
 test_data <- syn_data_tibble
 ##
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
 
-test_data_center_expand <- center_expand_regions(
+test_data_center_expand <- peakCombiner::center_expand_regions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL
 )
 
-test_data_filtered <- filter_regions(
+test_data_filtered <- peakCombiner::filter_regions(
   data = test_data_center_expand,
   exclude_by_blacklist = "hg38",
   include_by_chromosome_name = c("chr1", "chr10", "chr2", "chr42"),
@@ -39,14 +41,14 @@ test_data_filtered <- filter_regions(
   include_top_n_scoring = NULL
 )
 
-test_data_disjoin_filter <- cr_disjoin_filter(data = test_data_filtered, found_in_samples = 2)
-test_data_reduce <- cr_reduce(data = test_data_disjoin_filter)
-test_data_overlap <- cr_overlap_with_summits(
+test_data_disjoin_filter <- peakCombiner:::cr_disjoin_filter(data = test_data_filtered, found_in_samples = 2)
+test_data_reduce <- peakCombiner:::cr_reduce(data = test_data_disjoin_filter)
+test_data_overlap <- peakCombiner:::cr_overlap_with_summits(
   data = test_data_reduce,
   input = test_data_filtered
 )
 ##
-test_data_combined_with_summit <- cr_add_summit(
+test_data_combined_with_summit <- peakCombiner:::cr_add_summit(
   data = test_data_overlap,
   input = test_data_filtered,
   combined_center = "nearest",
@@ -90,38 +92,38 @@ test_that("Meta data frame has the expected structure", {
 })
 ##
 test_that("Parameter 'center' has the expected structure", {
-  expect_no_error(cr_add_summit(
+  expect_no_error(peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = "STRONGEST"
   ))
-  expect_no_error(cr_add_summit(
+  expect_no_error(peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = "middle"
   ))
   ##
-  expect_error(cr_add_summit(
+  expect_error(peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = mean
   ))
-  expect_error(cr_add_summit(
+  expect_error(peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = 2
   ))
-  expect_error(cr_add_summit(
+  expect_error(peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = c(1, 2, 3)
   ), "`")
-  expect_error(cr_add_summit(
+  expect_error(peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = NULL
   ), "`")
-  expect_error(cr_add_summit(
+  expect_error(peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = NA
@@ -153,21 +155,21 @@ test_that("Output data frame is correct", {
 })
 ##
 test_that("Output data results with different summits", {
-  data <- cr_add_summit(
+  data <- peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = "nearest"
   )
   expect_identical(data$center[7], 500)
   ##
-  data <- cr_add_summit(
+  data <- peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = "strongest"
   )
   expect_identical(data$center[7], 600)
   ##
-  data <- cr_add_summit(
+  data <- peakCombiner:::cr_add_summit(
     data = test_data_overlap,
     input = test_data_filtered,
     combined_center = "middle"

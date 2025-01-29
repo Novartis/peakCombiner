@@ -3,6 +3,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+library(peakCombiner)
+##
 set.seed(1234)
 
 
@@ -16,7 +18,7 @@ allowed_file_format <- c("narrowpeak", "broadpeak", "bed")
 data(syn_data_bed)
 samplesheet_test <- syn_data_bed
 
-test_sample_sheet <- prepare_input_regions(
+test_sample_sheet <- peakCombiner::prepare_input_regions(
   data = samplesheet_test[1, ]
 )
 
@@ -24,7 +26,7 @@ data(syn_data_tibble)
 test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
 
@@ -35,7 +37,7 @@ restult_colnames <- colnames(test_data_prepared)
 ### -----------------------------------------------------------------------###
 ### Test pre-loaded data frame
 test_that("Test if function works with correct input", {
-  expect_no_error(prepare_input_regions(
+  expect_no_error(peakCombiner::prepare_input_regions(
     data = test_data
   ))
 })
@@ -89,7 +91,7 @@ test_that("Input column 'sample_name' is a class 'character'.", {
 ### -----------------------------------------------------------------------###
 
 test_that("Output data frame has the correct structure.", {
-  expect_no_error(check_data_structure(test_data_prepared))
+  expect_no_error(peakCombiner::check_data_structure(test_data_prepared))
 })
 
 test_that("Column names of output data are identical with required once.", {

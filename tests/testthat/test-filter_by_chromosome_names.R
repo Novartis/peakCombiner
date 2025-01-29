@@ -3,6 +3,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+library(peakCombiner)
+##
 set.seed(1234)
 ##
 required_colnames <- c(
@@ -14,11 +16,11 @@ data(syn_data_tibble)
 test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 ##
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
 ##
-test_data_center_expand <- center_expand_regions(
+test_data_center_expand <- peakCombiner::center_expand_regions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL
@@ -28,7 +30,7 @@ input_colnames <- colnames(test_data_center_expand)
 ##
 keep_chromosomes <- c("chr1", "chr10", "chr42")
 ##
-test_data_filtered <- filter_by_chromosome_names(
+test_data_filtered <- peakCombiner:::filter_by_chromosome_names(
   data = test_data_center_expand,
   include_by_chromosome_name = keep_chromosomes
 )
@@ -40,7 +42,7 @@ result_colnames <- colnames(test_data_filtered)
 ### -----------------------------------------------------------------------###
 ##
 test_that("Test if function works with correct input", {
-  expect_no_error(filter_by_chromosome_names(
+  expect_no_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_center_expand,
     include_by_chromosome_name = keep_chromosomes
   ))
@@ -68,20 +70,20 @@ test_that("Input data frame has the expected structure", {
 ##
 test_that("Required parameter 'filter_by_chromosome_names' has expected
           structure", {
-  expect_no_error(filter_by_chromosome_names(
+  expect_no_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_filtered,
     include_by_chromosome_name = NULL
   ))
-  expect_no_error(filter_by_chromosome_names(
+  expect_no_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_filtered,
     include_by_chromosome_name = "chr1"
   ))
-  expect_no_error(filter_by_chromosome_names(
+  expect_no_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_filtered,
     include_by_chromosome_name = keep_chromosomes
   ))
   ##
-  expect_error(filter_by_chromosome_names(
+  expect_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_filtered,
     include_by_chromosome_name = NA
   ))

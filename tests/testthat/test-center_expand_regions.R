@@ -23,18 +23,18 @@ output_colnames_post <- c(
 data(syn_data_bed)
 test_data <- syn_data_bed
 ##
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
 ##
-test_data_center_expand <- center_expand_regions(
+test_data_center_expand <- peakCombiner::center_expand_regions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL
 )
 restult_colnames <- colnames(test_data_center_expand)
 ##
-test_data_filtered <- filter_regions(
+test_data_filtered <- peakCombiner::filter_regions(
   data = test_data_center_expand,
   exclude_by_blacklist = "hg38", # "hg38",
   include_by_chromosome_name = NULL,
@@ -43,7 +43,7 @@ test_data_filtered <- filter_regions(
   show_messages = TRUE
 )
 ##
-test_data_combined <- combine_regions(
+test_data_combined <- peakCombiner::combine_regions(
   data = test_data_filtered,
   found_in_samples = 2,
   combined_center = "nearest",
@@ -51,7 +51,7 @@ test_data_combined <- combine_regions(
   combined_sample_name = "combined"
 )
 ##
-test_data_combined_ce <- center_expand_regions(
+test_data_combined_ce <- peakCombiner::center_expand_regions(
   data = test_data_combined,
   center_by = "center_column",
   expand_by = NULL
@@ -61,7 +61,7 @@ test_data_combined_ce <- center_expand_regions(
 ### -----------------------------------------------------------------------###
 
 testthat::test_that("Test if function works with pre-combined input", {
-  testthat::expect_no_error(center_expand_regions(
+  testthat::expect_no_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = "center_column",
     expand_by = NULL
@@ -69,7 +69,7 @@ testthat::test_that("Test if function works with pre-combined input", {
 })
 
 testthat::test_that("Test if function works with post-combined input", {
-  testthat::expect_no_error(center_expand_regions(
+  testthat::expect_no_error(peakCombiner::center_expand_regions(
     data = test_data_combined,
     center_by = "center_column",
     expand_by = NULL
@@ -112,27 +112,27 @@ test_that("Required input data has the expected structure", {
 ### -----------------------------------------------------------------------###
 
 test_that("Required paramter 'center_by' has the expected structure/value", {
-  expect_no_error(center_expand_regions(
+  expect_no_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = "center_Column",
     expand_by = NULL
   ))
-  expect_error(center_expand_regions(
+  expect_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = c("center_column", "calculated_value"),
     expand_by = NULL
   ), "center_by")
-  expect_error(center_expand_regions(
+  expect_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = "nonexisting",
     expand_by = NULL
   ), "center_by")
-  expect_error(center_expand_regions(
+  expect_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = NULL,
     expand_by = NULL
   ), "center_by")
-  expect_error(center_expand_regions(
+  expect_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = NA,
     expand_by = NULL
@@ -142,22 +142,22 @@ test_that("Required paramter 'center_by' has the expected structure/value", {
 ### -----------------------------------------------------------------------###
 
 testthat::test_that("Required paramter expand_by has the expected structure/value", {
-  testthat::expect_no_error(center_expand_regions(
+  testthat::expect_no_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = "center_column",
     expand_by = NULL
   ))
-  testthat::expect_error(center_expand_regions(
+  testthat::expect_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = "column_value",
     expand_by = NA
   ), )
-  testthat::expect_error(center_expand_regions(
+  testthat::expect_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = "column_value",
     expand_by = c(1, 2, 3)
   ), )
-  testthat::expect_error(center_expand_regions(
+  testthat::expect_error(peakCombiner::center_expand_regions(
     data = test_data_prepared,
     center_by = "column_value",
     expand_by = "nonexisting"
@@ -233,13 +233,13 @@ test_that("Output data frame is correct for data_prepared", {
 test_that("Output data frame is correct for data_center_expand", {
   ##
   data <- test_data_center_expand
-  result <- center_expand_regions(
+  result <- peakCombiner::center_expand_regions(
     data = data,
     center_by = "center_column",
     expand_by = NULL
   )
   ##
-  expect_no_error(center_expand_regions(
+  expect_no_error(peakCombiner::center_expand_regions(
     data = data,
     center_by = "center_column",
     expand_by = NULL
@@ -251,13 +251,13 @@ test_that("Output data frame is correct for data_center_expand", {
 test_that("Output data frame is correct for data_filtered", {
   ##
   data <- test_data_filtered
-  result <- center_expand_regions(
+  result <- peakCombiner::center_expand_regions(
     data = data,
     center_by = "center_column",
     expand_by = NULL
   )
   ##
-  expect_no_error(center_expand_regions(
+  expect_no_error(peakCombiner::center_expand_regions(
     data = data,
     center_by = "center_column",
     expand_by = NULL
@@ -269,13 +269,13 @@ test_that("Output data frame is correct for data_filtered", {
 test_that("Output data frame is correct for data_combined", {
   ##
   data <- test_data_combined
-  result <- center_expand_regions(
+  result <- peakCombiner::center_expand_regions(
     data = data,
     center_by = "center_column",
     expand_by = NULL
   )
   ##
-  expect_no_error(center_expand_regions(
+  expect_no_error(peakCombiner::center_expand_regions(
     data = data,
     center_by = "center_column",
     expand_by = NULL

@@ -3,6 +3,10 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+library(peakCombiner)
+##
+set.seed(1234)
+##
 required_colnames <- c(
   "chrom", "start", "end", "name", "score", "strand", "center", "sample_name"
 )
@@ -11,15 +15,15 @@ data(syn_data_tibble)
 test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 ##
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
-test_data_center_expand <- center_expand_regions(
+test_data_center_expand <- peakCombiner::center_expand_regions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL
 )
-test_data_filtered <- filter_regions(
+test_data_filtered <- peakCombiner::filter_regions(
   data = test_data_center_expand,
   exclude_by_blacklist = "hg38", # "hg38",
   include_by_chromosome_name = NULL,
@@ -28,7 +32,7 @@ test_data_filtered <- filter_regions(
 )
 
 ##
-test_data_disjoin_filter <- cr_disjoin_filter(
+test_data_disjoin_filter <- peakCombiner:::cr_disjoin_filter(
   data = test_data_filtered,
   found_in_samples = 2
 )
@@ -56,27 +60,27 @@ test_that("Input data frame has the expected structure", {
 })
 ##
 test_that("Parameter 'found_in_samples' has the correct structure", {
-  expect_no_error(cr_disjoin_filter(
+  expect_no_error(peakCombiner:::cr_disjoin_filter(
     data = test_data_filtered,
     found_in_samples = 3
   ))
-  expect_error(cr_disjoin_filter(
+  expect_error(peakCombiner:::cr_disjoin_filter(
     data = test_data_filtered,
     found_in_samples = 0
   ), "Arg")
-  expect_error(cr_disjoin_filter(
+  expect_error(peakCombiner:::cr_disjoin_filter(
     data = test_data_filtered,
     found_in_samples = NULL
   ), "Arg")
-  expect_error(cr_disjoin_filter(
+  expect_error(peakCombiner:::cr_disjoin_filter(
     data = test_data_filtered,
     found_in_samples = NA
   ), )
-  expect_error(cr_disjoin_filter(
+  expect_error(peakCombiner:::cr_disjoin_filter(
     data = test_data_filtered,
     found_in_samples = c(1, 2, 3)
   ), "'")
-  expect_error(cr_disjoin_filter(
+  expect_error(peakCombiner:::cr_disjoin_filter(
     data = test_data_filtered,
     found_in_samples = test_data_filtered
   ), "Arg")

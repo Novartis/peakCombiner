@@ -3,6 +3,8 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+library(peakCombiner)
+##
 set.seed(1234)
 ##
 input_colnames <- c(
@@ -15,17 +17,17 @@ output_colnames <- c("chr", "start", "end", "width", "strand", "input_names")
 data(syn_data_tibble)
 test_data <- syn_data_tibble
 ##
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
 ##
-test_data_center_expand <- center_expand_regions(
+test_data_center_expand <- peakCombiner::center_expand_regions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL
 )
 ##
-test_data_filtered <- filter_regions(
+test_data_filtered <- peakCombiner::filter_regions(
   data = test_data_center_expand,
   exclude_by_blacklist = "hg38",
   include_by_chromosome_name = c("chr1", "chr10", "chr2", "chr42"),
@@ -33,12 +35,12 @@ test_data_filtered <- filter_regions(
   include_top_n_scoring = NULL
 )
 ##
-test_data_disjoin_filter <- cr_disjoin_filter(
+test_data_disjoin_filter <- peakCombiner:::cr_disjoin_filter(
   data = test_data_filtered,
   found_in_samples = 2
 )
 ##
-test_data_reduce <- cr_reduce(
+test_data_reduce <- peakCombiner:::cr_reduce(
   data = test_data_disjoin_filter
 )
 ##

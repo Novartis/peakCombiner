@@ -3,6 +3,7 @@
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
 ##
+library(peakCombiner)
 set.seed(1234)
 ##
 required_colnames <- c(
@@ -15,10 +16,10 @@ test_data <- syn_data_tibble
 
 input_colnames <- colnames(test_data)
 ##
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
-test_data_center_expand <- center_expand_regions(
+test_data_center_expand <- peakCombiner::center_expand_regions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL
@@ -26,7 +27,7 @@ test_data_center_expand <- center_expand_regions(
 ##
 input_colnames <- colnames(test_data_center_expand)
 ##
-test_data_filtered <- filter_regions(
+test_data_filtered <- peakCombiner::filter_regions(
   data = test_data_center_expand,
   include_by_chromosome_name = NULL,
   exclude_by_blacklist = "hg38",
@@ -36,13 +37,13 @@ test_data_filtered <- filter_regions(
 ##
 result_colnames <- colnames(test_data_filtered)
 ##
-test_data_combined <- combine_regions(
+test_data_combined <- peakCombiner::combine_regions(
   data = test_data_filtered,
   found_in_samples = 2,
   combined_center = "nearest"
 )
 ##
-test_data_combined_ce <- center_expand_regions(
+test_data_combined_ce <- peakCombiner::center_expand_regions(
   data = test_data_combined,
   center_by = "center_column",
   expand_by = NULL
@@ -107,7 +108,7 @@ test_that("Output data frame is correct for data_prepared", {
   ##
   data <- test_data_prepared
   ##
-  expect_no_error(filter_regions(
+  expect_no_error(peakCombiner::filter_regions(
     data = data,
     exclude_by_blacklist = "hg38",
     include_by_chromosome_name = NULL,
@@ -115,7 +116,7 @@ test_that("Output data frame is correct for data_prepared", {
     include_top_n_scoring = NULL
   ))
   ##
-  result <- filter_regions(
+  result <- peakCombiner::filter_regions(
     data = data,
     exclude_by_blacklist = "hg38",
     include_by_chromosome_name = NULL,
@@ -131,7 +132,7 @@ test_that("Output data frame is correct for data_center_expand", {
   ##
   data <- test_data_center_expand
   ##
-  result <- filter_regions(
+  result <- peakCombiner::filter_regions(
     data = data,
     exclude_by_blacklist = "hg38",
     include_by_chromosome_name = NULL,
@@ -146,7 +147,7 @@ test_that("Output data frame is correct for data_center_expand", {
 test_that("Output data frame is correct for data_filtered", {
   ##
   data <- test_data_filtered
-  result <- filter_regions(
+  result <- peakCombiner::filter_regions(
     data = data,
     exclude_by_blacklist = "hg38",
     include_by_chromosome_name = NULL,
@@ -161,7 +162,7 @@ test_that("Output data frame is correct for data_filtered", {
 test_that("Output data frame is correct for data_combined", {
   ##
   data <- test_data_combined
-  result <- filter_regions(
+  result <- peakCombiner::filter_regions(
     data = data,
     exclude_by_blacklist = "hg38",
     include_by_chromosome_name = NULL,
@@ -176,7 +177,7 @@ test_that("Output data frame is correct for data_combined", {
 test_that("Output data frame is correct for data_combined_ce", {
   ##
   data <- test_data_combined_ce
-  result <- filter_regions(
+  result <- peakCombiner::filter_regions(
     data = data,
     exclude_by_blacklist = "hg38",
     include_by_chromosome_name = NULL,
