@@ -176,25 +176,10 @@ to quaranty an optimal result.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load in and prepare a an accepted tibble</span></span></span>
-<span class="r-in"><span><span class="va">input_data</span> <span class="op">&lt;-</span> <span class="fu">peakCombiner</span><span class="fu">::</span><span class="va"><a href="syn_data_tibble.html">syn_data_tibble</a></span></span></span>
-<span class="r-in"><span><span class="va">input_data</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 55 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    chrom start   end name  score strand center sample_name   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr1    200   900 <span style="color: #BB0000;">NA</span>      100 .         500 treatment_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr1      1   900 <span style="color: #BB0000;">NA</span>       97 .         500 treatment_rep3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr1    101   300 <span style="color: #BB0000;">NA</span>       94 .         200 control_rep2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr1    301   900 <span style="color: #BB0000;">NA</span>       94 .         500 control_rep2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr1    201   900 <span style="color: #BB0000;">NA</span>      100 .         500 treatment_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr1    301   900 <span style="color: #BB0000;">NA</span>       98 .         600 treatment_rep2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr1    301  <span style="text-decoration: underline;">1</span>000 <span style="color: #BB0000;">NA</span>       96 .         600 control_rep1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr1    301  <span style="text-decoration: underline;">1</span>100 <span style="color: #BB0000;">NA</span>       93 .         500 control_rep3  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr1   <span style="text-decoration: underline;">1</span>301  <span style="text-decoration: underline;">1</span>600 <span style="color: #BB0000;">NA</span>       97 .        <span style="text-decoration: underline;">1</span>400 treatment_rep3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr1   <span style="text-decoration: underline;">1</span>901  <span style="text-decoration: underline;">2</span>200 <span style="color: #BB0000;">NA</span>       98 .        <span style="text-decoration: underline;">2</span>000 treatment_rep2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 45 more rows</span></span>
+<span class="r-in"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">syn_data_tibble</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data_prepared</span> <span class="op">&lt;-</span> <span class="fu">prepare_input_regions</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">input_data</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">syn_data_tibble</span>,</span></span>
 <span class="r-in"><span>  show_messages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provide input `data` is a pre-loaded <span style="color: #0000BB;">&lt;data.frame&gt;</span> with the required column</span>
@@ -233,12 +218,12 @@ to quaranty an optimal result.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or a pre-loaded tibble with genomic regions and named columns.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">control</span> <span class="op">&lt;-</span> <span class="fu">peakCombiner</span><span class="fu">::</span><span class="va"><a href="syn_data_control01.html">syn_data_control01</a></span></span></span>
-<span class="r-in"><span><span class="va">treatment</span> <span class="op">&lt;-</span> <span class="fu">peakCombiner</span><span class="fu">::</span><span class="va"><a href="syn_data_treatment01.html">syn_data_treatment01</a></span></span></span>
+<span class="r-in"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">syn_data_control01</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">syn_data_treatment01</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">combined_input</span> <span class="op">&lt;-</span> <span class="va">control</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">combined_input</span> <span class="op">&lt;-</span> <span class="va">syn_data_control01</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sample_name <span class="op">=</span> <span class="st">"control-rep1"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">treatment</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">syn_data_treatment01</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sample_name <span class="op">=</span> <span class="st">"treatment-rep1"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">prepare_input_regions</span><span class="op">(</span></span></span>

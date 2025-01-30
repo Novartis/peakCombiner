@@ -73,7 +73,7 @@ enriched genomic regions into consensus peak sets</h1>
                         <h4 data-toc-skip class="author">Markus
 Muckenhuber, Michael Stadler, Kathleen Sprouffske</h4>
             
-            <h4 data-toc-skip class="date">2024-11-14</h4>
+            <h4 data-toc-skip class="date">2025-01-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/novartis/peakCombiner/blob/devel/vignettes/peakCombiner.Rmd" class="external-link"><code>vignettes/peakCombiner.Rmd</code></a></small>
       <div class="hidden name"><code>peakCombiner.Rmd</code></div>
@@ -85,11 +85,12 @@ Muckenhuber, Michael Stadler, Kathleen Sprouffske</h4>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette for the R package <code>peakCombiner</code> guides you
-through the preparation of all accepted input files and how to define
-the best parameters for your analysis. Our goal is to provide you with
-easy to understand, transparent and modular framework to create the
-consensus regions file you need to address your scientific question.</p>
+<p>This vignette for the R package <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
+guides you through the preparation of all accepted input files and how
+to define the best parameters for your analysis. Our goal is to provide
+you with an easy to understand, transparent and modular framework to
+create the consensus regions file you need to address your scientific
+question.</p>
 <div class="section level3">
 <h3 id="abstract">Abstract<a class="anchor" aria-label="anchor" href="#abstract"></a>
 </h3>
@@ -162,7 +163,7 @@ regions</a>.</td>
 </tbody>
 </table>
 <p>Each <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
-function has the parameter<code>show_messages</code> that by default
+function has the parameter <code>show_messages</code> that by default
 prints feedback messages as functions run. If you plan to use <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
 non-interactively in a workflow, you can silence these messages by
 setting <code>show_messages = FALSE</code>. Note that error messages
@@ -181,9 +182,9 @@ data. The columns are described in the table below. Only ‘chrom’,
 but you have more possibilities for <a href="#center-and-expand-regions"><code>center_expand_regions</code></a>
 and <a href="#filter-regions"><code>filter_regions</code></a> if you can
 provide the optional ‘score’ and ‘center’ columns. If you can’t provide
-data for the optional columns, prepare_input_regions adds sensible
-defaults for you (see “Relevant Section”). We recommend that you create
-this standard tibble using prepare_input_regions (see section “Prepare
+data for the optional columns, <code>prepare_input_regions</code> adds
+sensible defaults for you. We recommend that you create this standard
+tibble using <code>prepare_input_regions</code> (see section “Prepare
 input data”), but you can also prepare it yourself (see section “<a href="#load-from-pre-loaded-tibble">Load from pre-loaded
 tibble</a>”)</p>
 <table class="table">
@@ -286,10 +287,10 @@ package:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="a-fast-start-for-a-complete-run">A fast start for a complete run<a class="anchor" aria-label="anchor" href="#a-fast-start-for-a-complete-run"></a>
+<h2 id="an-overview-of-a-complete-run">An overview of a complete run<a class="anchor" aria-label="anchor" href="#an-overview-of-a-complete-run"></a>
 </h2>
-<p>Here you find a fast start with <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
-and all function how we do recommend using it.</p>
+<p>Here you find an overview of a complete run of the <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
+recommended workflow.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Loading <span style="color: #0000BB;">peakCombiner</span></span></span>
@@ -354,14 +355,12 @@ and all function how we do recommend using it.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr10    150   850 my_new_sample_name|8     95 .         500 my_new_sample_n…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr4 2   250   950 my_new_sample_name|9     35 .         600 my_new_sample_n…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr4-2   150   850 my_new_sample_name|10    30 .         500 my_new_sample_n…</span></span></code></pre></div>
-<p>Please not that the message occurring during the <a href="#filter-regions"><code>filter_regions</code></a> is expected if
+<p>Please note that the message occurring during the <a href="#filter-regions"><code>filter_regions</code></a> is expected if
 chromosome names between input sample and blacklist are not absolutely
 identical.</p>
-<ul>
-<li>Export regions Finally we export the resulting consensus regions
-tibble and save it as BED-file. To establish a classical BED-file we
-remove here the column names.</li>
-</ul>
+<p>Finally we export the resulting consensus regions tibble and save it
+as BED-file. To establish a classical BED-file we remove here the column
+names.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rtracklayer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/BEDFile-class.html" class="external-link">export.bed</a></span><span class="op">(</span><span class="va">consensus_final</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"/lists/consensus_regions.bed"</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"bed"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -373,24 +372,27 @@ input files and how to add needed features to these files.
 <code>prepare_input_regions</code> is the mandatory first step to
 prepare your input data in the format needed for all of the following
 steps in <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
-(For details see section “<a href="#standard-genomic-regions-format">Standard genomic regions
-format</a>”). This function accepts three types of input formats: + a
-tibble of genomic regions and specifically named columns, + a
-GenomicRanges object of genomic regions and specifically named columns,
-or + a tibble (sample sheet) that specifies file paths of BED-like files
+(for details see section “<a href="#standard-genomic-regions-format">Standard genomic regions
+format</a>”). This function accepts three types of input formats:</p>
+<ul>
+<li>a tibble of genomic regions and specifically named columns,</li>
+<li>a GenomicRanges object of genomic regions and specifically named
+columns, or</li>
+<li>a tibble (sample sheet) that specifies file paths of BED-like files
 for a set of samples (e.g. standard output files from peak callers like
-‘narrowPeak’ files).</p>
+‘narrowPeak’ files).</li>
+</ul>
 <p><em>Please note</em> that the function
 <code>prepare_input_regions</code> also has a filtering step, which
 automatically checks for genomic regions with the same values in the
-columns ‘chrom’, ‘start’, ‘end’ and ‘sample_name’ and filter for the
+columns ‘chrom’, ‘start’, ‘end’ and ‘sample_name’ and filters for the
 strongest enriched summit (based on the ‘score’ values) per region.
 Additional summits are removed. Regions from peak callers can have
 multiple summits annotated per enriched genomic regions. This step is
 <em>not optional</em>.</p>
 <p><code>prepare_input_regions</code> returns the data that you need for
 all your future work as a tibble having the structure as described in
-section “<a href="#standard-genomic-regions-format">Standard genomic
+the section “<a href="#standard-genomic-regions-format">Standard genomic
 regions format</a>”.</p>
 <div class="section level3">
 <h3 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -412,13 +414,13 @@ format, and some information about the format of the peak files.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> treatment01 data-raw/syn_treatment_rep1.narrowPeak narrowPeak  qValue       </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> treatment02 data-raw/syn_treatment_rep2.narrowPeak narrowPeak  qValue       </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> treatment03 data-raw/syn_treatment_rep3.narrowPeak narrowPeak  qValue</span></span></code></pre></div>
-<p>This is the expected structure of an sample_sheet.</p>
+<p>This is the expected structure of a sample_sheet.</p>
 <p>If you already have your BED-like region files loaded into your R
 session, you can alternatively provide them to
 <code>prepare_input_regions</code> as a single GRanges or tibble object
 with genomic regions and named columns (see section “<a href="#standard-genomic-regions-format">Standard genomic regions
 format</a>”) that, importantly, include a unique sample identifier
-(‘sample_name’). Here, we show as an example the GRanges object.</p>
+(‘sample_name’). Here, we show as an example the tibble object.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"syn_data_control01"</span><span class="op">)</span></span>
 <span><span class="va">syn_data_control01</span></span>
@@ -501,7 +503,7 @@ format</a>”) that, importantly, include a unique sample identifier
 <p>We recommend that you use a sample sheet to prepare your data,
 especially if you have ‘narrowPeak’ or ‘broadPeak’ files.
 <code>prepare_input_regions</code> loads in the genomic regions file and
-formats them so that they are read to be used in peakCombiner’s other
+formats them so that they are ready to be used in peakCombiner’s other
 functions. The sample sheet has three required columns and one optional
 column, and is described as follows.</p>
 <table class="table">
@@ -616,12 +618,12 @@ section) or as a GRanges object (next section: <a href="#load-from-genomicranges
 object</a>). This could be either that per sample one tibble exists or
 that you ran <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
 before on two data sets and now want to combine these. In this section
-we show you prepare your input data from pre-loaded tibbles.</p>
-<p>When we start by loading in two of our synthetic data sets in
-‘narrowPeak’ format, a common format generated by peak callers like
-MACS. Most BED-like files (including ‘narrowPeak’ files) don’t include
-column names in the file so you will have to name them yourself using
-the standard naming conventions from as described by UCSC for <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format1" class="external-link">BED</a> or <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format12" class="external-link">narrowPeak</a>
+we show how you prepare your input data from pre-loaded tibbles.</p>
+<p>We start by loading in two of our synthetic data sets in ‘narrowPeak’
+format, a common format generated by peak callers like MACS. Most
+BED-like files (including ‘narrowPeak’ files) don’t include column names
+in the file so you will have to name them yourself using the standard
+naming conventions as described by UCSC for <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format1" class="external-link">BED</a> or <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format12" class="external-link">narrowPeak</a>
 or <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format13" class="external-link">broadPeak</a>.
 As we know what to expect in each column we can name the columns
 correctly: ‘chrom’ (X1), ‘start’ (X2), ‘end’ (X3), ‘name’ (X4), ‘score’
@@ -787,8 +789,8 @@ combined the data sets.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> chr4-2   201   900 treatment-rep1|10     0 .        550. treatment-rep1</span></span></code></pre></div>
 </li>
 </ul>
-<p>The output tibble from prepare_input_data can now be used for your
-next steps with <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>.
+<p>The output tibble from <code>prepare_input_data</code> can now be
+used for your next steps with <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>.
 For details about the accepted file structure see section “<a href="#standard-genomic-regions-format">Standard genomic regions
 format</a>”.</p>
 </div>
@@ -864,12 +866,12 @@ GenomicRanges object.</p>
 <span><span class="co">#&gt; 53   chr4?2   101  900   800      *    25    400 treatment_rep3</span></span>
 <span><span class="co">#&gt; 54   chr4|2   101  800   700      *    80    400   control_rep2</span></span>
 <span><span class="co">#&gt; 55    chr42   301 1000   700      *    90    600 treatment_rep2</span></span></code></pre></div>
-<p>The column names are based on its orginal GenomicRanges file format.
-This allows us to easily transform it into a GenomicRanges object. Note
-that normally we expect you to have the GenomicObject pre-loaded and
-want to use the <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
-on this data set. For the purpose of showing you how a accepted
-GenomicRanges object has be structured we transform it here.</p>
+<p>The column names are based on its original GRanges file format. This
+allows us to easily transform it into a GRanges object. Note that
+normally we expect you to have the GRanges object pre-loaded and want to
+use the <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
+on this data set. For the purpose of showing you how a accepted GRanges
+object has to be structured we transform it here.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GenomicRanges_data</span> <span class="op">&lt;-</span> <span class="fu">GenomicRanges</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/makeGRangesFromDataFrame.html" class="external-link">makeGRangesFromDataFrame</a></span><span class="op">(</span></span>
 <span>  <span class="va">syn_data_granges</span>,</span>
@@ -895,9 +897,9 @@ GenomicRanges object has be structured we transform it here.</p>
 </li>
 <li>
 <p><strong>Prepare input from GenomicRanges object</strong></p>
-<p>You can simply use your GenomicRanges object in the parameter ‘data’
-and load it in. The output tibble from prepare_input_data can now be
-used for your next steps with <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>.
+<p>You can simply use your GRanges object in the parameter ‘data’ and
+load it in. The output tibble from <code>prepare_input_data</code> can
+now be used for your next steps with <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>.
 For details about the accepted file structure see section “<a href="#standard-genomic-regions-format">Standard genomic regions
 format</a>”.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -938,7 +940,7 @@ format</a>”.</p>
 <p>We recommend to use the function <code>prepare_input_regions</code>
 to prepare the input data in the format needed for all of the following
 steps in <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>.
-In theory you can also manually provided an expected input data when
+In theory you can also manually provide an expected input data when
 preparing your data following the descriptions in the section “<a href="#standard-genomic-regions-format">Standard genomic regions
 format</a>”.</p>
 <div class="section level4">
@@ -952,7 +954,7 @@ still use <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" clas
 Here we show you how to load it.</p>
 <p>Lets load a BED file.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">syn_data_bed</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"syn_data_bed"</span><span class="op">)</span></span>
 <span><span class="va">syn_data_bed</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">sample_name</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 55 × 4</span></span></span>
 <span><span class="co">#&gt;    chrom  start   end sample_name </span></span>
@@ -1238,7 +1240,7 @@ ideal parameters for the function <code>center_expand_regions</code>.
 The expected input data structure we described early in this section “<a href="#standard-genomic-regions-format">Standard genomic regions
 format</a>”.</p>
 <p>After the preparation of the input data, the first step, we recommend
-to do is to center and expand the genomic regions by using
+to center and expand the genomic regions by using
 <code>center_expand_regions</code>. It is useful if you want all of your
 peaks to be the same size for your downstream analyses or if you want to
 use the information about the maximum enrichment in each reach (often
@@ -1470,11 +1472,15 @@ at once.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1      1   550 control_rep2|1    94 .         200 control_rep2</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 25 more rows</span></span></span></code></pre></div>
 <p>The filtering occurred in the order of the parameters and can be
-described as following: 1. The data set is filtered to only include
-chromosomes with the names ‘chr1’, ‘chr2’ and ‘chr4’, 2. Any remaining
-regions overlapping with blacklisted human regions are removed, 3.
-Regions having a ‘score’ above ‘2.5’ are retained, and 4. Only 6
-top-scoring sites are retained per sample.</p>
+described as following:</p>
+<ol style="list-style-type: decimal">
+<li>The data set is filtered to only include chromosomes with the names
+‘chr1’, ‘chr2’ and ‘chr4’,</li>
+<li>Any remaining regions overlapping with blacklisted human regions are
+removed,</li>
+<li>Regions having a ‘score’ above ‘2.5’ are retained, and</li>
+<li>Only 6 top-scoring sites are retained per sample.</li>
+</ol>
 </div>
 <div class="section level3">
 <h3 id="explained-in-detail-1">Explained in detail<a class="anchor" aria-label="anchor" href="#explained-in-detail-1"></a>
@@ -1620,12 +1626,12 @@ alternatively provide your own blacklist as a tibble containing genomic
 regions with columns named ‘chrom’, ‘start’ and ‘end’. In more general
 terms, you can use any file with genomic locations here to remove
 overlapping regions, for instance if you want to remove regions
-oberlapping with promoters you can use this functions here to remove
+overlapping with promoters you can use this functions here to remove
 these.</p>
 <p>If you would like to remove blacklisted regions from multiple
-sources, you can run <code>filter_regions</code> repeatedly times, for
-example first to remove the ENCODE blacklisted regions and then to
-remove your own blacklisted sites. We show how to do this below.</p>
+sources, you can run <code>filter_regions</code> repeatedly, for example
+first to remove the ENCODE blacklisted regions and then to remove your
+own blacklisted sites. We show how to do this below.</p>
 </div>
 <div class="section level5">
 <h5 id="filter-for-enrichment-value">Filter for enrichment value<a class="anchor" aria-label="anchor" href="#filter-for-enrichment-value"></a>
@@ -1639,20 +1645,23 @@ might differ between experiments, we recommend that you look at the
 distribution of the values in ‘score’ to help you choose the best
 threshold value for <code>include_above_score_cutoff</code> for your
 data set.</p>
-<p>Here is some code to do that on our small, fake dataset. The
+<p>Here is some code to do that on our small, synthetic dataset. The
 distribution you see will look different.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_center_expand</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0</span>,<span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_bar()`).</span></span></code></pre></div>
 <p><img src="peakCombiner_files/figure-html/unnamed-chunk-37-1.png" width="80%" style="display: block; margin: auto;"></p>
 <p>See that we have very few sites with low values. We use a cutoff of
-2.5 to remove lowly enriched sites and apply this value to the filtering
+35 to remove lowly enriched sites and apply this value to the filtering
 step.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_filtered_cutoff</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_regions.html">filter_regions</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_center_expand</span>,</span>
-<span>  include_above_score_cutoff <span class="op">=</span> <span class="fl">2.5</span>,</span>
+<span>  include_above_score_cutoff <span class="op">=</span> <span class="fl">35</span>,</span>
 <span>  show_messages <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Let’s compare the sites remaining in the input data set and after
@@ -1661,7 +1670,7 @@ filtering.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">data_center_expand</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 52  8</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">data_filtered_cutoff</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 52  8</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 39  8</span></span></code></pre></div>
 <p>When we check the range of the values in ‘score’ columns we see the
 effects of the filtering.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
@@ -1670,8 +1679,16 @@ effects of the filtering.</p>
 <span><span class="co">#&gt; [1]  10 100</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">data_filtered_cutoff</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1]  10 100</span></span></code></pre></div>
-<p>Again, we see that sites with ‘score’ 2.5 and below are removed.</p>
+<span><span class="co">#&gt; [1]  35 100</span></span></code></pre></div>
+<p>Again, we see that sites with ‘score’ 35 and below are removed.</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_filtered_cutoff</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_bar()`).</span></span></code></pre></div>
+<p><img src="peakCombiner_files/figure-html/unnamed-chunk-41-1.png" width="80%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level5">
 <h5 id="select-a-defined-number-of-regions">Select a defined number of regions<a class="anchor" aria-label="anchor" href="#select-a-defined-number-of-regions"></a>
@@ -1682,11 +1699,11 @@ shown if any sample does not have the required number of regions left in
 your input data. If your ‘score’ values vary widely between samples you
 may select widely different numbers of regions using the
 <code>include_above_cutoff</code>. In this case, using this approach
-will help you select the similar numbers of regions for each sample. The
+will help you select similar numbers of regions for each sample. The
 exact same number of regions may not be selected for each sample because
 sometimes multiple genomic regions may have the same ‘score’ value. In
 this case, all of the tied genomic regions are retained.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_center_expand</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">sample_name</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>num_regions <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
@@ -1718,7 +1735,7 @@ this case, all of the tied genomic regions are retained.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> treatment_rep3           8</span></span></code></pre></div>
 <p>We requested that only the top 8 genomic regions would be retained
 for each sample, and we can see in the information messages that <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
-that one samples (‘control03’) contains less then the required 8 site.
+that one sample (‘control03’) contains less then the required 8 sites.
 For the remaining samples, we select the expected 8 regions per
 sample.</p>
 </div>
@@ -1733,7 +1750,7 @@ use them to build your set of consensus regions using
 <code>combine_regions</code>.</p>
 <p>The most important parameter that affects the final set of consensus
 regions is ‘found_in_samples’, which allows you to retain a genomic
-region based on how many samples it was found in (Counting the unique
+region based on how many samples it was found in (counting the unique
 entries in ‘sample_name’). It is up to you to define this parameter
 based on your input data and analysis goals. The default is ‘2’ samples,
 as we assume that each condition has three biological replicates and
@@ -1746,7 +1763,7 @@ regions are annotated. For example, you can define how the ‘center’
 column is populated (‘combined_center’) and what new ‘sample_name’
 should be used for the new consensus regions (‘combined_sample_name’).
 Based on the selected value for the parameter ‘combined_center’, the new
-column ‘score’ is filled (For details see section <a href="#which-center-to-select-for-the-consensus-regions">Which center to
+column ‘score’ is filled (for details see section <a href="#which-center-to-select-for-the-consensus-regions">Which center to
 select for the consensus regions?</a>). If you want to trace which
 samples and genomic regions contributed to a new consensus region, you
 can use ‘annotate_with_input_names’ to create a new column ‘input_name’
@@ -1755,7 +1772,7 @@ describing links to the input genomic regions.</p>
 <h3 id="quick-start-3">Quick start<a class="anchor" aria-label="anchor" href="#quick-start-3"></a>
 </h3>
 <p>Following is a quick example that uses default parameters.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/combine_regions.html">combine_regions</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_filtered</span>,</span>
 <span>  combined_sample_name <span class="op">=</span> <span class="st">"my_new_sample_name"</span>,</span>
@@ -1781,7 +1798,7 @@ describing links to the input genomic regions.</p>
 <p>We run the function <code>combine_regions</code> and give the value
 ‘consensus’ to the parameter <code>combined_sample_name</code> and we
 want to have the link to our input regions by setting
-<code>annotattion_with_input_name</code> to ‘TRUE’.</p>
+<code>annotate_with_input_name</code> to ‘TRUE’.</p>
 <p>In brief, a description what the parameter you can define do. For
 more details please see below section “<a href="#define-parameter-to-best-combine-regions">Define parameter to
 best combine regions</a>”.</p>
@@ -1807,7 +1824,7 @@ link back each consensus region to the input regions.</li>
 the column ‘sample_name’, which is then used to create the unique ‘name’
 column.</li>
 </ul>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">consensus_peak_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/combine_regions.html">combine_regions</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_filtered</span>,</span>
 <span>  found_in_samples <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -1883,8 +1900,8 @@ file based on your personal needs.</p>
 region:</strong></p>
 <p>First step is to apply the GenomicRanges function
 <code>disjoin</code> to split up peaks depending on the number of input
-samples contributing. This numbers are counted to get the coverage of
-each genomic regions. These counts are then used for filtering using the
+samples contributing. These numbers are counted to get the coverage of
+each genomic region. These counts are then used for filtering using the
 parameter <code>found_in_samples</code>, which is defined by the user.
 If <code>found_in_samples</code> is a fraction between 0 and 1, then
 only include genomic regions that are found in at least this fraction of
@@ -1895,25 +1912,25 @@ merge all input regions.</p>
 </li>
 <li>
 <p><strong>Recombine separated genomic regions:</strong></p>
-<p>As next step we perform <code>reduce</code>, another GRangers
-operation, to combine regions adjesent to each other. If regions are
+<p>As next step we perform <code>reduce</code>, another GRanges
+operation, to combine regions adjacent to each other. If regions are
 separated by at least a single nucelotide, we keep them
-separatly.</p>
+separately.</p>
 </li>
 <li>
 <p><strong>Overlap with summits:</strong></p>
 <p>This is a quality control function for the resulting genomic regions
-specifically developed for <code>peakCombiner</code> package. To remove
-potenial false posotive sites, we designed the function
+specifically developed for <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>.
+To remove potential false positive sites, we designed the function
 <code>combine_regions</code> to check for an overlap between newly
 combined regions and input summits. If at least one overlap is found,
-the new region will be maintained, othrwise it is removed.</p>
+the new region will be maintained, otherwise it is removed.</p>
 </li>
 <li>
 <p><strong>Restore data structure</strong>:</p>
 <p>In this final step, we restore the accepted data structure for
 working with <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
-functions ensure the modularity of the package. This allows a user to
+functions to ensure the modularity of the package. This allows a user to
 apply the functions <code>center_expand_resgions</code> and
 <code>filter_resgions</code> to the combined consensus region file.
 Therefore, ‘center’, ‘score’ and ‘sample_name’ columns are created and
@@ -1923,7 +1940,7 @@ populated based on the user defined parameters.</p>
 <div class="section level4">
 <h4 id="define-parameter-to-best-combine-regions">Define parameter to best combine regions<a class="anchor" aria-label="anchor" href="#define-parameter-to-best-combine-regions"></a>
 </h4>
-<p>Here we explain the parameter you can set for the function
+<p>Here we explain the parameters you can set for the function
 <code>combine_regions</code> and the defaults we recommend.</p>
 <div class="section level5">
 <h5 id="in-how-many-samples-should-a-region-be-found">In how many samples should a region be found?<a class="anchor" aria-label="anchor" href="#in-how-many-samples-should-a-region-be-found"></a>
@@ -1944,7 +1961,7 @@ to increase the stringency by increasing <code>found_in_samples</code>
 parameter value.</p>
 <p>In general, as you increase <code>found_in_samples</code>, <em><a href="https://bioconductor.org/packages/3.21/peakCombiner" class="external-link">peakCombiner</a></em>
 will return fewer and smaller consensus genomic regions.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/combine_regions.html">combine_regions</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_filtered</span>,</span>
 <span>  found_in_samples <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -1966,7 +1983,7 @@ will return fewer and smaller consensus genomic regions.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr4-2   250   850 found_in_samples_2_exampl…    30 .         500 found_in_s…</span></span></code></pre></div>
 <p>If the parameter <code>found_in_samples</code> is set to ‘1’, this
 function basically merges all input regions.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/combine_regions.html">combine_regions</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_filtered</span>,</span>
 <span>  found_in_samples <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -2020,7 +2037,7 @@ closest to mean of the ‘center’s of all overlapping input regions
 </ul>
 <p>Lets have a look at the ‘center’ and ‘score’ within the synthetic
 data, when setting <code>combined_center</code> to ‘strongest’.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/combine_regions.html">combine_regions</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_filtered</span>,</span>
 <span>  combined_center <span class="op">=</span> <span class="st">"strongest"</span>,</span>
@@ -2040,7 +2057,7 @@ data, when setting <code>combined_center</code> to ‘strongest’.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>    600    35</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    500    30</span></span></code></pre></div>
 <p>Or to ‘middle’.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/combine_regions.html">combine_regions</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_filtered</span>,</span>
 <span>  combined_center <span class="op">=</span> <span class="st">"middle"</span>,</span>
@@ -2060,7 +2077,7 @@ data, when setting <code>combined_center</code> to ‘strongest’.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>    600  30  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    550  25</span></span></code></pre></div>
 <p>Or to ‘nearest’.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/combine_regions.html">combine_regions</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">data_filtered</span>,</span>
 <span>  combined_center <span class="op">=</span> <span class="st">"nearest"</span>,</span>
@@ -2089,15 +2106,15 @@ you a best common center and associated score.</p>
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <p>This vignette was built using:</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R Under development (unstable) (2024-11-10 r87316)</span></span>
-<span><span class="co">#&gt; Platform: x86_64-apple-darwin20</span></span>
-<span><span class="co">#&gt; Running under: macOS Monterey 12.7.6</span></span>
+<span><span class="co">#&gt; R version 4.4.2 (2024-10-31)</span></span>
+<span><span class="co">#&gt; Platform: aarch64-apple-darwin20</span></span>
+<span><span class="co">#&gt; Running under: macOS Sonoma 14.7.2</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
-<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.5-x86_64/Resources/lib/libRblas.0.dylib </span></span>
-<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.5-x86_64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0</span></span>
+<span><span class="co">#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib </span></span>
+<span><span class="co">#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
 <span><span class="co">#&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
@@ -2109,39 +2126,43 @@ you a best common center and associated score.</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] peakCombiner_0.99.5 testthat_3.2.1.1    BiocStyle_2.35.0   </span></span>
+<span><span class="co">#&gt; [1] peakCombiner_0.99.5 testthat_3.2.3      BiocStyle_2.35.0   </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] gtable_0.3.6            ggplot2_3.5.1           xfun_0.49              </span></span>
+<span><span class="co">#&gt;  [1] gtable_0.3.6            ggplot2_3.5.1           xfun_0.50              </span></span>
 <span><span class="co">#&gt;  [4] bslib_0.8.0             htmlwidgets_1.6.4       devtools_2.4.5         </span></span>
 <span><span class="co">#&gt;  [7] remotes_2.5.0           tzdb_0.4.0              vctrs_0.6.5            </span></span>
-<span><span class="co">#&gt; [10] tools_4.5.0             generics_0.1.3          stats4_4.5.0           </span></span>
-<span><span class="co">#&gt; [13] tibble_3.2.1            fansi_1.0.6             pkgconfig_2.0.3        </span></span>
-<span><span class="co">#&gt; [16] desc_1.4.3              S4Vectors_0.45.1        lifecycle_1.0.4        </span></span>
-<span><span class="co">#&gt; [19] GenomeInfoDbData_1.2.13 farver_2.1.2            stringr_1.5.1          </span></span>
-<span><span class="co">#&gt; [22] compiler_4.5.0          brio_1.1.5              textshaping_0.4.0      </span></span>
-<span><span class="co">#&gt; [25] munsell_0.5.1           httpuv_1.6.15           GenomeInfoDb_1.43.0    </span></span>
-<span><span class="co">#&gt; [28] htmltools_0.5.8.1       usethis_3.0.0           sass_0.4.9             </span></span>
-<span><span class="co">#&gt; [31] yaml_2.3.10             later_1.3.2             pillar_1.9.0           </span></span>
-<span><span class="co">#&gt; [34] pkgdown_2.1.1.9000      jquerylib_0.1.4         urlchecker_1.0.1       </span></span>
-<span><span class="co">#&gt; [37] tidyr_1.3.1             ellipsis_0.3.2          cachem_1.1.0           </span></span>
-<span><span class="co">#&gt; [40] sessioninfo_1.2.2       mime_0.12               tidyselect_1.2.1       </span></span>
-<span><span class="co">#&gt; [43] digest_0.6.37           stringi_1.8.4           dplyr_1.1.4            </span></span>
-<span><span class="co">#&gt; [46] purrr_1.0.2             bookdown_0.41           labeling_0.4.3         </span></span>
-<span><span class="co">#&gt; [49] grid_4.5.0              rprojroot_2.0.4         fastmap_1.2.0          </span></span>
-<span><span class="co">#&gt; [52] colorspace_2.1-1        here_1.0.1              cli_3.6.3              </span></span>
-<span><span class="co">#&gt; [55] magrittr_2.0.3          pkgbuild_1.4.5          utf8_1.2.4             </span></span>
-<span><span class="co">#&gt; [58] readr_2.1.5             withr_3.0.2             scales_1.3.0           </span></span>
-<span><span class="co">#&gt; [61] UCSC.utils_1.3.0        promises_1.3.0          rmarkdown_2.29         </span></span>
-<span><span class="co">#&gt; [64] XVector_0.47.0          httr_1.4.7              ragg_1.3.3             </span></span>
-<span><span class="co">#&gt; [67] hms_1.1.3               memoise_2.0.1           shiny_1.9.1            </span></span>
-<span><span class="co">#&gt; [70] evaluate_1.0.1          knitr_1.49              GenomicRanges_1.59.0   </span></span>
-<span><span class="co">#&gt; [73] IRanges_2.41.0          miniUI_0.1.1.1          profvis_0.4.0          </span></span>
-<span><span class="co">#&gt; [76] rlang_1.1.4             Rcpp_1.0.13-1           xtable_1.8-4           </span></span>
-<span><span class="co">#&gt; [79] glue_1.8.0              BiocManager_1.30.25     BiocGenerics_0.53.2    </span></span>
-<span><span class="co">#&gt; [82] pkgload_1.4.0           rstudioapi_0.17.1       jsonlite_1.8.9         </span></span>
-<span><span class="co">#&gt; [85] R6_2.5.1                systemfonts_1.1.0       fs_1.6.5               </span></span>
-<span><span class="co">#&gt; [88] zlibbioc_1.53.0</span></span></code></pre></div>
+<span><span class="co">#&gt; [10] tools_4.4.2             generics_0.1.3          stats4_4.4.2           </span></span>
+<span><span class="co">#&gt; [13] tibble_3.2.1            pkgconfig_2.0.3         desc_1.4.3             </span></span>
+<span><span class="co">#&gt; [16] S4Vectors_0.45.2        lifecycle_1.0.4         GenomeInfoDbData_1.2.13</span></span>
+<span><span class="co">#&gt; [19] farver_2.1.2            compiler_4.4.2          stringr_1.5.1          </span></span>
+<span><span class="co">#&gt; [22] brio_1.1.5              textshaping_1.0.0       munsell_0.5.1          </span></span>
+<span><span class="co">#&gt; [25] httpuv_1.6.15           GenomeInfoDb_1.43.4     htmltools_0.5.8.1      </span></span>
+<span><span class="co">#&gt; [28] usethis_3.1.0           sass_0.4.9              yaml_2.3.10            </span></span>
+<span><span class="co">#&gt; [31] later_1.4.1             pillar_1.10.1           pkgdown_2.1.1.9000     </span></span>
+<span><span class="co">#&gt; [34] jquerylib_0.1.4         urlchecker_1.0.1        tidyr_1.3.1            </span></span>
+<span><span class="co">#&gt; [37] ellipsis_0.3.2          cachem_1.1.0            sessioninfo_1.2.2      </span></span>
+<span><span class="co">#&gt; [40] mime_0.12               tidyselect_1.2.1        digest_0.6.37          </span></span>
+<span><span class="co">#&gt; [43] stringi_1.8.4           dplyr_1.1.4             purrr_1.0.2            </span></span>
+<span><span class="co">#&gt; [46] bookdown_0.42           labeling_0.4.3          grid_4.4.2             </span></span>
+<span><span class="co">#&gt; [49] rprojroot_2.0.4         fastmap_1.2.0           colorspace_2.1-1       </span></span>
+<span><span class="co">#&gt; [52] here_1.0.1              cli_3.6.3               magrittr_2.0.3         </span></span>
+<span><span class="co">#&gt; [55] utf8_1.2.4              pkgbuild_1.4.6          readr_2.1.5            </span></span>
+<span><span class="co">#&gt; [58] withr_3.0.2             scales_1.3.0            UCSC.utils_1.3.1       </span></span>
+<span><span class="co">#&gt; [61] promises_1.3.2          rmarkdown_2.29          XVector_0.47.2         </span></span>
+<span><span class="co">#&gt; [64] httr_1.4.7              qpdf_1.3.4              askpass_1.2.1          </span></span>
+<span><span class="co">#&gt; [67] ragg_1.3.3              hms_1.1.3               memoise_2.0.1          </span></span>
+<span><span class="co">#&gt; [70] shiny_1.10.0            evaluate_1.0.3          knitr_1.49             </span></span>
+<span><span class="co">#&gt; [73] GenomicRanges_1.59.1    IRanges_2.41.2          miniUI_0.1.1.1         </span></span>
+<span><span class="co">#&gt; [76] profvis_0.4.0           rlang_1.1.5             Rcpp_1.0.14            </span></span>
+<span><span class="co">#&gt; [79] xtable_1.8-4            glue_1.8.0              BiocManager_1.30.25    </span></span>
+<span><span class="co">#&gt; [82] BiocGenerics_0.53.6     pkgload_1.4.0           rstudioapi_0.17.1      </span></span>
+<span><span class="co">#&gt; [85] jsonlite_1.8.9          R6_2.5.1                systemfonts_1.2.1      </span></span>
+<span><span class="co">#&gt; [88] fs_1.6.5</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-macs" class="csl-entry">
 Zhang, Yong, Tao Liu, Clifford A Meyer, Jérôme Eeckhoute, David S

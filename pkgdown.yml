@@ -1,6 +1,6 @@
 pandoc: 3.1.11
 pkgdown: 2.1.1.9000
-pkgdown_sha: c40ba2c989e786bbb2829b431114d26375bbe19a
+pkgdown_sha: 18cca452d736fea33d47b19b4ef4973db9104a75
 articles:
   peakCombiner: peakCombiner.html
-last_built: 2024-11-14T13:26Z
+last_built: 2025-01-30T11:24Z

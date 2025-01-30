@@ -180,26 +180,11 @@ asymmetrically.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load in and prepare a an accepted tibble</span></span></span>
-<span class="r-in"><span><span class="va">input_data</span> <span class="op">&lt;-</span> <span class="fu">peakCombiner</span><span class="fu">::</span><span class="va"><a href="syn_data_bed.html">syn_data_bed</a></span></span></span>
-<span class="r-in"><span><span class="va">input_data</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 55 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    chrom start   end sample_name   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr1    200   900 treatment_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr1      1   900 treatment_rep3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr1    101   300 control_rep2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr1    301   900 control_rep2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr1    201   900 treatment_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr1    301   900 treatment_rep2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr1    301  <span style="text-decoration: underline;">1</span>000 control_rep1  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr1    301  <span style="text-decoration: underline;">1</span>100 control_rep3  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr1   <span style="text-decoration: underline;">1</span>301  <span style="text-decoration: underline;">1</span>600 treatment_rep3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr1   <span style="text-decoration: underline;">1</span>901  <span style="text-decoration: underline;">2</span>200 treatment_rep2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 45 more rows</span></span>
+<span class="r-in"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">syn_data_bed</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Prepare input data</span></span></span>
 <span class="r-in"><span><span class="va">data_prepared</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_input_regions.html">prepare_input_regions</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">input_data</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">syn_data_bed</span>,</span></span>
 <span class="r-in"><span>  show_messages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provide input `data` is a pre-loaded <span style="color: #0000BB;">&lt;data.frame&gt;</span> with the required column</span>
