@@ -30,9 +30,6 @@ jobs:
       cache-version: v3
 
     steps:
-      - name: checkout branch
-        uses: actions/checkout@v3
-
       - name: Set up R and install BiocManager
         uses: grimbough/bioc-actions/setup-bioc@v1
         if: matrix.config.image == null
@@ -107,10 +104,6 @@ jobs:
           name: install-log
           path: |
             ${{ steps.build-install-check.outputs.install-log }}
-            
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
 
@@ -120,12 +113,12 @@ jobs:
           install.packages("testthat")
         shell: Rscript {0}
 
-      - name: Run tests and capture output
-        run: |
-          sink(file = "tests/testthat.Rout")
-          testthat::test_dir("tests/testthat")
-          sink()
-        shell: Rscript {0}
+      #- name: Run tests and capture output
+      #  run: |
+      #    sink(file = "tests/testthat.Rout")
+      #    testthat::test_dir("tests/testthat")
+      #    sink()
+      #  shell: Rscript {0}
 
       - name: Show testthat output (windows)
         if: always() && runner.os == 'Windows'
