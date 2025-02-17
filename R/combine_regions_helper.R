@@ -3,7 +3,7 @@
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' [peakCombiner].
+#' peakCombiner package.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -18,10 +18,12 @@
 #'
 cr_disjoin_filter <- function(data,
                               found_in_samples) {
-
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
+  ##
+  set.seed(1234)
+  ##
   ## Check if expansion exists
   if (!exists("data")) {
     # show error message independent of parameter show_messages
@@ -100,11 +102,13 @@ cr_disjoin_filter <- function(data,
     dplyr::ungroup() |>
     tidyr::unnest("revmap") |>
     dplyr::rename(chrom = "seqnames") |>
-    dplyr::left_join(data |>
-      tibble::rownames_to_column(var = "revmap") |>
-      dplyr::mutate(revmap = as.integer(.data$revmap)) |>
-      dplyr::select("revmap", "sample_name"), 
-      by = "revmap")
+    dplyr::left_join(
+      data |>
+        tibble::rownames_to_column(var = "revmap") |>
+        dplyr::mutate(revmap = as.integer(.data$revmap)) |>
+        dplyr::select("revmap", "sample_name"),
+      by = "revmap"
+    )
 
   data_disjoin_meta <- data_disjoin |>
     dplyr::left_join(
@@ -171,7 +175,7 @@ cr_disjoin_filter <- function(data,
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' [peakCombiner].
+#' peakCombiner package.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -186,11 +190,12 @@ cr_disjoin_filter <- function(data,
 #'
 #'
 cr_reduce <- function(data) {
-
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
   required_colnames <- c(
     "chrom", "start", "end", "width", "strand", "revmap",
     "ranking_comb_ref", "rowname_disjoin", "name"
@@ -253,7 +258,7 @@ cr_reduce <- function(data) {
     ) |>
     dplyr::select(-"revmap") |>
     dplyr::arrange(.data$seqnames, .data$start, .data$name) |>
-    dplyr::rename(chrom = .data$seqnames) |>
+    dplyr::rename(chrom = "seqnames") |>
     unique() |>
     dplyr::ungroup()
 
@@ -279,7 +284,7 @@ cr_reduce <- function(data) {
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' [peakCombiner].
+#' peakCombiner package.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -298,11 +303,12 @@ cr_reduce <- function(data) {
 #'
 cr_overlap_with_summits <- function(data,
                                     input) {
-
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
   required_colnames <- c(
     "chrom", "start", "end", "strand", "name", "score",
     "center", "sample_name"
@@ -428,7 +434,7 @@ cr_overlap_with_summits <- function(data,
 #' @description
 #' Helper function for main function [peakCombiner::combine_regions].
 #' Requires in memory data frame in the standard accepted format for the
-#' [peakCombiner].
+#' peakCombiner package.
 #' For details see the details for [peakCombiner::combine_regions].
 #'
 #' @details
@@ -453,7 +459,10 @@ cr_overlap_with_summits <- function(data,
 #' In addition, the output data.frame columns `sample_name`, `name` and `score`
 #' will be updated.
 #'
-#' @inheritParams cr_overlap_with_summits
+#' @inheritParams combine_regions
+#'
+#' @param input The original input file from `combine_regions` to extract center
+#' information
 #'
 #' @return A tibble with the following columns: `chrom`, `start`, `end`, `name`,
 #' `score`, `strand`, `center`, `sample_name`.
@@ -463,11 +472,12 @@ cr_add_summit <- function(data,
                           combined_center = "nearest",
                           annotate_with_input_names = FALSE,
                           combined_sample_name = NULL) {
-
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
   center_values <- c("nearest", "strongest", "middle")
 
   combined_center <- tolower(combined_center)

@@ -144,15 +144,11 @@ skipped (optional).
 }
 \examples{
 
-# Load in and prepare the input data
-sample_sheet <- readr::read_tsv(
-  paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
-  show_col_types = FALSE
-)
-sample_sheet
+# Load in and prepare a an accepted tibble
+utils::data(syn_data_bed)
 
 data_prepared <- prepare_input_regions(
-  data = sample_sheet,
+  data = syn_data_bed,
   show_messages = TRUE
 )
 

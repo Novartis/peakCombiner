@@ -15,12 +15,12 @@
 #'
 filter_by_chromosome_names <- function(data,
                                        include_by_chromosome_name = NULL) {
-
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
-
-
+  ##
+  set.seed(1234)
+  ##
   ## check if input vector is numeric and if so change to character
   if (!is.character(include_by_chromosome_name) &&
     !is.null(include_by_chromosome_name)) {
@@ -166,11 +166,13 @@ filter_by_chromosome_names <- function(data,
 #'
 filter_by_blacklist <- function(data,
                                 exclude_by_blacklist = NULL) {
-
   ### -----------------------------------------------------------------------###
   ### Define parameters
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
+  
   allowed_blacklist_annotations <- c("hg38", "mm10")
   required_colnames_blacklist <- c("chrom", "start", "end")
 
@@ -200,7 +202,6 @@ filter_by_blacklist <- function(data,
 
     return(data)
   } else if (is.data.frame(exclude_by_blacklist)) {
-
     ## Check for correct colnames
     colnames(exclude_by_blacklist) <- tolower(colnames(exclude_by_blacklist))
 
@@ -261,15 +262,19 @@ filter_by_blacklist <- function(data,
     ))
 
     # Load the blacklist corresponding to the character parameter hg38 or mm10
-    if(exclude_by_blacklist == "hg38") {
-      utils::data(blacklist_hg38)
-      blacklist_data <- blacklist_hg38
-    } else if(exclude_by_blacklist == "mm10") {
-      utils::data(blacklist_mm10)
-      blacklist_data <- blacklist_mm10
+    blacklist_data <- if (exclude_by_blacklist == "hg38") {
+      blacklist_hg38  <- NULL
+      data("blacklist_hg38", package = "peakCombiner", envir = environment())
+      blacklist_hg38
+    } else if (exclude_by_blacklist == "mm10") {
+      blacklist_mm10  <- NULL
+      data("blacklist_mm10", package = "peakCombiner", envir = environment())
+      blacklist_mm10
+    } else {
+      stop("Invalid genome parameter. Please use 'hg38' or 'mm10'.")
     }
     
-    } else {
+  } else {
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
@@ -298,8 +303,8 @@ filter_by_blacklist <- function(data,
     dplyr::pull(.data$chrom) |>
     unique()
 
-  not_found_blacklist <- setdiff(data_chr, blacklist_chr)
-  not_found_input <- setdiff(blacklist_chr, data_chr)
+  not_found_blacklist <- dplyr::setdiff(data_chr, blacklist_chr)
+  not_found_input <- dplyr::setdiff(blacklist_chr, data_chr)
 
   if (length(not_found_blacklist) > 0) {
     cli::cli_inform(c(
@@ -327,14 +332,16 @@ filter_by_blacklist <- function(data,
   data <-
     data |>
     GenomicRanges::makeGRangesFromDataFrame(keep.extra.columns = TRUE) |>
-    IRanges::subsetByOverlaps(blacklist_data |>
-      GenomicRanges::makeGRangesFromDataFrame(
-        keep.extra.columns = TRUE
-      ),
-    invert = TRUE
-    ) |>
+    IRanges::subsetByOverlaps(
+      blacklist_data |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE, 
+        ),
+      invert = TRUE
+    ) |> 
+    suppressWarnings() |> #Recently added to solve warning
     tibble::as_tibble() |>
-    dplyr::rename(chrom = .data$seqnames) |>
+    dplyr::rename(chrom = "seqnames") |>
     dplyr::select(-"width") |>
     dplyr::mutate(
       chrom = as.character(.data$chrom),
@@ -378,6 +385,9 @@ filter_by_blacklist <- function(data,
 #'
 filter_by_significance <- function(data,
                                    include_above_score_cutoff = NULL) {
+  ##
+  set.seed(1234)
+  ##
   if (is.null(include_above_score_cutoff)) {
     cli::cli_inform(c(
       "i" = "The argument {.arg include_above_score_cutoff} is {.val NULL}.",
@@ -455,8 +465,10 @@ filter_by_significance <- function(data,
 #' @noRd
 #'
 filter_by_top_enriched <- function(data,
-                                   include_top_n_scoring = include_top_n_scoring
-                                   ) {
+                                   include_top_n_scoring = include_top_n_scoring) {
+  ##
+  set.seed(1234)
+  ##
   if (is.null(include_top_n_scoring)) {
     cli::cli_inform(c(
       "i" = "The argument {.arg include_top_n_scoring} is {.val NULL}.",
@@ -468,7 +480,6 @@ filter_by_top_enriched <- function(data,
     return(data)
   } else if (is.numeric(include_top_n_scoring) &&
     include_top_n_scoring > 0) {
-
     ### ---------------------------------------------------------------------###
 
     cli::cli_inform(c(

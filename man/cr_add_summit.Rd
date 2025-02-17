@@ -20,6 +20,32 @@ columns will be dropped}
 
 \item{input}{The original input file from \code{combine_regions} to extract center
 information}
+
+\item{combined_center}{Defines how the column 'center' will be
+populated for each genomic region in the output
+data. Allowed options are
+* \code{middle}        - the mathematical center of the new region
+* \code{strongest}     - the 'center' of the input region that has the
+the highest 'score' of all overlapping input
+regions
+* \code{nearest}       - the 'center' of the input region that is closest
+to mean of the 'center's of all overlapping
+input regions (default)}
+
+\item{annotate_with_input_names}{TRUE / FALSE (default). If TRUE, a new
+column named 'input_names' is created
+in the output data that is populated for
+each combined genomic region with the
+'name's of all contributing input regions.
+If the column 'input_names' already
+exists, it will be overwritten.}
+
+\item{combined_sample_name}{Optionally defines how the column 'sample_name'
+is populated for the output data.
+If not used, then the default is to simply
+concatenate all input
+sample_names into a single comma-separated
+string}
 }
 \value{
 A tibble with the following columns: \code{chrom}, \code{start}, \code{end}, \code{name},
@@ -28,7 +54,7 @@ A tibble with the following columns: \code{chrom}, \code{start}, \code{end}, \co
 \description{
 Helper function for main function \link{combine_regions}.
 Requires in memory data frame in the standard accepted format for the
-\link{peakCombiner}.
+peakCombiner package.
 For details see the details for \link{combine_regions}.
 }
 \details{

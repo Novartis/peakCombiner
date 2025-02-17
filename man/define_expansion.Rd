@@ -41,9 +41,3 @@ function. 'NULL' allows for data-driven definition of the \code{expand_by} value
 It calculates the median genomic region size of the input data and uses this
 value like a length 1 numeric vector for expansion.
 }
-\examples{
-expansion_value <- define_expansion(
-  data = data,
-  expand_by = expand_by
-)
-}

@@ -57,13 +57,13 @@
 #'                      named `chrom`, `start`, `end`, `name`,
 #'                      `score`, `strand`, `center`, `sample_name`. Additional
 #'                      columns will be maintained.
-#' @param center_by   Allowed values are 'center_column' (default) or 
+#' @param center_by   Allowed values are 'center_column' (default) or
 #'                    'midpoint'.
 #' * 'center_column' uses the value stored in the column `center` to center.
-#' * 'midpoint' replaces the value stored in the column `center` with the 
-#'    mathematical mean of each genomic region (e.g., round(end - start / 2)), 
+#' * 'midpoint' replaces the value stored in the column `center` with the
+#'    mathematical mean of each genomic region (e.g., round(end - start / 2)),
 #'    which is then used.
-#'    
+#'
 #' @param expand_by   Allowed values a numeric vector of length 1 or 2,
 #'                      or 'NULL' (default).
 #' * The value from the numeric vector of length 1
@@ -94,17 +94,17 @@
 #'
 #' @export
 #'
+#' @importFrom rlang .data
+#' @import tidyr
+#' @import here
+#'
 #' @examples
 #' # Load in and prepare a an accepted tibble
-#' sample_sheet <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
-#'   show_col_types = FALSE
-#' )
-#' sample_sheet
+#' utils::data(syn_data_bed)
 #'
 #' # Prepare input data
 #' data_prepared <- prepare_input_regions(
-#'   data = sample_sheet,
+#'   data = syn_data_bed,
 #'   show_messages = TRUE
 #' )
 #' # Run center and expand
@@ -132,7 +132,6 @@ center_expand_regions <- function(data,
                                   center_by = "center_column",
                                   expand_by = NULL,
                                   show_messages = TRUE) {
-
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
   ### -----------------------------------------------------------------------###
@@ -228,12 +227,12 @@ center_expand_regions <- function(data,
   ### -----------------------------------------------------------------------###
   ### Center and expand
   ### -----------------------------------------------------------------------###
-  
+
   cli::cli_inform(c(
     ">" = "Genomic regions will be centered and expanded.",
     " " = " "
   ))
-  
+
   if (center_by == "center_column") {
     cli::cli_inform(c(
       ">" = "Starting with expanding genomic regions from the column {.field

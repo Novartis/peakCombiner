@@ -69,7 +69,6 @@ load_input_regions <- function(data) {
   ### -----------------------------------------------------------------------###
   ## Check if data is a data_frame
   if (!is.data.frame(data)) {
-
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
@@ -80,7 +79,7 @@ load_input_regions <- function(data) {
   }
 
   ## Check if samples_sheet has correct col names
-  if (!all(allowed_col_names %in% colnames(data))) {
+  if (!all(allowed_col_names[1:3] %in% colnames(data))) {
     missing_column <- allowed_col_names[!colnames(data) %in% allowed_col_names]
 
     # show error message independent of parameter show_messages
@@ -115,7 +114,6 @@ load_input_regions <- function(data) {
   }
 
   if (n_unique_score_or_formats > 1) {
-
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
@@ -134,15 +132,14 @@ load_input_regions <- function(data) {
   ### -----------------------------------------------------------------------###
   ## Test if provided file paths in input do exist
 
-  if (!all(file.exists(data$file_path))) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
-      ">" = "`data` contains column with name 'file_path'.",
-      "x" = "At least one file does not exist."
-    ), call. = FALSE)
-  }
+  #if (!all(file.exists(data$file_path))) {
+  #  # show error message independent of parameter show_messages
+  #  options("rlib_message_verbosity" = "default")
+  #  cli::cli_abort(c(
+  #    ">" = "`data` contains column with name 'file_path'.",
+  #    "x" = "At least one file does not exist."
+  #  ), call. = FALSE)
+  #}
 
   ### -----------------------------------------------------------------------###
   ## Test if sample names are unique
@@ -207,7 +204,6 @@ load_input_regions <- function(data) {
   ### -----------------------------------------------------------------------###
 
   if (score_colname %in% all_other_colnames) {
-
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
@@ -225,7 +221,7 @@ load_input_regions <- function(data) {
   cli::cli_inform(c(
     ">" = "Start reading in data."
   ))
-  
+
   ## Read in peak files
   data_readin <-
     tibble::tibble(
@@ -241,7 +237,25 @@ load_input_regions <- function(data) {
       ) |> stats::setNames(data$sample_name)
     ) |>
     dplyr::select(-"file_path") |>
-    tidyr::unnest(cols = c("input_file")) |>
+    dplyr::filter(purrr::map_int(.data$input_file, nrow) > 0) |>
+    tidyr::unnest(cols = c("input_file"))
+  
+  #table(data_readin$sample_name)
+  
+  if(!"peak" %in% names(data_readin)) {
+    ## Inform that column peak is added
+    cli::cli_inform(c(
+      "i" = "No information about peak found in data.",
+      "v" = "Column with neam 'peak' is added."
+    ))
+  
+    data_readin <- data_readin |>
+      dplyr::mutate(peak = (.data$end - (.data$end + .data$start) / 2) |>
+                      round(0)
+                    )
+  }
+  
+  data_readin <- data_readin |>
     dplyr::group_by(.data$sample_name) |>
     dplyr::mutate(
       start = .data$start + 1,

@@ -109,45 +109,29 @@
 #'
 #' @export
 #'
-#' @examples
-#' infolder <- here::here()
+#' @importFrom rlang .data
+#' @import tidyr
+#' @import here
 #'
-#' # Load a tibble with path to region files  and required meta information
-#' sample_sheet <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
-#'   show_col_types = FALSE
-#' )
-#' sample_sheet
+#'
+#' @examples
+#' # Load in and prepare a an accepted tibble
+#' utils::data(syn_data_tibble)
 #'
 #' data_prepared <- prepare_input_regions(
-#'   data = sample_sheet,
+#'   data = syn_data_tibble,
 #'   show_messages = TRUE
 #' )
 #' data_prepared
 #'
 #' # Or a pre-loaded tibble with genomic regions and named columns.
 #'
-#' control <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_data_C1.bed"),
-#'   show_col_types = FALSE,
-#'   col_names = c(
-#'     "chrom", "start", "end", "name",
-#'     "strand", "score", "summit"
-#'   )
-#' )
+#' utils::data(syn_data_control01)
+#' utils::data(syn_data_treatment01)
 #'
-#' treatment <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_data_T1.bed"),
-#'   show_col_types = FALSE,
-#'   col_names = c(
-#'     "chrom", "start", "end", "name",
-#'     "strand", "score", "summit"
-#'   )
-#' )
-#'
-#' combined_input <- control |>
+#' combined_input <- syn_data_control01 |>
 #'   dplyr::mutate(sample_name = "control-rep1") |>
-#'   rbind(treatment |>
+#'   rbind(syn_data_treatment01 |>
 #'     dplyr::mutate(sample_name = "treatment-rep1"))
 #'
 #' prepare_input_regions(
@@ -207,7 +191,6 @@ prepare_input_regions <- function(data, show_messages = TRUE) {
   } else if (isFALSE(show_messages)) {
     options("rlib_message_verbosity" = "quiet")
   } else {
-
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
@@ -261,6 +244,7 @@ prepare_input_regions <- function(data, show_messages = TRUE) {
   } else {
     # show error independend of show_messages
     options("rlib_message_verbosity" = "default")
+
     cli::cli_abort(c(
       "x" = "Provide input {.arg data} does not have the required format.",
       "!" = "Please check your column names in {.arg data}."

@@ -5,8 +5,7 @@
 \alias{syn_data_tibble}
 \title{Synthetic data set of genomic coordinates and meta data columns as tibble}
 \format{
-\subsection{\code{syn_data_tibble} A tibble with 55 rows and 8 columns:}{
-}
+\code{syn_data_tibble} A tibble with 55 rows and 8 columns:
 }
 \source{
 Created for R package peakCombiner.

@@ -47,10 +47,10 @@
 #'                                    to 'NULL' (default), this step will be
 #'                                    skipped (optional).
 #'                                    Please note that if there are not matching
-#'                                    entries in the 'chrom' columns of input 
-#'                                    and blacklist, an information message is 
-#'                                    displayed. This can happend und does not 
-#'                                    cause any problems with the script. 
+#'                                    entries in the 'chrom' columns of input
+#'                                    and blacklist, an information message is
+#'                                    displayed. This can happend und does not
+#'                                    cause any problems with the script.
 #' * `include_above_score_cutoff` -   Single numeric value that defines the
 #'                                    `score` threshold above which all genomic
 #'                                    regions will be retained. The `score`
@@ -120,17 +120,17 @@
 #'
 #' @export
 #'
+#' @importFrom rlang .data
+#' @import tidyr
+#' @import here
+#'
 #' @examples
 #'
-#' # Load in and prepare the input data
-#' sample_sheet <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
-#'   show_col_types = FALSE
-#' )
-#' sample_sheet
+#' # Load in and prepare a an accepted tibble
+#' utils::data(syn_data_bed)
 #'
 #' data_prepared <- prepare_input_regions(
-#'   data = sample_sheet,
+#'   data = syn_data_bed,
 #'   show_messages = TRUE
 #' )
 #'
@@ -151,10 +151,12 @@ filter_regions <- function(data,
                            include_above_score_cutoff = NULL,
                            include_top_n_scoring = NULL,
                            show_messages = TRUE) {
-
   ### -----------------------------------------------------------------------###
   ### Define parameters
   ### -----------------------------------------------------------------------###
+  ##
+  set.seed(1234)
+  ##
   ## Pass data into new variable
   data_filtered <- data
 
@@ -237,7 +239,7 @@ filter_regions <- function(data,
   ### -----------------------------------------------------------------------###
 
   data_filtered <- data_filtered |>
-    dplyr::relocate(.data$strand, .after = .data$score) |>
+    dplyr::relocate("strand", .after = "score") |>
     dplyr::mutate(strand = ifelse(.data$strand == "*", ".", .data$strand)) |>
     dplyr::ungroup()
 

@@ -10,14 +10,9 @@
 #'
 #' @return A vector of length 1 to define region expansion.
 #'
-#' @examples
-#' expansion_value <- define_expansion(
-#'   data = data,
-#'   expand_by = expand_by
-#' )
+
 define_expansion <- function(data = data,
                              expand_by = expand_by) {
-
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###

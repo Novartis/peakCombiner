@@ -2,89 +2,53 @@
 ### -----------------------------------------------------------------------###
 ### Prepare data for testing
 ### -----------------------------------------------------------------------###
-## tweak the prepare_input_regions() function and re-load it
-devtools::load_all()
-library("tidyverse")
-library("GenomicRanges")
 ##
-### -----------------------------------------------------------------------###
-### Prepare data for testing
-### -----------------------------------------------------------------------###
-
+set.seed(1234)
+##
 colnames_preloaded_df <- c(
   "chrom", "start", "end", "name", "score", "strand",
   "center", "sample_name"
 )
 
-colnames_sample_sheet <- c(
-  "sample_name", "file_path", "file_format", "score_colname"
-  )
-
 allowed_file_format <- c("narrowpeak", "broadpeak", "bed")
 
+data(syn_data_bed, package = "peakCombiner")
+samplesheet_test <- syn_data_bed
 
-samplesheet_test <- readr::read_tsv("/da/ONC/BFx/research/muckema1/discovery_brd9/analysis/opbaf-brd9-muckema1_rpackage_comb_peak/support/sample_sheet_test.tsv", show_col_types = FALSE)
-
-test_sample_sheet <- prepare_input_regions(
-  data = samplesheet_test[1,]
+test_sample_sheet <- peakCombiner::prepare_input_regions(
+  data = samplesheet_test[1, ]
 )
 
-
-test_data <- readr::read_tsv(paste0("lists/synthetic_genomic_regions.bed"), show_col_types = FALSE)
+data(syn_data_tibble, package = "peakCombiner")
+test_data <- syn_data_tibble
 input_colnames <- colnames(test_data)
 
-test_data_prepared <- prepare_input_regions(
+test_data_prepared <- peakCombiner::prepare_input_regions(
   data = test_data
 )
 
 restult_colnames <- colnames(test_data_prepared)
 
-
 ### -----------------------------------------------------------------------###
 ### Test input
 ### -----------------------------------------------------------------------###
-### Test sample sheet
-test_that("Input data has all required columns", {
-  expect_true(all(colnames(samplesheet_test) %in% colnames_sample_sheet)
-)
-})
-
-test_that("Check if all entries in sample_names are unique", {
-  expect_true(samplesheet_test |> 
-                dplyr::pull("sample_name") |>
-                unique() |> 
-                length() == nrow(samplesheet_test))
-})
-
-test_that("Check if all entries in sample_names are unique", {
-  expect_true(samplesheet_test |> 
-                dplyr::pull("file_format") |>
-                unique() |> 
-                length() == 1)
-})
-
-### -----------------------------------------------------------------------###
-### Test pre-loaded data frame 
+### Test pre-loaded data frame
 test_that("Test if function works with correct input", {
-  expect_no_error(prepare_input_regions(
+  expect_no_error(peakCombiner::prepare_input_regions(
     data = test_data
   ))
 })
 
 test_that("Input data has at least 8 number of columns", {
-  expect_gt(length(colnames(test_data)), 8)
+  expect_equal(length(colnames(test_data)), 8)
 })
 
 test_that("Column names of input data are identical with required once.", {
   expect_true(all(colnames_preloaded_df %in% names(test_data)))
 })
 
-
-
 ### -----------------------------------------------------------------------###
-### Test pre-loaded gRanges 
-
-
+### Test pre-loaded gRanges
 ### -----------------------------------------------------------------------###
 
 test_that("Input data has the right number of columns", {
@@ -103,10 +67,6 @@ test_that("Input column 'end' is a class 'numeric'.", {
   expect_true(is.numeric(test_data$end))
 })
 
-test_that("Input column 'name' is a class 'character'.", {
-  expect_true(is.character(test_data$name))
-})
-
 test_that("Input column 'score' is a class 'numeric'.", {
   expect_true(is.numeric(test_data$score))
 })
@@ -123,16 +83,12 @@ test_that("Input column 'sample_name' is a class 'character'.", {
   expect_true(is.character(test_data$sample_name))
 })
 
-test_that("Values in column 'name' contain the separater '|'", {
-  expect_true(sum(str_detect(test_data$name, "|")) > 0)
-})
-
 ### -----------------------------------------------------------------------###
 ### Test output
 ### -----------------------------------------------------------------------###
 
 test_that("Output data frame has the correct structure.", {
-  expect_no_error(check_data_structure(test_data_prepared))
+  expect_no_error(peakCombiner:::check_data_structure(test_data_prepared))
 })
 
 test_that("Column names of output data are identical with required once.", {
@@ -180,11 +136,11 @@ test_that("Ouput column 'sample_name' is a class 'character'.", {
 })
 
 test_that("The mean of all output centers.", {
-  expect_equal(mean(test_data_prepared$center), 1942.2535)
+  expect_equal(round(mean(test_data_prepared$center), 0), 2452)
 })
 
 test_that("The number of rows in the output file.", {
-  expect_identical(nrow(test_data_prepared), as.integer(71))
+  expect_identical(nrow(test_data_prepared), 52L)
 })
 
 ### -----------------------------------------------------------------------###

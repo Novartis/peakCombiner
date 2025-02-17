@@ -2,14 +2,16 @@ citHeader("To cite peakCombiner in publications use:")
 
 citEntry(
   entry    = "Article",
-  title    = ,
-  author   = ,
-  journal  = ,
-  year     = ,
-  volume   = ,
-  number   = ,
-  pages    = ,
-  url      = ,
+  title    = "peakCombiner: An R package to curate and merge enriched genomic regions into consensus peak sets",
+  author   = personList(as.person("Markus Muckenhuber [aut, cre]"), 
+                        as.person("Michael B Stadler [aut]"), 
+                        as.person("Kathleen Sprouffske [aut]")),
+  journal  = "X",
+  year     = "X",
+  volume   = "X",
+  number   = "X",
+  pages    = "X",
+  url      = "X",
   textVersion = paste(
 
   )

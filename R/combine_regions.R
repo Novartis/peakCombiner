@@ -94,17 +94,17 @@
 #'
 #' @export
 #'
-#' @examples
+#' @importFrom rlang .data
+#' @import stringr
+#' @import tidyr
+#' @import here
 #'
-#' # Load in and prepare input data
-#' sample_sheet <- readr::read_tsv(
-#'   paste0(infolder, "/lists/synthetic_sample_sheet.tsv"),
-#'   show_col_types = FALSE
-#' )
-#' sample_sheet
+#' @examples
+#' # Load in and prepare a an accepted tibble
+#' utils::data(syn_data_bed)
 #'
 #' data_prepared <- prepare_input_regions(
-#'   data = sample_sheet,
+#'   data = syn_data_bed,
 #'   show_messages = FALSE
 #' )
 #'
@@ -124,11 +124,12 @@ combine_regions <- function(data,
                             annotate_with_input_names = FALSE,
                             combined_sample_name = NULL,
                             show_messages = TRUE) {
-
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
-
+  ##
+  set.seed(1234)
+  ##
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
   ### -----------------------------------------------------------------------###
@@ -204,7 +205,7 @@ combine_regions <- function(data,
 
 
   data_combined_with_summit <- data_combined_with_summit |>
-    dplyr::relocate(.data$strand, .after = .data$score) |>
+    dplyr::relocate("strand", .after = "score") |>
     dplyr::mutate(strand = ifelse(.data$strand == "*", ".", .data$strand)) |>
     dplyr::ungroup()
 
