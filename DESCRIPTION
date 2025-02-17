@@ -17,7 +17,7 @@ Authors@R: c(person("Markus", "Muckenhuber",
             person("Kathleen", "Sprouffske",
                 email = "",
                 role = c("aut"),
-                comment = c(ORCID = "0000-0001-7081-2598"))
+                comment = c(ORCID = "0000-0001-7081-2598")),
              person("Novartis Biomedical Research", 
                 role = c("cph")))
 Depends: R (>= 4.3.0)
