@@ -22,16 +22,16 @@ test_data
 
 test_data_prepared <- peakCombiner:::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  show_messages = TRUE
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 
 test_data_center_expand <- peakCombiner:::centerExpandRegions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL,
-  output_format = "tibble",
-  show_messages = TRUE
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 
 test_data_filtered <- peakCombiner:::filterRegions(
@@ -40,17 +40,17 @@ test_data_filtered <- peakCombiner:::filterRegions(
   exclude_by_blacklist = NULL,
   include_above_score_cutoff = NULL,
   include_top_n_scoring = NULL,
-  output_format = "tibble",
-  show_messages = TRUE
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 
 test_data_combined <- peakCombiner:::combineRegions(
   data = test_data_filtered,
-  combined_center = "nearest",
-  annotate_with_input_names = FALSE,
-  combined_sample_name = NULL,
-  output_format = "tibble",
-  show_messages = TRUE
+  combinedCenter = "nearest",
+  annotateWithInputNames = FALSE,
+  combinedSampleName = NULL,
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 
 ### -----------------------------------------------------------------------###
@@ -60,223 +60,223 @@ test_data_combined <- peakCombiner:::combineRegions(
 testthat::test_that("Input data frame has be data frame or tibble", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = c(1, 2, 3, 4, 5),
-    output_format = "tibble",
-    show_messages = FALSE
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
 testthat::test_that("Input data frame has be data frame or tibble", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = NULL,
-    output_format = "tibble",
-    show_messages = FALSE
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
 ### -----------------------------------------------------------------------###
-testthat::test_that("Argument 'combined_center' creates error if NULL", {
+testthat::test_that("Argument 'combinedCenter' creates error if NULL", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_center = NULL,
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedCenter = NULL,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'combined_center' creates error if NA", {
+testthat::test_that("Argument 'combinedCenter' creates error if NA", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_center = NA,
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedCenter = NA,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'combined_center' creates error if numeric
+testthat::test_that("Argument 'combinedCenter' creates error if numeric
                     value", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_center = 1,
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedCenter = 1,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'combined_center' tolerates capitilization", {
+testthat::test_that("Argument 'combinedCenter' tolerates capitilization", {
   testthat::expect_no_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_center = "Nearest",
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedCenter = "Nearest",
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'combined_center' creates error if not allowes
+testthat::test_that("Argument 'combinedCenter' creates error if not allowes
                     value", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_center = "Shortest",
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedCenter = "Shortest",
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
 ### -----------------------------------------------------------------------###
-testthat::test_that("Argument 'annotate_with_input_names' creates no error if
+testthat::test_that("Argument 'annotateWithInputNames' creates no error if
                     allowed value", {
   testthat::expect_no_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    annotate_with_input_names = TRUE,
-    output_format = "tibble",
-    show_messages = FALSE
+    annotateWithInputNames = TRUE,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
   testthat::expect_no_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    annotate_with_input_names = FALSE,
-    output_format = "tibble",
-    show_messages = FALSE
+    annotateWithInputNames = FALSE,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'annotate_with_input_names' creates error if not
+testthat::test_that("Argument 'annotateWithInputNames' creates error if not
                     allowes value", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    annotate_with_input_names = FALSe,
-    output_format = "tibble",
-    show_messages = FALSE
+    annotateWithInputNames = FALSe,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    annotate_with_input_names = 10,
-    output_format = "tibble",
-    show_messages = FALSE
+    annotateWithInputNames = 10,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'annotate_with_input_names' creates error if not
+testthat::test_that("Argument 'annotateWithInputNames' creates error if not
                     allowes value 'NA'", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    annotate_with_input_names = NA,
-    output_format = "tibble",
-    show_messages = FALSE
+    annotateWithInputNames = NA,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'annotate_with_input_names' creates error if not
+testthat::test_that("Argument 'annotateWithInputNames' creates error if not
                     allowes value 'NULL'", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    annotate_with_input_names = NULL,
-    output_format = "tibble",
-    show_messages = FALSE
+    annotateWithInputNames = NULL,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'annotate_with_input_names' creates error if
+testthat::test_that("Argument 'annotateWithInputNames' creates error if
                     length is greater then 1.", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    annotate_with_input_names = c(1, 2),
-    output_format = "tibble",
-    show_messages = FALSE
+    annotateWithInputNames = c(1, 2),
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'annotate_with_input_names' creates error if not
+testthat::test_that("Argument 'annotateWithInputNames' creates error if not
                     allowed logical value with length 2 is provided.", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    annotate_with_input_names = c(NA, TRUE),
-    output_format = "tibble",
-    show_messages = FALSE
+    annotateWithInputNames = c(NA, TRUE),
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 ### -----------------------------------------------------------------------###
 
-testthat::test_that("Argument 'combined_sample_name' creates no error if 'NULL'
+testthat::test_that("Argument 'combinedSampleName' creates no error if 'NULL'
           value is provided.", {
   testthat::expect_no_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_sample_name = NULL,
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedSampleName = NULL,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'combined_sample_name' creates no error if single
+testthat::test_that("Argument 'combinedSampleName' creates no error if single
                     character value is provided.", {
   testthat::expect_no_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_sample_name = "Consensus",
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedSampleName = "Consensus",
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'combined_sample_name' creates error if single
+testthat::test_that("Argument 'combinedSampleName' creates error if single
                     numeric value is provided.", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_sample_name = 1,
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedSampleName = 1,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'combined_sample_name' creates error if vector
+testthat::test_that("Argument 'combinedSampleName' creates error if vector
                     with two entries is provided.", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_sample_name = c("Consensus", "Two"),
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedSampleName = c("Consensus", "Two"),
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
-testthat::test_that("Argument 'combined_sample_name' creates error if 'NA' is
+testthat::test_that("Argument 'combinedSampleName' creates error if 'NA' is
           provided.", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    combined_sample_name = NA,
-    output_format = "tibble",
-    show_messages = FALSE
+    combinedSampleName = NA,
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
 ### -----------------------------------------------------------------------###
 
-testthat::test_that("Argument 'show_messages' creates no error if TRUE or FALSE
+testthat::test_that("Argument 'showMessages' creates no error if TRUE or FALSE
           value is provided.", {
   testthat::expect_no_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    output_format = "tibble",
-    show_messages = FALSE
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
   testthat::expect_no_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    output_format = "tibble",
-    show_messages = TRUE
+    outputFormat = "tibble",
+    showMessages = TRUE
   ))
 })
 
-testthat::test_that("Argument 'show_messages' creates no error if non accepted
+testthat::test_that("Argument 'showMessages' creates no error if non accepted
           value is provided.", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    output_format = "tibble",
-    show_messages = FaLSE
+    outputFormat = "tibble",
+    showMessages = FaLSE
   ))
 })
 
-testthat::test_that("Argument 'show_messages' creates no error if non accepted
+testthat::test_that("Argument 'showMessages' creates no error if non accepted
           value 'NA' is provided.", {
   testthat::expect_error(peakCombiner:::combineRegions(
     data = test_data_filtered,
-    output_format = "tibble",
-    show_messages = NA
+    outputFormat = "tibble",
+    showMessages = NA
   ))
 })
 
@@ -320,12 +320,12 @@ testthat::test_that("Output data results has correct summit for 'nearest'
                     peak", {
   data <- peakCombiner:::combineRegions(
     data = test_data_filtered,
-    found_in_samples = 2,
-    combined_center = "nearest",
-    annotate_with_input_names = FALSE,
-    combined_sample_name = "consensus_peak",
-    output_format = "tibble",
-    show_messages = FALSE
+    foundInSamples = 2,
+    combinedCenter = "nearest",
+    annotateWithInputNames = FALSE,
+    combinedSampleName = "consensus_peak",
+    outputFormat = "tibble",
+    showMessages = FALSE
   )
 
   testthat::expect_identical(round(data$center[7],0), 500)
@@ -335,12 +335,12 @@ testthat::test_that("Output data results has correct summit for 'nearest'
 test_that("Output data results has correct summit for 'strongst' peak", {
   data <- peakCombiner:::combineRegions(
     data = test_data_filtered,
-    found_in_samples = 2,
-    combined_center = "strongest",
-    annotate_with_input_names = FALSE,
-    combined_sample_name = "consensus_peak",
-    output_format = "tibble",
-    show_messages = FALSE
+    foundInSamples = 2,
+    combinedCenter = "strongest",
+    annotateWithInputNames = FALSE,
+    combinedSampleName = "consensus_peak",
+    outputFormat = "tibble",
+    showMessages = FALSE
   )
 
   expect_identical(round(data$center[7],0), 600)
@@ -351,12 +351,12 @@ testthat::test_that("Output data results has correct summit for 'middle'
                     peak", {
   data <- peakCombiner:::combineRegions(
     data = test_data_filtered,
-    found_in_samples = 2,
-    combined_center = "middle",
-    annotate_with_input_names = FALSE,
-    combined_sample_name = "consensus_peak",
-    output_format = "tibble",
-    show_messages = FALSE
+    foundInSamples = 2,
+    combinedCenter = "middle",
+    annotateWithInputNames = FALSE,
+    combinedSampleName = "consensus_peak",
+    outputFormat = "tibble",
+    showMessages = FALSE
   )
 
   testthat::expect_identical(data$center[7], 550)

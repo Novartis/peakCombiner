@@ -23,15 +23,15 @@ test_data <- syn_data_tibble
 ##
 test_data_prepared <- peakCombiner::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
-  center_by = "center_column",
-  output_format = "tibble",
-  expand_by = NULL
+  centerBy = "center_column",
+  outputFormat = "tibble",
+  expandBy = NULL
 )
 
 test_data_filtered <- peakCombiner::filterRegions(
@@ -40,7 +40,7 @@ test_data_filtered <- peakCombiner::filterRegions(
   include_by_chromosome_name = c("chr1", "chr10", "chr2", "chr42"),
   include_above_score_cutoff = NULL,
   include_top_n_scoring = NULL,
-  output_format = "tibble"
+  outputFormat = "tibble"
 )
 
 test_data_disjoin_filter <- peakCombiner:::cr_disjoin_filter(data = test_data_filtered, found_in_samples = 2)

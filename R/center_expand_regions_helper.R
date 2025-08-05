@@ -1,8 +1,8 @@
 #' Calculate expansion value from median input region size
 #'
 #' @description
-#' Calculates the parameter `expand_by` when it was set to 'NULL' in the main
-#' function. 'NULL' allows for data-driven definition of the `expand_by` value.
+#' Calculates the parameter `expandBy` when it was set to 'NULL' in the main
+#' function. 'NULL' allows for data-driven definition of the `expandBy` value.
 #' It calculates the median genomic region size of the input data and uses this
 #' value like a length 1 numeric vector for expansion.
 #'
@@ -12,60 +12,60 @@
 #'
 
 define_expansion <- function(data = data,
-                             expand_by = expand_by) {
+                             expandBy = expandBy) {
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
 
-  if (!exists("expand_by")) {
-    # show error message independent of parameter show_messages
+  if (!exists("expandBy")) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg expand_by} has to be defined."
+      "x" = "{.arg expandBy} has to be defined."
     ))
   }
 
-  if (!is.null(expand_by) && !is.numeric(expand_by)) {
-    # show error message independent of parameter show_messages
+  if (!is.null(expandBy) && !is.numeric(expandBy)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg expand_by} has to be {.cls numeric}."
+      "x" = "{.arg expandBy} has to be {.cls numeric}."
     ))
   }
 
-  if (any(is.na(expand_by))) {
-    # show error message independent of parameter show_messages
+  if (any(is.na(expandBy))) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg expand_by} has the unallowed value {.val NA}."
+      "x" = "{.arg expandBy} has the unallowed value {.val NA}."
     ))
   }
 
-  if (any(expand_by < 1)) {
-    # show error message independent of parameter show_messages
+  if (any(expandBy < 1)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg expand_by} has the unallowed value {.val 0}."
+      "x" = "{.arg expandBy} has the unallowed value {.val 0}."
     ))
   }
 
   ### -----------------------------------------------------------------------###
-  ### If expand_by is not provided, here we calculate the median peak size.
+  ### If expandBy is not provided, here we calculate the median peak size.
   ### -----------------------------------------------------------------------###
 
-  if (any(is.null(expand_by)) == TRUE) {
+  if (any(is.null(expandBy)) == TRUE) {
     cli::cli_inform(c(
-      "i" = "Input value for {.arg expand_by} is {.val NULL}. Median of all
+      "i" = "Input value for {.arg expandBy} is {.val NULL}. Median of all
       input genomic regions is calculated and returned for expansion."
     ))
 
     ## Get median peak size
 
-    expand_by <-
+    expandBy <-
       data |>
       dplyr::ungroup() |>
       dplyr::summarise(val = stats::median(.data$end - .data$start)) |>
@@ -73,37 +73,37 @@ define_expansion <- function(data = data,
       dplyr::pull()
 
     cli::cli_inform(c(
-      "v" = "{.var expand_by} was calculated from the input data and set to
-      \"{.val {expand_by}}\".",
-      "i" = "Genomic regions will be expanded by {expand_by}bp in
+      "v" = "{.var expandBy} was calculated from the input data and set to
+      \"{.val {expandBy}}\".",
+      "i" = "Genomic regions will be expanded by {expandBy}bp in
       both direction.",
       " " = " "
     ))
-  } else if (is.numeric(expand_by) && length(expand_by) < 3) {
-    if (length(expand_by) == 2) {
-      expand_by <- round(expand_by)
+  } else if (is.numeric(expandBy) && length(expandBy) < 3) {
+    if (length(expandBy) == 2) {
+      expandBy <- round(expandBy)
 
       cli::cli_inform(c(
-        "v" = "Parameter {.var expand_by} was defined as
-        {expand_by}bp in a vector having length 2.",
-        "i" = "Genomic regions will be expanded by subtracting {expand_by[1]}bp
-         from, and adding {expand_by[2]}bp to, the {.field center}."
+        "v" = "Parameter {.var expandBy} was defined as
+        {expandBy}bp in a vector having length 2.",
+        "i" = "Genomic regions will be expanded by subtracting {expandBy[1]}bp
+         from, and adding {expandBy[2]}bp to, the {.field center}."
       ))
-    } else if (length(expand_by) == 1) {
-      expand_by <- round(expand_by)
+    } else if (length(expandBy) == 1) {
+      expandBy <- round(expandBy)
       cli::cli_inform(c(
-        "v" = "The parameter {.var expand_by} was defined as
-            {expand_by}bp.",
-        "i" = "Genomic regions will be expanded by {expand_by}bp
+        "v" = "The parameter {.var expandBy} was defined as
+            {expandBy}bp.",
+        "i" = "Genomic regions will be expanded by {expandBy}bp
             in both directions."
       ))
     }
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "The parameter {.var expand_by} has to be either {.val NULL} or a
+      "x" = "The parameter {.var expandBy} has to be either {.val NULL} or a
           numeric vector with length 1 or 2."
     ))
   }
@@ -112,5 +112,5 @@ define_expansion <- function(data = data,
   ### Return expansion parameter
   ### -----------------------------------------------------------------------###
 
-  return(expand_by)
+  return(expandBy)
 }

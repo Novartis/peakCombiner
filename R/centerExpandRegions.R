@@ -46,7 +46,7 @@
 #'
 #' In the symmetrical case, if you want to choose the size of your genomic
 #' region based on the input data, this function can also calculate the median
-#' peak size across all of your genomic regions and use that value (`expand_by`
+#' peak size across all of your genomic regions and use that value (`expandBy`
 #' = NULL). Alternatively, the user is free to provide a numeric vector to
 #' define the expansion. A numeric vector with one value is used to
 #' symmetrically expand, while a vector with two values allows to expand
@@ -57,14 +57,14 @@
 #'                      named `chrom`, `start`, `end`, `name`,
 #'                      `score`, `strand`, `center`, `sample_name`. Additional
 #'                      columns will be maintained.
-#' @param center_by   Allowed values are 'center_column' (default) or
+#' @param centerBy   Allowed values are 'center_column' (default) or
 #'                    'midpoint'.
 #' * 'center_column' uses the value stored in the column `center` to center.
 #' * 'midpoint' replaces the value stored in the column `center` based on the 
 #' [GenomicRanges::resize()] followed by the expansion from based on the user 
 #' input.
 #'
-#' @param expand_by   Allowed values a numeric vector of length 1 or 2,
+#' @param expandBy   Allowed values a numeric vector of length 1 or 2,
 #'                      or 'NULL' (default).
 #' * The value from the numeric vector of length 1
 #'                          is expanded in both directions from center to define
@@ -78,7 +78,7 @@
 #'                          the sum of the first value + the second value
 #'                          + 1 (for the center coordinate).
 #' * 'NULL' allows for data-driven definition of the
-#'                          `expand_by` value. It calculates the median
+#'                          `expandBy` value. It calculates the median
 #'                          genomic region size of the input data and uses this
 #'                          value like a length 1 numeric vector for expansion.
 #' @param genome      Character value to define the matching genome reference to 
@@ -94,11 +94,11 @@
 #'                      resulting genomic results with negative starting 
 #'                      coordinates will be set to 1.
 #'            
-#' @param output_format Character value to define format of output object. 
+#' @param outputFormat Character value to define format of output object. 
 #'                      Accepted values are "GenomicRanges" (default), "tibble" 
 #'                      or "data.frame".  
 #'
-#' @param show_messages Logical value of TRUE (default) or FALSE. Defines if
+#' @param showMessages Logical value of TRUE (default) or FALSE. Defines if
 #'                      info messages are displayed or not.
 #'
 #'
@@ -121,16 +121,16 @@
 #' # Prepare input data
 #' data_prepared <- prepareInputRegions(
 #'   data = syn_data_bed,
-#'   output_format = "tibble",
-#'   show_messages = TRUE
+#'   outputFormat = "tibble",
+#'   showMessages = TRUE
 #' )
 #' # Run center and expand
 #' data_center_expand <- centerExpandRegions(
 #'   data = data_prepared,
-#'   center_by = "center_column",
-#'   expand_by = NULL,
-#'   output_format = "tibble",
-#'   show_messages = TRUE
+#'   centerBy = "center_column",
+#'   expandBy = NULL,
+#'   outputFormat = "tibble",
+#'   showMessages = TRUE
 #' )
 #'
 #' data_center_expand
@@ -139,21 +139,21 @@
 #'
 #' data_center_expand <- centerExpandRegions(
 #'   data = data_prepared,
-#'   center_by = "midpoint",
-#'   expand_by = c(100, 600),
-#'   output_format = "tibble",
-#'   show_messages = FALSE
+#'   centerBy = "midpoint",
+#'   expandBy = c(100, 600),
+#'   outputFormat = "tibble",
+#'   showMessages = FALSE
 #' )
 #'
 #' data_center_expand
 #'
 centerExpandRegions <- function(data,
-                                  center_by = "center_column",
-                                  expand_by = NULL,
+                                  centerBy = "center_column",
+                                  expandBy = NULL,
                                   genome = NA,
                                   trim_start = TRUE,
-                                  output_format = "GenomicRanges",
-                                  show_messages = TRUE) {
+                                  outputFormat = "GenomicRanges",
+                                  showMessages = TRUE) {
   
   ### -----------------------------------------------------------------------###
   ### Allowed genomes from GenomicRanges
@@ -179,11 +179,11 @@ centerExpandRegions <- function(data,
   
   if(is.na(genome)) {
     cli::cli_inform(c(
-      "i" = "Argument {.arg output_format} is set to NA"
+      "i" = "Argument {.arg outputFormat} is set to NA"
     ))
   } else if(genome %in% gr_genome_seqinfo) {
     cli::cli_inform(c(
-      "i" = "Argument {.arg output_format} is set to {.val {genome}}."
+      "i" = "Argument {.arg outputFormat} is set to {.val {genome}}."
     ))
   } else {
     cli::cli_abort(c(
@@ -197,22 +197,22 @@ centerExpandRegions <- function(data,
   ### Check if output format is valid
   ### -----------------------------------------------------------------------###
   
-  if (output_format %in% c("GenomicRanges", 
+  if (outputFormat %in% c("GenomicRanges", 
                            "GRanges", 
                            "tibble", 
                            "data.frame", 
                            "data.table")) {
     cli::cli_inform(c(
-      "i" = "Argument {.arg output_format} is set to {.val {output_format}}."
+      "i" = "Argument {.arg outputFormat} is set to {.val {outputFormat}}."
     ))
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
     
     cli::cli_abort(c(
-      "x" = "Argument {.arg output_format} has to be one of the following
+      "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
-      "i" = "Provided value is {.val {output_format}}."
+      "i" = "Provided value is {.val {outputFormat}}."
     ))
   }
   
@@ -259,7 +259,7 @@ centerExpandRegions <- function(data,
       ">" = "Start preparing data."
     ))
   } else {
-    # show error independend of show_messages
+    # show error independend of showMessages
     options("rlib_message_verbosity" = "default")
     
     cli::cli_abort(c(
@@ -288,25 +288,25 @@ centerExpandRegions <- function(data,
   ### Show or hide messages
   ### -----------------------------------------------------------------------###
 
-  if (!is.logical(show_messages)) {
-    # show error message independent of parameter show_messages
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg show_messages} has to be {.cls logical}."
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
     ))
-  } else if (isTRUE(show_messages)) {
+  } else if (isTRUE(showMessages)) {
     options("rlib_message_verbosity" = "default")
-  } else if (isFALSE(show_messages)) {
+  } else if (isFALSE(showMessages)) {
     options("rlib_message_verbosity" = "quiet")
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg show_messages} is a non-accepted {.cls logical}
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
       value.",
-      "i" = "Argument {.arg show_messages} is {.val {show_messages}}."
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
     ))
   }
 
@@ -318,7 +318,7 @@ centerExpandRegions <- function(data,
   ## Check parameter value correctness and calculate if needed
   expansion_value <- define_expansion(
     data = data,
-    expand_by = expand_by
+    expandBy = expandBy
   )
 
   ## Calculate the values to expand the regions
@@ -330,43 +330,43 @@ centerExpandRegions <- function(data,
   ### Check input parameters
   ### -----------------------------------------------------------------------###
 
-  if (is.null(center_by)) {
-    # show error message independent of parameter show_messages
+  if (is.null(centerBy)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg center_by} has to be {.val center_column} or
+      "x" = "{.arg centerBy} has to be {.val center_column} or
       {.val midpoint}.",
-      "i" = "{.arg center_by} is {.val NULL}."
+      "i" = "{.arg centerBy} is {.val NULL}."
     ))
-  } else if (length(center_by) != 1) {
-    # show error message independent of parameter show_messages
+  } else if (length(centerBy) != 1) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg center_by} has a length of {length(center_by)}.",
-      "i" = "{.arg center_by} allowed length is 1."
+      "x" = "{.arg centerBy} has a length of {length(centerBy)}.",
+      "i" = "{.arg centerBy} allowed length is 1."
     ))
-  } else if (!tolower(center_by) %in% center_values) {
-    # show error message independent of parameter show_messages
+  } else if (!tolower(centerBy) %in% center_values) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg center_by} has to be {.val center_column} or
+      "x" = "{.arg centerBy} has to be {.val center_column} or
       {.val midpoint}.",
-      "i" = "{.arg center_by} is {.val {center_by}}."
+      "i" = "{.arg centerBy} is {.val {centerBy}}."
     ))
-  } else if (tolower(center_by) %in% center_values) {
+  } else if (tolower(centerBy) %in% center_values) {
     ## good values!
-    center_by <- tolower(center_by)
+    centerBy <- tolower(centerBy)
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg center_by} has to be {.val center_column} or
+      "x" = "{.arg centerBy} has to be {.val center_column} or
       {.val midpoint}.",
-      "i" = "{.arg center_by} is {.val NULL}."
+      "i" = "{.arg centerBy} is {.val NULL}."
     ))
   }
 
@@ -384,7 +384,7 @@ centerExpandRegions <- function(data,
     ">" = "Genomic regions will be centered and expanded."
   ))
   
-  if (center_by == "center_column") {
+  if (centerBy == "center_column") {
     
     cli::cli_inform(c(
       ">" = "Starting with expanding genomic regions from the column 
@@ -456,7 +456,7 @@ centerExpandRegions <- function(data,
       {.val {expand_1}} before and {.val {expand_2}} after the center."
     ))
     
-    } else if (center_by == "midpoint") {
+    } else if (centerBy == "midpoint") {
     cli::cli_inform(c(
       ">" = "Starting with defining the {.field center} as the midpoint of the 
       regions from the {.field start} and {.field end} coordinates."
@@ -580,9 +580,9 @@ centerExpandRegions <- function(data,
   ### Adjust output format
   ### -----------------------------------------------------------------------###
   
-  if (output_format %in% c("GenomicRanges", "GRanges")) {
+  if (outputFormat %in% c("GenomicRanges", "GRanges")) {
     cli::cli_inform(c(
-      "i" = "Output format is set to {.val {output_format}}.")
+      "i" = "Output format is set to {.val {outputFormat}}.")
     )
     
     data_center_expand <- 
@@ -591,18 +591,18 @@ centerExpandRegions <- function(data,
         keep.extra.columns = TRUE,
       )
     
-  } else if (output_format %in% c("tibble", "data.frame", "data.table")) {
+  } else if (outputFormat %in% c("tibble", "data.frame", "data.table")) {
     cli::cli_inform(c(
       "i" = "Output format is set to {.val tibble}."
     ))
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
     
     cli::cli_abort(c(
-      "x" = "Argument {.arg output_format} has to be one of the following
+      "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
-      "i" = "Provided value is {.val {output_format}}."
+      "i" = "Provided value is {.val {outputFormat}}."
     ))
   } 
   
@@ -610,7 +610,7 @@ centerExpandRegions <- function(data,
   ### Set message display back to default
   ### -----------------------------------------------------------------------###
 
-  if (isFALSE(show_messages)) {
+  if (isFALSE(showMessages)) {
     options("rlib_message_verbosity" = "default")
   }
 

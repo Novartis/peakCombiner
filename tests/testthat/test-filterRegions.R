@@ -17,41 +17,41 @@ input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- peakCombiner::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
-  center_by = "center_column",
-  output_format = "tibble",
-  expand_by = NULL
+  centerBy = "center_column",
+  outputFormat = "tibble",
+  expandBy = NULL
 )
 ##
 input_colnames <- colnames(test_data_center_expand)
 ##
 test_data_filtered <- peakCombiner::filterRegions(
   data = test_data_center_expand,
-  include_by_chromosome_name = NULL,
-  exclude_by_blacklist = NULL,
-  include_above_score_cutoff = NULL,
-  include_top_n_scoring = NULL,
-  output_format = "tibble"
+  includeByChromosomeName = NULL,
+  excludeByBlacklist = NULL,
+  includeAboveScoreCutoff = NULL,
+  includeTopNScoring = NULL,
+  outputFormat = "tibble"
 )
 ##
 result_colnames <- colnames(test_data_filtered)
 ##
 test_data_combined <- peakCombiner::combineRegions(
   data = test_data_filtered,
-  found_in_samples = 2,
-  output_format = "tibble",
-  combined_center = "nearest"
+  foundInSamples = 2,
+  outputFormat = "tibble",
+  combinedCenter = "nearest"
 )
 ##
 test_data_combined_ce <- peakCombiner::centerExpandRegions(
   data = test_data_combined,
-  center_by = "center_column",
-  expand_by = NULL,
-  output_format = "tibble"
+  centerBy = "center_column",
+  expandBy = NULL,
+  outputFormat = "tibble"
 )
 ##
 ### -----------------------------------------------------------------------###
@@ -115,20 +115,20 @@ test_that("Output data frame is correct for data_prepared", {
   ##
   expect_no_error(peakCombiner::filterRegions(
     data = data,
-    exclude_by_blacklist = NULL,
-    include_by_chromosome_name = NULL,
-    include_above_score_cutoff = NULL,
-    include_top_n_scoring = NULL,
-    output_format = "tibble"
+    excludeByBlacklist = NULL,
+    includeByChromosomeNamey_chromosome_name = NULL,
+    includeAboveScoreCutoff = NULL,
+    includeTopNScoring = NULL,
+    outputFormat = "tibble"
   ))
   ##
   result <- peakCombiner::filterRegions(
     data = data,
-    exclude_by_blacklist = NULL,
-    include_by_chromosome_name = NULL,
-    include_above_score_cutoff = NULL,
-    include_top_n_scoring = NULL,
-    output_format = "tibble"
+    excludeByBlacklist = NULL,
+    includeByChromosomeName = NULL,
+    includeAboveScoreCutoff = NULL,
+    includeTopNScoring = NULL,
+    outputFormat = "tibble"
   )
   ##
   expect_identical(nrow(result), 52L)
@@ -141,11 +141,11 @@ test_that("Output data frame is correct for data_center_expand", {
   ##
   result <- peakCombiner::filterRegions(
     data = data,
-    exclude_by_blacklist = NULL,
-    include_by_chromosome_name = NULL,
-    include_above_score_cutoff = NULL,
-    include_top_n_scoring = NULL,
-    output_format = "tibble"
+    excludeByBlacklist = NULL,
+    includeByChromosomeName = NULL,
+    includeAboveScoreCutoff = NULL,
+    includeTopNScoring = NULL,
+    outputFormat = "tibble"
   )
   ##
   expect_identical(nrow(result), 52L)
@@ -157,11 +157,11 @@ test_that("Output data frame is correct for data_filtered", {
   data <- test_data_filtered
   result <- peakCombiner::filterRegions(
     data = data,
-    exclude_by_blacklist = NULL,
-    include_by_chromosome_name = NULL,
-    include_above_score_cutoff = NULL,
-    include_top_n_scoring = NULL,
-    output_format = "tibble"
+    excludeByBlacklist = NULL,
+    includeByChromosomeName = NULL,
+    includeAboveScoreCutoff = NULL,
+    includeTopNScoring = NULL,
+    outputFormat = "tibble"
   )
   ##
   expect_identical(nrow(result), 52L)
@@ -173,11 +173,11 @@ test_that("Output data frame is correct for data_combined", {
   data <- test_data_combined
   result <- peakCombiner::filterRegions(
     data = data,
-    exclude_by_blacklist = NULL,
-    include_by_chromosome_name = NULL,
-    include_above_score_cutoff = NULL,
-    include_top_n_scoring = NULL,
-    output_format = "tibble"
+    excludeByBlacklist = NULL,
+    includeByChromosomeName = NULL,
+    includeAboveScoreCutoff = NULL,
+    includeTopNScoring = NULL,
+    outputFormat = "tibble"
   )
   ##
   expect_identical(nrow(result), 10L)
@@ -189,11 +189,11 @@ test_that("Output data frame is correct for data_combined_ce", {
   data <- test_data_combined_ce
   result <- peakCombiner::filterRegions(
     data = data,
-    exclude_by_blacklist = NULL,
-    include_by_chromosome_name = NULL,
-    include_above_score_cutoff = NULL,
-    include_top_n_scoring = NULL,
-    output_format = "tibble"
+    excludeByBlacklist = NULL,
+    includeByChromosomeName = NULL,
+    includeAboveScoreCutoff = NULL,
+    includeTopNScoring = NULL,
+    outputFormat = "tibble"
   )
   ##
   expect_identical(nrow(result), 10L)

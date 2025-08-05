@@ -16,21 +16,21 @@ input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- peakCombiner::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL,
-  output_format = "tibble"
+  outputFormat = "tibble"
 )
 ##
 input_colnames <- colnames(test_data_center_expand)
 ##
 test_data_filtered <- peakCombiner:::filter_by_top_enriched(
   data = test_data_center_expand,
-  include_top_n_scoring = 10
+  includeTopNScoring = 10
 )
 ##
 result_colnames <- colnames(test_data_filtered)
@@ -44,7 +44,7 @@ table(test_data_filtered$sample_name)
 test_that("Test if function works with correct input", {
   expect_no_error(peakCombiner:::filter_by_top_enriched(
     data = test_data_center_expand,
-    include_top_n_scoring = 10
+    includeTopNScoring = 10
   ))
 })
 ##
@@ -71,28 +71,28 @@ test_that("Input data frame has the expected structure", {
 test_that("Required parameter 'filter_by_top_enriched' has expected structure", {
   expect_no_error(peakCombiner:::filter_by_top_enriched(
     data = test_data_center_expand,
-    include_top_n_scoring = NULL
+    includeTopNScoring = NULL
   ))
   expect_no_error(peakCombiner:::filter_by_top_enriched(
     data = test_data_center_expand,
-    include_top_n_scoring = 5
+    includeTopNScoring = 5
   ))
   ##
   expect_error(peakCombiner:::filter_by_top_enriched(
     data = test_data_center_expand,
-    include_top_n_scoring = 0
+    includeTopNScoring = 0
   ))
   expect_error(peakCombiner:::filter_by_top_enriched(
     data = test_data_center_expand,
-    include_top_n_scoring = NA
+    includeTopNScoring = NA
   ))
   expect_error(peakCombiner:::filter_by_top_enriched(
     data = test_data_center_expand,
-    include_top_n_scoring = "notexisting"
+    includeTopNScoring = "notexisting"
   ))
   expect_error(peakCombiner:::filter_by_top_enriched(
     data = test_data_center_expand,
-    include_top_n_scoring = c(1, 2, 3)
+    includeTopNScoring = c(1, 2, 3)
   ))
 })
 ##

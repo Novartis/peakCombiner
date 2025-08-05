@@ -8,7 +8,7 @@
 #'
 #' @details
 #' Retain overlapping genomic regions that are found in at least
-#' `found_in_samples` samples. In this way, you can remove rare or
+#' `foundInSamples` samples. In this way, you can remove rare or
 #' sample-specific regions.
 #'
 #' @inheritParams combineRegions
@@ -17,7 +17,7 @@
 #' `width`, `strand`, `revmap`, `ranking_comb_ref`, `name`, `rowname_disjoin`.
 #'
 cr_disjoin_filter <- function(data,
-                              found_in_samples) {
+                              foundInSamples) {
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
@@ -25,7 +25,7 @@ cr_disjoin_filter <- function(data,
   ##
   ## Check if expansion exists
   if (!exists("data")) {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
@@ -33,29 +33,29 @@ cr_disjoin_filter <- function(data,
     ))
   }
 
-  if (!is.numeric(found_in_samples) ||
-    is.null(found_in_samples) ||
-    is.na(found_in_samples) ||
-    length(found_in_samples) > 1) {
-    # show error message independent of parameter show_messages
+  if (!is.numeric(foundInSamples) ||
+    is.null(foundInSamples) ||
+    is.na(foundInSamples) ||
+    length(foundInSamples) > 1) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg found_in_samples} has an unaccepted value.",
-      "i" = "Argument {.arg found_in_samples} has to be a positive
+      "x" = "Argument {.arg foundInSamples} has an unaccepted value.",
+      "i" = "Argument {.arg foundInSamples} has to be a positive
       {.cls numeric} value."
     ))
   }
 
-  if (found_in_samples <= 0) {
-    # show error message independent of parameter show_messages
+  if (foundInSamples <= 0) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg found_in_samples} is {.val 0} or negative.",
-      "i" = "Argument {.arg found_in_samples} has to be positive."
+      "x" = "Argument {.arg foundInSamples} is {.val 0} or negative.",
+      "i" = "Argument {.arg foundInSamples} has to be positive."
     ))
-  } else if (found_in_samples > 0 && found_in_samples < 1) {
+  } else if (foundInSamples > 0 && foundInSamples < 1) {
     n_samples <-
       data |>
       dplyr::select(.data$sample_name) |>
@@ -63,17 +63,17 @@ cr_disjoin_filter <- function(data,
       dplyr::summarize(n = dplyr::n()) |>
       dplyr::pull(.data$n)
 
-    found_in_samples <- ceiling(n_samples * found_in_samples)
+    foundInSamples <- ceiling(n_samples * foundInSamples)
 
     # TODO: Write and informational message to user about number of samples
 
     cli::cli_inform(c(
-      ">" = "Argument {.arg found_in_samples} is between {.val 0} and {.val 1}
+      ">" = "Argument {.arg foundInSamples} is between {.val 0} and {.val 1}
       and considered to be a fraction.",
-      "i" = "Argument {.arg found_in_samples} was calulated based on the number
+      "i" = "Argument {.arg foundInSamples} was calulated based on the number
       of provided values in {.field samples_names}.",
-      "v" = "Argument {.arg found_in_samples} was set to
-      {.val {found_in_samples}}.",
+      "v" = "Argument {.arg foundInSamples} was set to
+      {.val {foundInSamples}}.",
       " " = " "
     ))
 
@@ -123,7 +123,7 @@ cr_disjoin_filter <- function(data,
 
   data_disjoin_filter <-
     data_disjoin_meta |>
-    dplyr::filter(.data$length >= found_in_samples) |>
+    dplyr::filter(.data$length >= foundInSamples) |>
     tibble::rownames_to_column() |>
     dplyr::relocate(
       "ranking_comb_ref" = "rowname",
@@ -148,7 +148,7 @@ cr_disjoin_filter <- function(data,
   ### -----------------------------------------------------------------------###
 
   cli::cli_inform(c(
-    "v" = "Disjoin and filter by {.arg found_in_samples} of genomic regions
+    "v" = "Disjoin and filter by {.arg foundInSamples} of genomic regions
     successfully finished.",
     " " = " "
   ))
@@ -204,7 +204,7 @@ cr_reduce <- function(data) {
   ### -----------------------------------------------------------------------###
   ## Check if expansion exists
   if (!exists("data")) {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
@@ -215,7 +215,7 @@ cr_reduce <- function(data) {
   if (!any(colnames(data) %in% required_colnames)) {
     missing_cols <- required_colnames[!required_colnames %in% colnames(data)]
 
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
@@ -316,7 +316,7 @@ cr_overlap_with_summits <- function(data,
   ### -----------------------------------------------------------------------###
   ## Check if expansion exists
   if (!exists("input")) {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
@@ -325,7 +325,7 @@ cr_overlap_with_summits <- function(data,
   }
 
   if (!exists("data")) {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
@@ -335,7 +335,7 @@ cr_overlap_with_summits <- function(data,
 
   if (!any(colnames(input) %in% required_colnames)) {
     missing_cols <- required_colnames[!required_colnames %in% colnames(input)]
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
@@ -439,7 +439,7 @@ cr_overlap_with_summits <- function(data,
 #'   center and expand the new set of consensus regions), we must define
 #'   the 'center', 'score', 'sample_name', and 'name' values for the new
 #'   genomic regions. We do this as follows:
-#'    + 'center' is defined by the `combined_center` parameter, which has three
+#'    + 'center' is defined by the `combinedCenter` parameter, which has three
 #'       options.
 #'          * `middle`        - the mathematical center of the new region
 #'          * `strongest`     - the 'center' of the input region that has the
@@ -450,7 +450,7 @@ cr_overlap_with_summits <- function(data,
 #'                              input regions (default)
 #'    + 'score' is the score of the genomic region from the sample whose
 #'      'center's was used, or the mean of the 'score's if `middle` was selected
-#'      for the `combined_center` parameter
+#'      for the `combinedCenter` parameter
 #'    + 'sample_name' is a concatenated string of all input sample_names
 #'
 #' In addition, the output data.frame columns `sample_name`, `name` and `score`
@@ -466,9 +466,9 @@ cr_overlap_with_summits <- function(data,
 #'
 cr_add_summit <- function(data,
                           input,
-                          combined_center = "nearest",
-                          annotate_with_input_names = FALSE,
-                          combined_sample_name = NULL) {
+                          combinedCenter = "nearest",
+                          annotateWithInputNames = FALSE,
+                          combinedSampleName = NULL) {
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
@@ -476,7 +476,7 @@ cr_add_summit <- function(data,
   ##
   center_values <- c("nearest", "strongest", "middle")
 
-  combined_center <- tolower(combined_center)
+  combinedCenter <- tolower(combinedCenter)
 
   if (!any(names(data) == "sample_name")) {
     data <- data |>
@@ -493,7 +493,7 @@ cr_add_summit <- function(data,
   ### -----------------------------------------------------------------------###
   ## Check if expansion exists
   if (!exists("input")) {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
@@ -502,7 +502,7 @@ cr_add_summit <- function(data,
   }
 
   if (!exists("data")) {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
@@ -512,110 +512,110 @@ cr_add_summit <- function(data,
 
   ### -----------------------------------------------------------------------###
 
-  if (!length(combined_center) == 1) {
-    # show error message independent of parameter show_messages
+  if (!length(combinedCenter) == 1) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg combined_center} is has a length of
-      {length(combined_center)}.",
-      ">" = "Allowed length for argument {.arg combined_center} is 1."
+      "x" = "Argument {.arg combinedCenter} is has a length of
+      {length(combinedCenter)}.",
+      ">" = "Allowed length for argument {.arg combinedCenter} is 1."
     ))
   }
 
-  if (!combined_center %in% center_values) {
-    # show error message independent of parameter show_messages
+  if (!combinedCenter %in% center_values) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg combined_center} is an unallowed value:
-      {.val {combined_center}}.",
-      ">" = "Allowed values for argument {.arg combined_center} are:
+      "x" = "Argument {.arg combinedCenter} is an unallowed value:
+      {.val {combinedCenter}}.",
+      ">" = "Allowed values for argument {.arg combinedCenter} are:
       {.val {center_values}}."
     ))
   }
 
   ### -----------------------------------------------------------------------###
-  if (!is.logical(annotate_with_input_names)) {
-    # show error message independent of parameter show_messages
+  if (!is.logical(annotateWithInputNames)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg annotate_with_input_names} has to be
+      "x" = "Argument {.arg annotateWithInputNames} has to be
     {.cls logical}.",
       "i" = "Accepted values are either {.val TRUE} or {.val FALSE}."
     ))
-  } else if (!length(annotate_with_input_names) == 1) {
-    # show error message independent of parameter show_messages
+  } else if (!length(annotateWithInputNames) == 1) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg annotate_with_input_names} has to be a single
+      "x" = "Argument {.arg annotateWithInputNames} has to be a single
     {.cls logical} value.",
       "i" = "Accepted values are either {.val TRUE} or {.val FALSE}."
     ))
-  } else if (is.na(annotate_with_input_names) ||
-    is.null(annotate_with_input_names)) {
-    # show error message independent of parameter show_messages
+  } else if (is.na(annotateWithInputNames) ||
+    is.null(annotateWithInputNames)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg annotate_with_input_names} is an unallowed value:
-      {.val {annotate_with_input_names}}.",
-      "i" = "Argument {.arg annotate_with_input_names} has to be logical.
+      "x" = "Argument {.arg annotateWithInputNames} is an unallowed value:
+      {.val {annotateWithInputNames}}.",
+      "i" = "Argument {.arg annotateWithInputNames} has to be logical.
       Accepted values are either {.val TRUE} or {.val FALSE}."
     ))
   }
 
   ### -----------------------------------------------------------------------###
 
-  if (is.data.frame(combined_sample_name) ||
-    tibble::is_tibble(combined_sample_name)) {
-    # show error message independent of parameter show_messages
+  if (is.data.frame(combinedSampleName) ||
+    tibble::is_tibble(combinedSampleName)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg combined_sample_name} is an unallowed class:
-      {.cls {class(combined_sample_name)}}.",
-      ">" = "Argument {.arg combined_sample_name} has be either
+      "x" = "Argument {.arg combinedSampleName} is an unallowed class:
+      {.cls {class(combinedSampleName)}}.",
+      ">" = "Argument {.arg combinedSampleName} has be either
       {.cls NULL} or {.cls character} value of length 1."
     ))
-  } else if (!is.null(combined_sample_name) &&
-    !is.character(combined_sample_name)) {
-    # show error message independent of parameter show_messages
+  } else if (!is.null(combinedSampleName) &&
+    !is.character(combinedSampleName)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg combined_sample_name} is an unallowed value:
-      {.val {combined_sample_name}}.",
-      ">" = "Argument {.arg combined_sample_name} has be either {.cls NULL} or
+      "x" = "Argument {.arg combinedSampleName} is an unallowed value:
+      {.val {combinedSampleName}}.",
+      ">" = "Argument {.arg combinedSampleName} has be either {.cls NULL} or
       single {.cls character} value."
     ))
-  } else if (is.character(combined_sample_name) &&
-    !length(combined_sample_name) == 1) {
-    # show error message independent of parameter show_messages
+  } else if (is.character(combinedSampleName) &&
+    !length(combinedSampleName) == 1) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg combined_sample_name} is an unallowed value with
-      length other then 1: {.val {combined_sample_name}}.",
-      ">" = "Argument {.arg combined_sample_name} has be either {.cls NULL} or
+      "x" = "Argument {.arg combinedSampleName} is an unallowed value with
+      length other then 1: {.val {combinedSampleName}}.",
+      ">" = "Argument {.arg combinedSampleName} has be either {.cls NULL} or
       single {.cls character} value."
     ))
   }
 
   ### -----------------------------------------------------------------------###
-  ## If mean of all centers is 0. combined_center has to be middle
+  ## If mean of all centers is 0. combinedCenter has to be middle
   if (mean(data$center) == 0) {
     cli::cli_inform(c(
       "!" = "Column {.field center} in input data contains only values of
       {.val 0}.",
-      ">" = "Argument {.arg combined_center} is set to {.val middle} as no
+      ">" = "Argument {.arg combinedCenter} is set to {.val middle} as no
       useful center information can be identified input data.",
       " " = " "
     ))
 
-    combined_center <- "middle"
+    combinedCenter <- "middle"
   }
 
   ### -----------------------------------------------------------------------###
@@ -630,9 +630,9 @@ cr_add_summit <- function(data,
     dplyr::mutate(peak = paste("peak", seq_len(dplyr::n()), sep = "_")) |>
     dplyr::ungroup()
 
-  if (combined_center == "nearest") {
+  if (combinedCenter == "nearest") {
     cli::cli_inform(c(
-      "i" = "Argument {.arg combined_center} was defined as {.val nearest}.",
+      "i" = "Argument {.arg combinedCenter} was defined as {.val nearest}.",
       "i" = "The mean of all input centers is calculated and the
     nearest input {.field center} is used",
       ">" = "Center information in {.field center} and {.field score} are added
@@ -650,9 +650,9 @@ cr_add_summit <- function(data,
       dplyr::sample_n(size = 1) |>
       dplyr::ungroup() |>
       dplyr::select(-"width", -"peak", -"mean_center", -"distance")
-  } else if (combined_center == "strongest") {
+  } else if (combinedCenter == "strongest") {
     cli::cli_inform(c(
-      "i" = "Argument {.arg combined_center} was defined as {.val strongest}.",
+      "i" = "Argument {.arg combinedCenter} was defined as {.val strongest}.",
       "i" = "Based on column {.field score} the strongest input {.field center}
       is idenfied.",
       ">" = "Center information in {.field center} and {.field score} are added
@@ -665,9 +665,9 @@ cr_add_summit <- function(data,
       dplyr::sample_n(size = 1) |>
       dplyr::ungroup() |>
       dplyr::select(-"width", -"peak")
-  } else if (combined_center == "middle") {
+  } else if (combinedCenter == "middle") {
     cli::cli_inform(c(
-      "i" = "Argument {.arg combined_center} was defined as {.val middle}.",
+      "i" = "Argument {.arg combinedCenter} was defined as {.val middle}.",
       "i" = "The middle between {.field start} and {.field end} and the mean
       {.field score} is calculated.",
       ">" = "Newly calculated center information are added to {.field center}
@@ -695,7 +695,7 @@ cr_add_summit <- function(data,
 
   ### -----------------------------------------------------------------------###
 
-  if (is.null(combined_sample_name)) {
+  if (is.null(combinedSampleName)) {
     cli::cli_inform(c(
       ">" = "No value for column {.field sample_name} was provided.",
       "i" = "Column {.field sample_name} is filled with all input
@@ -714,30 +714,30 @@ cr_add_summit <- function(data,
       ) |>
       dplyr::relocate("score", .after = "name") |>
       dplyr::relocate("sample_name", .after = "center")
-  } else if (is.character(combined_sample_name) &&
-    length(combined_sample_name) == 1) {
+  } else if (is.character(combinedSampleName) &&
+    length(combinedSampleName) == 1) {
     cli::cli_inform(c(
-      ">" = "The value {.val {combined_sample_name}} for column
+      ">" = "The value {.val {combinedSampleName}} for column
     {.field sample_name} was provided.",
       "i" = "Column {.field sample_name} is filled with provided value
-    {combined_sample_name}.",
+    {combinedSampleName}.",
       "i" = "Column {.field name} is created as unique identifier for each row
     containing {.field sample_name} and the row number."
     ))
 
     data_center_add_out <- data_center_add |>
       dplyr::mutate(
-        sample_name = combined_sample_name,
+        sample_name = combinedSampleName,
         name = paste(.data$sample_name, dplyr::row_number(), sep = "|")
       ) |>
       dplyr::relocate("name", .before = "score") |>
       dplyr::relocate("center", .before = "sample_name")
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      ">" = "The value '{combined_sample_name}' for column
+      ">" = "The value '{combinedSampleName}' for column
     {.field sample_name} was provided but is a non-accepted values."
     ))
   }
@@ -750,9 +750,9 @@ cr_add_summit <- function(data,
 
   ### -----------------------------------------------------------------------###
 
-  if (isTRUE(annotate_with_input_names)) {
+  if (isTRUE(annotateWithInputNames)) {
     cli::cli_inform(c(
-      "i" = "Argument {.arg annotate_with_input_names} was set to {.val TRUE}.",
+      "i" = "Argument {.arg annotateWithInputNames} was set to {.val TRUE}.",
       ">" = "Column {.field input_names} is added to output data frame."
     ))
 
@@ -792,9 +792,9 @@ cr_add_summit <- function(data,
       populated.",
       " " = " "
     ))
-  } else if (isFALSE(annotate_with_input_names)) {
+  } else if (isFALSE(annotateWithInputNames)) {
     cli::cli_inform(c(
-      "i" = "Argument {.arg annotate_with_input_names} was set to
+      "i" = "Argument {.arg annotateWithInputNames} was set to
       {.val FALSE}.",
       "v" = "Column {.field input_names} is not added to output data frame.",
       " " = " "

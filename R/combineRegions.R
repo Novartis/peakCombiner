@@ -20,7 +20,7 @@
 #'
 #' * Identify overlapping genomic regions from the input samples
 #' * Retain overlapping genomic regions that are found in at least
-#'   `found_in_samples` samples. In this way, you can remove rare or
+#'   `foundInSamples` samples. In this way, you can remove rare or
 #'   sample-specific regions
 #' * Note that overlapping genomic regions must contain at least one 'center'
 #'   from its input sample regions to be considered a valid genomic region.
@@ -28,7 +28,7 @@
 #'   center and expand the new set of consensus regions), we must define
 #'   the 'center', 'score', 'sample_name', and 'name' values for the new
 #'   genomic regions. We do this as follows:
-#'    + 'center' is defined by the `combined_center` parameter, which has three
+#'    + 'center' is defined by the `combinedCenter` parameter, which has three
 #'       options.
 #'          * `middle`        - the mathematical center of the new region
 #'          * `strongest`     - the 'center' of the input region that has the
@@ -39,8 +39,8 @@
 #'                              input regions (default)
 #'    + 'score' is the score of the genomic region from the sample whose
 #'      'center's was used, or the mean of the 'score's if `middle` was selected
-#'      for the `combined_center` parameter
-#'    + 'sample_name' can be user defined (`combined_sample_name`) or is a
+#'      for the `combinedCenter` parameter
+#'    + 'sample_name' can be user defined (`combinedSampleName`) or is a
 #'    concatenated string of all input 'sample_names' (default).
 #'    + 'name' is created by combining 'sample_name' and row number to create a
 #'    unique identifier for each newly created genomic region.
@@ -52,14 +52,14 @@
 #'                      named `chrom`, `start`, `end`, `name`,
 #'                      `score`, `strand`, `center`, `sample_name`. Additional
 #'                      columns will be dropped
-#' @param found_in_samples  Only include genomic regions that are found
-#'                            in at least `found_in_samples` **number**
-#'                            of samples. If `found_in_samples` is a fraction
+#' @param foundInSamples  Only include genomic regions that are found
+#'                            in at least `foundInSamples` **number**
+#'                            of samples. If `foundInSamples` is a fraction
 #'                            between 0 and 1, then only include genomic
 #'                            regions that ar found in at least
-#'                            `found_in_samples` **fraction** of samples.
+#'                            `foundInSamples` **fraction** of samples.
 #'                            Default value is 2.
-#' @param combined_center   Defines how the column 'center' will be
+#' @param combinedCenter   Defines how the column 'center' will be
 #'                            populated for each genomic region in the output
 #'                            data. Allowed options are
 #'          * `middle`        - the mathematical center of the new region
@@ -69,25 +69,25 @@
 #'          * `nearest`       - the 'center' of the input region that is closest
 #'                              to mean of the 'center's of all overlapping
 #'                              input regions (default)
-#' @param annotate_with_input_names TRUE / FALSE (default). If TRUE, a new
+#' @param annotateWithInputNames TRUE / FALSE (default). If TRUE, a new
 #'                                    column named 'input_names' is created
 #'                                    in the output data that is populated for
 #'                                    each combined genomic region with the
 #'                                    'name's of all contributing input regions.
 #'                                    If the column 'input_names' already
 #'                                    exists, it will be overwritten.
-#' @param combined_sample_name Optionally defines how the column 'sample_name'
+#' @param combinedSampleName Optionally defines how the column 'sample_name'
 #'                               is populated for the output data.
 #'                               If not used, then the default is to simply
 #'                               concatenate all input
 #'                               sample_names into a single comma-separated
 #'                               string
 #'            
-#' @param output_format Character value to define format of output object. 
+#' @param outputFormat Character value to define format of output object. 
 #'                      Accepted values are "GenomicRanges" (default), "tibble" 
 #'                      or "data.frame".  
 #'
-#' @param show_messages Logical value of TRUE (default) or FALSE. Defines if
+#' @param showMessages Logical value of TRUE (default) or FALSE. Defines if
 #'                      info messages are displayed or not.
 #'
 #' @return A tibble with the columns `chrom`, `start`, `end`, `name`, `score`,
@@ -109,28 +109,28 @@
 #'
 #' data_prepared <- prepareInputRegions(
 #'   data = syn_data_bed,
-#'   output_format = "tibble",
-#'   show_messages = FALSE
+#'   outputFormat = "tibble",
+#'   showMessages = FALSE
 #' )
 #'
 #' # Lets combine the input data by defining all potential option
 #' combineRegions(
 #'   data = data_prepared,
-#'   found_in_samples = 2,
-#'   combined_center = "nearest",
-#'   annotate_with_input_names = TRUE,
-#'   combined_sample_name = "consensus",
-#'   output_format = "tibble",
-#'   show_messages = TRUE
+#'   foundInSamples = 2,
+#'   combinedCenter = "nearest",
+#'   annotateWithInputNames = TRUE,
+#'   combinedSampleName = "consensus",
+#'   outputFormat = "tibble",
+#'   showMessages = TRUE
 #' )
 #'
 combineRegions <- function(data,
-                            found_in_samples = 2,
-                            combined_center = "nearest",
-                            annotate_with_input_names = FALSE,
-                            combined_sample_name = NULL,
-                            output_format = "GenomicRanges",
-                            show_messages = TRUE) {
+                            foundInSamples = 2,
+                            combinedCenter = "nearest",
+                            annotateWithInputNames = FALSE,
+                            combinedSampleName = NULL,
+                            outputFormat = "GenomicRanges",
+                            showMessages = TRUE) {
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
@@ -139,22 +139,22 @@ combineRegions <- function(data,
   ### Check if output format is valid
   ### -----------------------------------------------------------------------###
   
-  if (output_format %in% c("GenomicRanges", 
+  if (outputFormat %in% c("GenomicRanges", 
                            "GRanges", 
                            "tibble", 
                            "data.frame", 
                            "data.table")) {
     cli::cli_inform(c(
-      "i" = "Argument {.arg output_format} is set to {.val {output_format}}."
+      "i" = "Argument {.arg outputFormat} is set to {.val {outputFormat}}."
     ))
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
     
     cli::cli_abort(c(
-      "x" = "Argument {.arg output_format} has to be one of the following
+      "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
-      "i" = "Provided value is {.val {output_format}}."
+      "i" = "Provided value is {.val {outputFormat}}."
     ))
   }
   
@@ -201,7 +201,7 @@ combineRegions <- function(data,
       ">" = "Start preparing data."
     ))
   } else {
-    # show error independend of show_messages
+    # show error independend of showMessages
     options("rlib_message_verbosity" = "default")
     
     cli::cli_abort(c(
@@ -215,25 +215,25 @@ combineRegions <- function(data,
   ### Show or hide messages
   ### -----------------------------------------------------------------------###
 
-  if (!is.logical(show_messages)) {
-    # show error message independent of parameter show_messages
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg show_messages} has to be {.cls logical}."
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
     ))
-  } else if (isTRUE(show_messages)) {
+  } else if (isTRUE(showMessages)) {
     options("rlib_message_verbosity" = "default")
-  } else if (isFALSE(show_messages)) {
+  } else if (isFALSE(showMessages)) {
     options("rlib_message_verbosity" = "quiet")
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg show_messages} is a non-accepted {.cls logical}
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
       value.",
-      "i" = "Argument {.arg show_messages} is {.val {show_messages}}."
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
     ))
   }
 
@@ -249,10 +249,10 @@ combineRegions <- function(data,
   ### -----------------------------------------------------------------------###
   ### Combine peaks - Disjoin & Filter
   ### -----------------------------------------------------------------------###
-  ## 1: Do a disjoin to separate the peaks and filter based on found_in_samples
+  ## 1: Do a disjoin to separate the peaks and filter based on foundInSamples
   data_disjoin <- cr_disjoin_filter(
     data = data,
-    found_in_samples = found_in_samples
+    foundInSamples = foundInSamples
   )
 
   ### -----------------------------------------------------------------------###
@@ -279,9 +279,9 @@ combineRegions <- function(data,
   data_combined_with_summit <- cr_add_summit(
     data = data_overlap_summit,
     input = data,
-    combined_center = combined_center,
-    annotate_with_input_names = annotate_with_input_names,
-    combined_sample_name = combined_sample_name
+    combinedCenter = combinedCenter,
+    annotateWithInputNames = annotateWithInputNames,
+    combinedSampleName = combinedSampleName
   )
 
 
@@ -304,9 +304,9 @@ combineRegions <- function(data,
   ### Adjust output format
   ### -----------------------------------------------------------------------###
   
-  if (output_format %in% c("GenomicRanges", "GRanges")) {
+  if (outputFormat %in% c("GenomicRanges", "GRanges")) {
     cli::cli_inform(c(
-      "i" = "Output format is set to {.val {output_format}}.")
+      "i" = "Output format is set to {.val {outputFormat}}.")
     )
     
     data_combined_with_summit <- 
@@ -315,18 +315,18 @@ combineRegions <- function(data,
         keep.extra.columns = TRUE,
       )
     
-  } else if (output_format %in% c("tibble", "data.frame", "data.table")) {
+  } else if (outputFormat %in% c("tibble", "data.frame", "data.table")) {
     cli::cli_inform(c(
       "i" = "Output format is set to {.val tibble}."
     ))
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
     
     cli::cli_abort(c(
-      "x" = "Argument {.arg output_format} has to be one of the following
+      "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
-      "i" = "Provided value is {.val {output_format}}."
+      "i" = "Provided value is {.val {outputFormat}}."
     ))
   } 
   
@@ -334,7 +334,7 @@ combineRegions <- function(data,
   ### Set message display back to default
   ### -----------------------------------------------------------------------###
 
-  if (isFALSE(show_messages)) {
+  if (isFALSE(showMessages)) {
     options("rlib_message_verbosity" = "default")
   }
 

@@ -16,15 +16,15 @@ input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- peakCombiner::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 ##
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
-  center_by = "center_column",
-  expand_by = NULL,
-  output_format = "tibble"
+  centerBy = "center_column",
+  expandBy = NULL,
+  outputFormat = "tibble"
 )
 ##
 input_colnames <- colnames(test_data_center_expand)
@@ -33,7 +33,7 @@ keep_chromosomes <- c("chr1", "chr10", "chr42")
 ##
 test_data_filtered <- peakCombiner:::filter_by_chromosome_names(
   data = test_data_center_expand,
-  include_by_chromosome_name = keep_chromosomes
+  includeByChromosomeName = keep_chromosomes
 )
 ##
 result_colnames <- colnames(test_data_filtered)
@@ -45,7 +45,7 @@ result_colnames <- colnames(test_data_filtered)
 test_that("Test if function works with correct input", {
   expect_no_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_center_expand,
-    include_by_chromosome_name = keep_chromosomes
+    includeByChromosomeName = keep_chromosomes
   ))
 })
 ##
@@ -73,20 +73,20 @@ test_that("Required parameter 'filter_by_chromosome_names' has expected
           structure", {
   expect_no_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_filtered,
-    include_by_chromosome_name = NULL
+    includeByChromosomeName = NULL
   ))
   expect_no_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_filtered,
-    include_by_chromosome_name = "chr1"
+    includeByChromosomeName = "chr1"
   ))
   expect_no_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_filtered,
-    include_by_chromosome_name = keep_chromosomes
+    includeByChromosomeName = keep_chromosomes
   ))
   ##
   expect_error(peakCombiner:::filter_by_chromosome_names(
     data = test_data_filtered,
-    include_by_chromosome_name = NA
+    includeByChromosomeName = NA
   ))
 })
 ##

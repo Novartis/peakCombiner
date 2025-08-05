@@ -16,20 +16,20 @@ input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- peakCombiner::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 ##
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL,
-  output_format = "tibble"
+  outputFormat = "tibble"
 )
 ##
 test_data_filtered <- peakCombiner:::filter_by_chromosome_names(
   data = test_data_center_expand,
-  include_by_chromosome_name = c("chr1", "chr10", "chr42")
+  includeByChromosomeName = c("chr1", "chr10", "chr42")
 )
 ##
 input_colnames <- colnames(test_data_filtered)
@@ -42,7 +42,7 @@ backlist
 ##
 test_data_filtered_bl <- peakCombiner:::filter_by_blacklist(
   data = test_data_filtered,
-  exclude_by_blacklist = blacklist
+  excludeByBlacklist = blacklist
 )
 ##
 result_colnames <- colnames(test_data_filtered)
@@ -55,11 +55,11 @@ result_colnames <- colnames(test_data_filtered)
 test_that("Test if function works with correct input", {
   expect_no_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = blacklist
+    excludeByBlacklist = blacklist
   ))
   expect_no_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = NULL
+    excludeByBlacklist = NULL
   ))
   
 })
@@ -87,12 +87,12 @@ test_that("Input data frame has the expected structure", {
 test_that("Required parameter 'filter_by_blacklist' has expected structure", {
   expect_no_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = NULL
+    excludeByBlacklist = NULL
   ))
   ##
   expect_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = "HG38"
+    excludeByBlacklist = "HG38"
   ))
   expect_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
@@ -109,35 +109,35 @@ test_that("For 'filter_by_blacklist' providing blacklist with different
   ##
   expect_no_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = blacklist2
+    excludeByBlacklist = blacklist2
   ))
   ##
   colnames(blacklist2) <- c("seqnames", "start", "end")
   ##
   expect_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = blacklist2
+    excludeByBlacklist = blacklist2
   ))
 })
 ##
 ### -----------------------------------------------------------------------###
 ##
-test_that("Wrong input for exclude_by_blacklist for 'filter_by_blacklist'", {
+test_that("Wrong input for excludeByBlacklist for 'filter_by_blacklist'", {
   expect_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = "mm38"
+    excludeByBlacklist = "mm38"
   ))
   expect_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = hg38
+    excludeByBlacklist = hg38
   ))
   expect_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = 1
+    excludeByBlacklist = 1
   ))
   expect_error(peakCombiner:::filter_by_blacklist(
     data = test_data_filtered,
-    exclude_by_blacklist = c(1, 2)
+    excludeByBlacklist = c(1, 2)
   ))
 })
 ##

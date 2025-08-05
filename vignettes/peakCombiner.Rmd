@@ -45,7 +45,7 @@ The package `r Biocpkg("peakCombiner")` contains four main functions to curate a
 | [`filterRegions`][Filter regions]        | Allows you to filter your genomic regions.                            | See in section [Filter regions].
 | [`combineRegions`][Combine Regions]       | Combine overlapping genomic regions to create a single set of consensus genomic regions.              | See in section [Combine regions].
 
-Each `r Biocpkg("peakCombiner")` function provides the parameter `output_format` that allows you to choose the output format of the function. The accepted values are 'tibble', 'GenomicRanges', and 'data.frame'. The default value is 'tibble'. The output format is used to define the structure of the returned data, which is described in the section [Standard genomic regions format]. Additionally, the parameter `show_messages` that by default prints feedback messages as functions run. If you plan to use `r Biocpkg("peakCombiner")` non-interactively in a workflow, you can silence these messages by setting `show_messages = FALSE`. Note that error messages will still be printed to help you to troubleshoot potential problems.
+Each `r Biocpkg("peakCombiner")` function provides the parameter `outputFormat` that allows you to choose the output format of the function. The accepted values are 'tibble', 'GenomicRanges', and 'data.frame'. The default value is 'tibble'. The output format is used to define the structure of the returned data, which is described in the section [Standard genomic regions format]. Additionally, the parameter `showMessages` that by default prints feedback messages as functions run. If you plan to use `r Biocpkg("peakCombiner")` non-interactively in a workflow, you can silence these messages by setting `showMessages = FALSE`. Note that error messages will still be printed to help you to troubleshoot potential problems.
 
 ## Standard genomic regions format
 The modularity of `r Biocpkg("peakCombiner")` is enabled by standardizing how the genomic regions and samples are represented in the input and output of all its functions. We chose to use a tibble because this allows you to easily plot and explore the data. 
@@ -97,45 +97,45 @@ Here you have all the function in the recommended order with all available param
 ```{r, eval=TRUE}
 data_prepared <- prepareInputRegions(
   data = syn_data_tibble,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 data_center_expand <- centerExpandRegions(
   data = data_prepared,
-  center_by = "center_column",
-  expand_by = NULL,
+  centerBy = "center_column",
+  expandBy = NULL,
   genome = NA,
   trim_start = TRUE,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 data_filtered <- filterRegions(
   data = data_center_expand,
-  include_by_chromosome_name = NULL,
-  exclude_by_blacklist = NULL,
-  include_above_score_cutoff = NULL,
-  include_top_n_scoring = NULL, 
-  output_format = "tibble",
-  show_messages = FALSE
+  includeByChromosomeName = NULL,
+  excludeByBlacklist = NULL,
+  includeAboveScoreCutoff = NULL,
+  includeTopNScoring = NULL, 
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 consensus_peak <- combineRegions(
   data = data_filtered,
-  found_in_samples = 2,
-  combined_center = "nearest",
-  annotate_with_input_names = FALSE,
-  combined_sample_name = "my_new_sample_name",
-  output_format = "tibble",
-  show_messages = FALSE
+  foundInSamples = 2,
+  combinedCenter = "nearest",
+  annotateWithInputNames = FALSE,
+  combinedSampleName = "my_new_sample_name",
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 consensus_final <- centerExpandRegions(
   data = consensus_peak,
-  expand_by = 350,
-  output_format = "tibble",
-  show_messages = FALSE
+  expandBy = 350,
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 consensus_final
@@ -200,8 +200,8 @@ combined_input |>
 ```{r, eval=TRUE}
 prepareInputRegions(
   data = combined_input,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 ```
 
@@ -245,7 +245,7 @@ sample_sheet
     ```{r, eval = FALSE}
 prepareInputRegions(
   data = sample_sheet,
-  show_messages = FALSE
+  showMessages = FALSE
 )
     ```
 
@@ -318,8 +318,8 @@ combined_input |>
     ```{r, eval=TRUE}
 prepareInputRegions(
   data = combined_input,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
     ```
 
@@ -354,8 +354,8 @@ GenomicRanges_data
     ```{r, eval=TRUE}
 prepareInputRegions(
   data = GenomicRanges_data,
-  output_format = "GenomicRanges",
-  show_messages = FALSE
+  outputFormat = "GenomicRanges",
+  showMessages = FALSE
 )
     ```
     
@@ -387,14 +387,14 @@ And now we use it as input for `prepareInputRegions`.
 ```{r, eval=TRUE}
 prepareInputRegions(
   data = syn_data_bed,
-  output_format = "data.frame",
-  show_messages = TRUE
+  outputFormat = "data.frame",
+  showMessages = TRUE
 )
 ```
 
 Please note here that the information messages are informing you about all missing values and with which default values these columns are populated. The 'score' is set to 0 as no information can be obtained from a classical BED file about enrichment values. The column 'strand' is populated with the value '.', representing that no strand information is known. The 'center' is calculated based on the arithmetical midpoint of each region as no 'summit' input column was found. The resulting tibble can be used with all functions ([`centerExpandRegions`][Center and expand regions], [`filterRegions`][Filter regions], [`combineRegions`][Combine Regions]) of the package but certain option are limited due to the missing information in the input. 
 
-For instance, [`centerExpandRegions`][Center and expand regions] is limited to use the 'midpoint' as center as no summit information is provided (See section [Center and expand regions]). [`filterRegions`][Filter regions] the options 'include_above_score_cutoff' and 'include_top_n_scoring' do rely on values in the column 'score' to be populated with different values (See section [Filter regions]) and can not be used.
+For instance, [`centerExpandRegions`][Center and expand regions] is limited to use the 'midpoint' as center as no summit information is provided (See section [Center and expand regions]). [`filterRegions`][Filter regions] the options 'includeAboveScoreCutoff' and 'includeTopNScoring' do rely on values in the column 'score' to be populated with different values (See section [Filter regions]) and can not be used.
 
 ### Working in 1-based space
 
@@ -411,9 +411,9 @@ The quickest way to get started is to call `centerExpandRegions` using just the 
 ```{r, eval=TRUE}
 centerExpandRegions(
   data = data_prepared,
-  center_by = "center_column",
-  expand_by = NULL,
-  output_format = "tibble",
+  centerBy = "center_column",
+  expandBy = NULL,
+  outputFormat = "tibble",
   show_message = FALSE
 )
 ```
@@ -426,23 +426,23 @@ The expected input can be a GenomicRanges, tibble or data.frame as described pre
 
 + **Define the new center**
 
-    By default, `centerExpandRegions` uses the existing value in the ‘center’ column. (center_by = "center_column") which is the recommended approach.
+    By default, `centerExpandRegions` uses the existing value in the ‘center’ column. (centerBy = "center_column") which is the recommended approach.
     
-    However, you can also overwrite the existing ‘center’ value by computing the midpoint of the genomic region (center_by = "midpoint"). This makes sense to do only if you have loaded your data from a peak caller that contain summits or the location of the strongest enrichment (e.g., MACS narrowPeak), but you would rather use the midpoint.
+    However, you can also overwrite the existing ‘center’ value by computing the midpoint of the genomic region (centerBy = "midpoint"). This makes sense to do only if you have loaded your data from a peak caller that contain summits or the location of the strongest enrichment (e.g., MACS narrowPeak), but you would rather use the midpoint.
 
 + **Define the value to expand**
 
-    By default, `centerExpandRegions` (expand_by = NULL) calculates a reasonable value for you from your data by using half of the median regions length of all your inputdata to expand. You can alternatively provide a numeric value. For example, when 'expand_by' is set to 250 (expand_by = 250), this results in regions of size 500 centered around 'center' (for more details see section "[Expand from 'center']").
+    By default, `centerExpandRegions` (expandBy = NULL) calculates a reasonable value for you from your data by using half of the median regions length of all your inputdata to expand. You can alternatively provide a numeric value. For example, when 'expandBy' is set to 250 (expandBy = 250), this results in regions of size 500 centered around 'center' (for more details see section "[Expand from 'center']").
 
 + **Center & expanding the regions**
 
     ```{r, eval=TRUE}
 centerExpandRegions(
   data = data_prepared,
-  center_by = "center_column",
-  expand_by = NULL,
-  output_format = "tibble",
-  show_messages = TRUE
+  centerBy = "center_column",
+  expandBy = NULL,
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
     ```
 
@@ -455,24 +455,24 @@ centerExpandRegions(
 ```{r, eval=TRUE}
 centerExpandRegions(
   data = data_prepared,
-  center_by = "center_column",
-  expand_by = c(500),
-  output_format = "tibble",
-  show_messages = FALSE
+  centerBy = "center_column",
+  expandBy = c(500),
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 ```
 
 ```{r, eval=TRUE}
 centerExpandRegions(
   data = data_prepared,
-  center_by = "center_column",
-  expand_by = c(100, 1000),
-  output_format = "tibble",
-  show_messages = FALSE
+  centerBy = "center_column",
+  expandBy = c(100, 1000),
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 ```
 
-In all cases, the input regions are altered. If you are unsure how to define this parameter or have no prior expectations, don’t specify a value for the parameter 'expand_by' to enable its default behavior to calculate the expansion as median of the input regions from input data. 
+In all cases, the input regions are altered. If you are unsure how to define this parameter or have no prior expectations, don’t specify a value for the parameter 'expandBy' to enable its default behavior to calculate the expansion as median of the input regions from input data. 
 
 ## Explained in details
 
@@ -486,11 +486,11 @@ There are two concepts that are relevant to understand the function `centerExpan
 
 In general, there are two approaches to define a 'center' of a genomic region and the function `centerExpandRegions` allows you to decide which one to use.
 
-The first option for you is to use pre-defined summit information (e.g., obtained from a peak caller like MACS2) (center_by = center_column). Such information is provided when input regions were identified by a peak calling tool that exactly defines where in the region the maximum enriched signal is found. The second option is to calculate the arithmetic midpoint of the genomic region (center_by = midpoint). (For details see the help for `prepareInputRegions`).
+The first option for you is to use pre-defined summit information (e.g., obtained from a peak caller like MACS2) (centerBy = center_column). Such information is provided when input regions were identified by a peak calling tool that exactly defines where in the region the maximum enriched signal is found. The second option is to calculate the arithmetic midpoint of the genomic region (centerBy = midpoint). (For details see the help for `prepareInputRegions`).
 
 ### Expand from 'center'
 
-The second factor you have to think about is by how many nucleotides you want to expand from the center to re-define your genomic regions. The function `centerExpandRegions` allows you to either use the input data to calculate the expansion value or to provide one or two numeric values to expand. Your decision is strongly impacted by the type of signal you are looking for. Traditionally, ATAC-seq, transcription factor ChIP-seq and some histone marks ChIP-seq (For details see [ENCODE recommendations](https://www.encodeproject.org/chip-seq/histone/)) show a very narrow, sharp signal, and your region size and expansion value should reflect that. On the other hand, some histone marks are enriched on large domains showing broad patterns. Therefore, prior knowledge of the signal you are looking for is key to choosing the best option for this parameter. Sometimes you may not have a prior expectation of region size, so the default in  `r Biocpkg("peakCombiner")` is to choose a reasonable default value from the data (expand_by = NULL) as the median input region length / 2 for expansion. 
+The second factor you have to think about is by how many nucleotides you want to expand from the center to re-define your genomic regions. The function `centerExpandRegions` allows you to either use the input data to calculate the expansion value or to provide one or two numeric values to expand. Your decision is strongly impacted by the type of signal you are looking for. Traditionally, ATAC-seq, transcription factor ChIP-seq and some histone marks ChIP-seq (For details see [ENCODE recommendations](https://www.encodeproject.org/chip-seq/histone/)) show a very narrow, sharp signal, and your region size and expansion value should reflect that. On the other hand, some histone marks are enriched on large domains showing broad patterns. Therefore, prior knowledge of the signal you are looking for is key to choosing the best option for this parameter. Sometimes you may not have a prior expectation of region size, so the default in  `r Biocpkg("peakCombiner")` is to choose a reasonable default value from the data (expandBy = NULL) as the median input region length / 2 for expansion. 
 
 You can also choose to expand the genomic region from the new center asymmetrically, by different lengths before and after the center position (For examples see section “[Run center and expand”) by providing a vector with two values (the 'center' minus the first value defines the start and the 'center' plus the second defines the end).
 
@@ -500,15 +500,15 @@ It is theoretically possible that centering and expanding could result in coordi
 
 ### Run function mutliple times
 
-If you have chosen to run `centerExpandRegions` on your input regions, you probably also want to center and expand the consensus regions you get from [`combineRegions`][Combine Regions] so that your final consensus set of regions all have the same length and are well-aligned at their centers. When you combine genomic regions during [`combineRegions`][Combine Regions], the genomic regions are alternated. This means that the median region size could be different compared to your input data region size, if you try to let [`centerExpandRegions`][Center and expand regions] choose the default region length from the data. For that reason, we suggest that you save the values of the calculated expansion (which is printed out) for the input regions and when you run the [`centerExpandRegions`][Center and expand regions] again on the consensus file to use this value for the 'expand_by' parameter. Doing so allows you to define the consensus region length by the exact input region length and not just a subset.
+If you have chosen to run `centerExpandRegions` on your input regions, you probably also want to center and expand the consensus regions you get from [`combineRegions`][Combine Regions] so that your final consensus set of regions all have the same length and are well-aligned at their centers. When you combine genomic regions during [`combineRegions`][Combine Regions], the genomic regions are alternated. This means that the median region size could be different compared to your input data region size, if you try to let [`centerExpandRegions`][Center and expand regions] choose the default region length from the data. For that reason, we suggest that you save the values of the calculated expansion (which is printed out) for the input regions and when you run the [`centerExpandRegions`][Center and expand regions] again on the consensus file to use this value for the 'expandBy' parameter. Doing so allows you to define the consensus region length by the exact input region length and not just a subset.
 
 # Filter regions
 The next function `filterRegions` allows you to refine the genomic regions based on four different parameters in exact the order provided here:
 
 + 'include_by_chromosome'
-+ 'exclude_by_blacklist'
-+ 'include_above_score_cutoff'
-+ 'include_top_n_scoring'
++ 'excludeByBlacklist'
++ 'includeAboveScoreCutoff'
++ 'includeTopNScoring'
 
 This is an *optional* step that can help you retain the most high-quality genomic regions or reduce the overall number of genomic regions for each sample. You can apply `filterRegions` multiple times on the same data set, one after another, in order to explore the effect of each individual filtering steps.
 
@@ -527,9 +527,9 @@ backlist
 ```{r, eval=TRUE}
 data_filtered <- filterRegions(
   data = data_center_expand,
-  exclude_by_blacklist = backlist,
-  output_format = "tibble",
-  show_messages = FALSE
+  excludeByBlacklist = backlist,
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 data_filtered
@@ -539,25 +539,25 @@ data_filtered
 ## Filter genomic regions
 You can filter based on four parameters:
 
-+ `include_by_chromosome_name` - Retains only chromosomes that are in the provided vector. By not including mitochondrial, sex, or non-classical chromosomes, genomic regions found on these chromosomes can be removed. By default, this filter is not applied.
++ `includeByChromosomeName` - Retains only chromosomes that are in the provided vector. By not including mitochondrial, sex, or non-classical chromosomes, genomic regions found on these chromosomes can be removed. By default, this filter is not applied.
 
-+ `exclude_by_blacklist` - A tibble can be provided listing the genomic regions to remove (having 'chrom', 'start', and 'end' column names). By default, this filter is not applied.
++ `excludeByBlacklist` - A tibble can be provided listing the genomic regions to remove (having 'chrom', 'start', and 'end' column names). By default, this filter is not applied.
 
-+ `include_above_score_cutoff` - Single numeric value that defines the threshold above which all genomic regions will be retained based on the values in the column 'score'. The 'score' column in the `r Biocpkg("peakCombiner")` input data must be non-zero for this parameter to be useful. Recall that `prepareInputRegions` sets the ‘score’ by default if possible (e.g., it takes the value of -log10(FDR) using a 'narrowPeak' file from MACS as input). Importantly, applying this filter retains a variable number of genomic regions per sample, all having a score greater than the `include_above_score_cutoff` parameter. By default, this filter is not applied.
++ `includeAboveScoreCutoff` - Single numeric value that defines the threshold above which all genomic regions will be retained based on the values in the column 'score'. The 'score' column in the `r Biocpkg("peakCombiner")` input data must be non-zero for this parameter to be useful. Recall that `prepareInputRegions` sets the ‘score’ by default if possible (e.g., it takes the value of -log10(FDR) using a 'narrowPeak' file from MACS as input). Importantly, applying this filter retains a variable number of genomic regions per sample, all having a score greater than the `includeAboveScoreCutoff` parameter. By default, this filter is not applied.
 
-+ `include_top_n_scoring` - Single numeric value that defines how many of the top scoring genomic regions (using the column 'score') are retained. All other genomic regions are discarded. Importantly, applying this filter retains `include_top_n_scoring` regions per sample, which means that the minimum enrichment levels may vary between samples. Note that if multiple genomic regions have the same 'score' cutoff value, then all of those genomic regions are included. In this case, the number of resulting regions retained may be a bit higher than the input parameter. By default, this filter is not applied.
++ `includeTopNScoring` - Single numeric value that defines how many of the top scoring genomic regions (using the column 'score') are retained. All other genomic regions are discarded. Importantly, applying this filter retains `includeTopNScoring` regions per sample, which means that the minimum enrichment levels may vary between samples. Note that if multiple genomic regions have the same 'score' cutoff value, then all of those genomic regions are included. In this case, the number of resulting regions retained may be a bit higher than the input parameter. By default, this filter is not applied.
 
 Let’s see how what happens when all four filtering options are used at once.
 
 ```{r, eval=TRUE}
 filterRegions(
   data = data_center_expand,
-  include_by_chromosome_name = c("chr1", "chr2", "chr4"),
-  exclude_by_blacklist = backlist,
-  include_above_score_cutoff = 2.5,
-  include_top_n_scoring = 6,
-  output_format = "tibble",
-  show_messages = TRUE
+  includeByChromosomeName = c("chr1", "chr2", "chr4"),
+  excludeByBlacklist = backlist,
+  includeAboveScoreCutoff = 2.5,
+  includeTopNScoring = 6,
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 ```
 
@@ -606,17 +606,17 @@ include_chrom <- input_chrom |>
 include_chrom
     ```
 
-Finally, we can use this vector of good names in `filterRegions` for the parameter `include_by_chromosome_name`
+Finally, we can use this vector of good names in `filterRegions` for the parameter `includeByChromosomeName`
 
 ```{r, eval=TRUE}
 data_filtered_chr <- filterRegions(
   data = data_center_expand,
-  include_by_chromosome_name = include_chrom,
-  exclude_by_blacklist = NULL,
-  include_above_score_cutoff = NULL,
-  include_top_n_scoring = NULL,
-  output_format = "tibble",
-  show_messages = FALSE
+  includeByChromosomeName = include_chrom,
+  excludeByBlacklist = NULL,
+  includeAboveScoreCutoff = NULL,
+  includeTopNScoring = NULL,
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 data_filtered_chr
 ```
@@ -639,7 +639,7 @@ data_filtered_chr |>
 
 #### Remove blacklisted sites
 
-It is often recommended to exclude blacklisted genomic regions from your analyses, and the `exclude_by_blacklist`  parameter allows you to do that easily. Genomic regions that overlap a blacklisted region with at least 1 base are removed. We suggest to use blacklisted regions from ENCODE for human ([hg38](https://www.encodeproject.org/files/ENCFF356LFX/)) and mouse ([mm10](https://www.encodeproject.org/files/ENCFF547MET/)). The blacklists were manually curated by ENCODE by combing several published blacklisted regions.
+It is often recommended to exclude blacklisted genomic regions from your analyses, and the `excludeByBlacklist`  parameter allows you to do that easily. Genomic regions that overlap a blacklisted region with at least 1 base are removed. We suggest to use blacklisted regions from ENCODE for human ([hg38](https://www.encodeproject.org/files/ENCFF356LFX/)) and mouse ([mm10](https://www.encodeproject.org/files/ENCFF547MET/)). The blacklists were manually curated by ENCODE by combing several published blacklisted regions.
 
 While we recommend to use the provided ENCODE blacklists, you can alternatively provide your own blacklist as a tibble containing genomic regions with columns named 'chrom', 'start' and 'end'. In more general terms, you can use any file with genomic locations here to remove overlapping regions, for instance if you want to remove regions overlapping with promoters you can use this functions here to remove these. 
 
@@ -648,7 +648,7 @@ Additionally, other R packages as [excluderages](https://www.bioconductor.org/pa
 If you would like to remove blacklisted regions from multiple sources, you can run `filterRegions` repeatedly, for example first to remove the ENCODE blacklisted regions and then to remove your own blacklisted sites. We show how to do this below. 
 
 #### Filter for enrichment value
-Setting this parameter allows you to retain any peak that has a bigger score than the `include_above_score_cutoff` value based on the values in the column 'score'. Recall that [`prepareInputRegions`][Prepare input data] defines the 'score' by default if possible (e.g., it takes the value of -log10(FDR) using a ‘narrowPeak’ file from MACS2 as input). As scores might differ between experiments, we recommend that you look at the distribution of the values in 'score' to help you choose the best threshold value for `include_above_score_cutoff` for your data set.
+Setting this parameter allows you to retain any peak that has a bigger score than the `includeAboveScoreCutoff` value based on the values in the column 'score'. Recall that [`prepareInputRegions`][Prepare input data] defines the 'score' by default if possible (e.g., it takes the value of -log10(FDR) using a ‘narrowPeak’ file from MACS2 as input). As scores might differ between experiments, we recommend that you look at the distribution of the values in 'score' to help you choose the best threshold value for `includeAboveScoreCutoff` for your data set.
 
 Here is some code to do that on our small, synthetic dataset. The distribution you see will look different.
 
@@ -664,9 +664,9 @@ See that we have very few sites with low values. We use a cutoff of 35 to remove
 ```{r, eval=TRUE}
 data_filtered_cutoff <- filterRegions(
   data = data_center_expand,
-  include_above_score_cutoff = 35,
-  output_format = "tibble",
-  show_messages = FALSE
+  includeAboveScoreCutoff = 35,
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 ```
 
@@ -704,9 +704,9 @@ data_center_expand |>
 
 filterRegions(
   data = data_center_expand,
-  include_top_n_scoring = 8,
-  output_format = "tibble",
-  show_messages = FALSE
+  includeTopNScoring = 8,
+  outputFormat = "tibble",
+  showMessages = FALSE
 ) |>
   dplyr::group_by(sample_name) |>
   dplyr::summarize(num_regions = dplyr::n())
@@ -716,9 +716,9 @@ We requested that only the top 8 genomic regions would be retained for each samp
 # Combine regions
 After loading and preparing the regions from your samples, you can use them to build your set of consensus regions using `combineRegions`.
 
-The most important parameter that affects the final set of consensus regions is 'found_in_samples', which allows you to retain a genomic region based on how many samples it was found in (counting the unique entries in 'sample_name'). It is up to you to define this parameter based on your input data and analysis goals. The default is '2' samples, as we assume that each condition has three biological replicates and most users would like to focus on regions to be found in at lest two of these replicates. See the explained in detail section "[Define parameter to best combine regions]" for more considerations on setting this parameter.
+The most important parameter that affects the final set of consensus regions is 'foundInSamples', which allows you to retain a genomic region based on how many samples it was found in (counting the unique entries in 'sample_name'). It is up to you to define this parameter based on your input data and analysis goals. The default is '2' samples, as we assume that each condition has three biological replicates and most users would like to focus on regions to be found in at lest two of these replicates. See the explained in detail section "[Define parameter to best combine regions]" for more considerations on setting this parameter.
 
-The other parameters allow you to configure how the new consensus regions are annotated. For example, you can define how the 'center' column is populated ('combined_center') and what new 'sample_name' should be used for the new consensus regions ('combined_sample_name'). Based on the selected value for the parameter 'combined_center', the new column 'score' is filled (for details see section [Which center to select for the consensus regions?]). If you want to trace which samples and genomic regions contributed to a new consensus region, you can use 'annotate_with_input_names' to create a new column ‘input_name’ describing links to the input genomic regions.
+The other parameters allow you to configure how the new consensus regions are annotated. For example, you can define how the 'center' column is populated ('combinedCenter') and what new 'sample_name' should be used for the new consensus regions ('combinedSampleName'). Based on the selected value for the parameter 'combinedCenter', the new column 'score' is filled (for details see section [Which center to select for the consensus regions?]). If you want to trace which samples and genomic regions contributed to a new consensus region, you can use 'annotateWithInputNames' to create a new column ‘input_name’ describing links to the input genomic regions.
 
 ## Quick start
 Following is a quick example that uses default parameters.
@@ -726,34 +726,34 @@ Following is a quick example that uses default parameters.
 ```{r, eval=TRUE}
 combineRegions(
   data = data_filtered,
-  found_in_samples = 2,
-  combined_center = "nearest",
-  annotate_with_input_names = FALSE,
-  combined_sample_name = "my_new_sample_name",
-  output_format = "tibble",
+  foundInSamples = 2,
+  combinedCenter = "nearest",
+  annotateWithInputNames = FALSE,
+  combinedSampleName = "my_new_sample_name",
+  outputFormat = "tibble",
   show_message = FALSE
 )
 ```
 
 ## Run to combine regions
-We run the function `combineRegions` and give the value 'consensus' to the parameter `combined_sample_name` and we want to have the link to our input regions by setting `annotate_with_input_name` to 'TRUE'. 
+We run the function `combineRegions` and give the value 'consensus' to the parameter `combinedSampleName` and we want to have the link to our input regions by setting `annotate_with_input_name` to 'TRUE'. 
 
 In brief, a description what the specific parameter you can define do. For more details please see below section "[Define parameter to best combine regions]". 
 
-* `found_in_samples` - Defines in how many input samples a genomic site has to be found to be included into the consensus set. 
-* `combined_center` - To stay within the expected data structure of `r Biocpkg("peakCombiner")`, we add new values for 'center' and 'score' at the end of this function to make it an accepted input for [`centerExpandRegions`][Center and expand regions] and [`filterRegions`][Filter regions]. You can choose between the options 'nearest', 'strongest' or 'middle' for `combined_center`. 
-* `annotate_with_input_names` - You can define if for each consensus region the 'name' values of all contributing input regions are combined and saved in a new column 'input_names'. This allows you to link back each consensus region to the input regions.
-* `combined_sample_name` -  You can define the new value for the column 'sample_name', which is then used to create the unique 'name' column. 
+* `foundInSamples` - Defines in how many input samples a genomic site has to be found to be included into the consensus set. 
+* `combinedCenter` - To stay within the expected data structure of `r Biocpkg("peakCombiner")`, we add new values for 'center' and 'score' at the end of this function to make it an accepted input for [`centerExpandRegions`][Center and expand regions] and [`filterRegions`][Filter regions]. You can choose between the options 'nearest', 'strongest' or 'middle' for `combinedCenter`. 
+* `annotateWithInputNames` - You can define if for each consensus region the 'name' values of all contributing input regions are combined and saved in a new column 'input_names'. This allows you to link back each consensus region to the input regions.
+* `combinedSampleName` -  You can define the new value for the column 'sample_name', which is then used to create the unique 'name' column. 
 
 ```{r, eval=TRUE}
 consensus_peak_list <- combineRegions(
   data = data_filtered,
-  found_in_samples = 2,
-  combined_center = "nearest",
-  annotate_with_input_names = TRUE,
-  combined_sample_name = "consensus",
-  output_format = "tibble",
-  show_messages = TRUE
+  foundInSamples = 2,
+  combinedCenter = "nearest",
+  annotateWithInputNames = TRUE,
+  combinedSampleName = "consensus",
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 consensus_peak_list
 ```
@@ -765,7 +765,7 @@ Here we briefly describe what is happening under the hood.
 
 + **Binning and counting of each genomic input region:** 
     
-    First step is to apply the GenomicRanges function `disjoin` to split up peaks depending on the number of input samples contributing. These numbers are counted to get the coverage of each genomic region. These counts are then used for filtering using the parameter `found_in_samples`, which is defined by the user. If `found_in_samples` is a fraction between 0 and 1, then only include genomic regions that are found in at least this fraction of input samples. Default value is 2. *Please note* if `found_in_samples` is set to 1 all genomic regions covered in at least one sample are included, this makes this function to simply merge all input regions.
+    First step is to apply the GenomicRanges function `disjoin` to split up peaks depending on the number of input samples contributing. These numbers are counted to get the coverage of each genomic region. These counts are then used for filtering using the parameter `foundInSamples`, which is defined by the user. If `foundInSamples` is a fraction between 0 and 1, then only include genomic regions that are found in at least this fraction of input samples. Default value is 2. *Please note* if `foundInSamples` is set to 1 all genomic regions covered in at least one sample are included, this makes this function to simply merge all input regions.
 
 + **Recombine separated genomic regions:** 
 
@@ -786,32 +786,32 @@ Here we explain the parameters you can set for the function `combineRegions` and
 
 As described in "[Run to combine regions]", the default behavior is to retain genomic regions that overlap in at least two samples. When should you considering using a non-default value? 
 
-Setting `found_in_samples` = 1 includes every region from every sample. This is useful if you simply want a union of all peak regions regardless of how often they were found across your replicates. For example, you may already be very confident in the quality of the input genomic regions or you have previously run `r Biocpkg("peakCombiner")` on subsets of your data to get consensus regions for replicates of the same condition. 
+Setting `foundInSamples` = 1 includes every region from every sample. This is useful if you simply want a union of all peak regions regardless of how often they were found across your replicates. For example, you may already be very confident in the quality of the input genomic regions or you have previously run `r Biocpkg("peakCombiner")` on subsets of your data to get consensus regions for replicates of the same condition. 
 
-When you have many replicates per condition, you may find it helpful to increase the stringency by increasing `found_in_samples` parameter value. 
+When you have many replicates per condition, you may find it helpful to increase the stringency by increasing `foundInSamples` parameter value. 
 
-In general, as you increase `found_in_samples`, `r Biocpkg("peakCombiner")` will return fewer and smaller consensus genomic regions.
+In general, as you increase `foundInSamples`, `r Biocpkg("peakCombiner")` will return fewer and smaller consensus genomic regions.
 
 
 ```{r, eval=TRUE}
 combineRegions(
   data = data_filtered,
-  found_in_samples = 2,
-  output_format = "tibble",
-  show_messages = FALSE,
-  combined_sample_name = "found_in_samples_2_example"
+  foundInSamples = 2,
+  outputFormat = "tibble",
+  showMessages = FALSE,
+  combinedSampleName = "foundInSamples_2_example"
 )
 ```
 
-If the parameter `found_in_samples` is set to '1', this function basically merges all input regions.
+If the parameter `foundInSamples` is set to '1', this function basically merges all input regions.
 
 ```{r, eval=TRUE}
 combineRegions(
   data = data_filtered,
-  found_in_samples = 1,
-  output_format = "tibble",
-  show_messages = FALSE,
-  combined_sample_name = "found_in_samples_1_example"
+  foundInSamples = 1,
+  outputFormat = "tibble",
+  showMessages = FALSE,
+  combinedSampleName = "foundInSamples_1_example"
 )
 ```
 
@@ -826,14 +826,14 @@ Three different option are available:
 * `strongest` - the 'center' of the input region that has the the highest 'score' of all overlapping input regions. 'score' is taken from the used input center.
 * `nearest` - the 'center' of the input region that is closest to mean of the 'center's of all overlapping input regions (default). 'score' is taken from the used input center.
 
-Lets have a look at the 'center' and 'score' within the synthetic data, when setting `combined_center` to 'strongest'.
+Lets have a look at the 'center' and 'score' within the synthetic data, when setting `combinedCenter` to 'strongest'.
 
 ```{r, eval=TRUE}
 combineRegions(
   data = data_filtered,
-  combined_center = "strongest",
-  output_format = "tibble",
-  show_messages = FALSE
+  combinedCenter = "strongest",
+  outputFormat = "tibble",
+  showMessages = FALSE
 ) |> dplyr::select("center", "score")
 ```
 
@@ -842,9 +842,9 @@ Or to 'middle'.
 ```{r, eval=TRUE}
 combineRegions(
   data = data_filtered,
-  combined_center = "middle",
-  output_format = "tibble",
-  show_messages = FALSE
+  combinedCenter = "middle",
+  outputFormat = "tibble",
+  showMessages = FALSE
 ) |> dplyr::select("center", "score")
 ```
 
@@ -853,9 +853,9 @@ Or to 'nearest'.
 ```{r, eval=TRUE}
 combineRegions(
   data = data_filtered,
-  combined_center = "nearest",
-  output_format = "tibble",
-  show_messages = FALSE
+  combinedCenter = "nearest",
+  outputFormat = "tibble",
+  showMessages = FALSE
 ) |> dplyr::select("center", "score")
 ```
 

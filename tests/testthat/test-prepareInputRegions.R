@@ -17,8 +17,8 @@ samplesheet_test <- syn_data_bed
 
 test_sample_sheet <- peakCombiner::prepareInputRegions(
   data = samplesheet_test[1, ],
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 data(syn_data_tibble, package = "peakCombiner")
@@ -27,8 +27,8 @@ input_colnames <- colnames(test_data)
 
 test_data_prepared <- peakCombiner::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 restult_colnames <- colnames(test_data_prepared)
@@ -42,7 +42,7 @@ test_that("Test if output is a GenomicRanges object", {
   expect_no_error(
     peakCombiner::prepareInputRegions(
     data = test_data,
-    output_format = "GenomicRanges",
+    outputFormat = "GenomicRanges",
     ) |> inherits( "GenomicRanges")
   ) 
 })
@@ -52,16 +52,16 @@ test_that("Test if function works with correct input", {
   expect_no_error(
     tibble::is_tibble(peakCombiner::prepareInputRegions(
     data = test_data,
-    output_format = "tibble",
-    show_messages = FALSE
+    outputFormat = "tibble",
+    showMessages = FALSE
     )
   ))
 })
 test_that("Test if function works with correct input", {
   expect_error(peakCombiner::prepareInputRegions(
     data = test_data,
-    output_format = "BED",
-    show_messages = FALSE
+    outputFormat = "BED",
+    showMessages = FALSE
   ))
 })
 ### -----------------------------------------------------------------------###
@@ -71,8 +71,8 @@ test_that("Test if function works with correct input", {
 test_that("Test if function works with correct input", {
   expect_no_error(peakCombiner::prepareInputRegions(
     data = test_data,
-    output_format = "tibble",
-    show_messages = FALSE
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 
@@ -135,8 +135,8 @@ syn_sample_sheet
 test_that("Test if error when score_colname contains multiple entries", {
   expect_error(peakCombiner::prepareInputRegions(
     data = syn_sample_sheet,
-    output_format = "tibble",
-    show_messages = FALSE
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
 })
 

@@ -28,14 +28,14 @@
 #' set, allowing a user to select regions of interest using a step-wise
 #' optimization approach.
 #'
-#' * `include_by_chromosome_name` -   Retains only chromosomes that are in the
+#' * `includeByChromosomeName` -   Retains only chromosomes that are in the
 #'                                    provided vector. By not including
 #'                                    mitochondrial, sex, or non-classical
 #'                                    chromosomes, genomic regions found on
 #'                                    these chromosomes can be removed. If set
 #'                                    to 'NULL' (default), this step will be
 #'                                    skipped (optional).
-#' * `exclude_by_blacklist` -         A data frame or tibble can be provided 
+#' * `excludeByBlacklist` -         A data frame or tibble can be provided 
 #'                                    listing the genomic regions to remove 
 #'                                    (having `chrom`, `start`, and `end` column
 #'                                    names). If set to 'NULL' (default), this 
@@ -45,7 +45,7 @@
 #'                                    and blacklist, an information message is
 #'                                    displayed. This can happend und does not
 #'                                    cause any problems with the script.
-#' * `include_above_score_cutoff` -   Single numeric value that defines the
+#' * `includeAboveScoreCutoff` -   Single numeric value that defines the
 #'                                    `score` threshold above which all genomic
 #'                                    regions will be retained. The `score`
 #'                                    column in the peakCombiner input data
@@ -58,15 +58,15 @@
 #'                                    applying this filter retains a variable
 #'                                    number of genomic regions per sample, all
 #'                                    having a score greater than the
-#'                                    `include_above_score_cutoff` parameter. If
+#'                                    `includeAboveScoreCutoff` parameter. If
 #'                                    set to 'NULL' (default), this step will
 #'                                    be skipped (optional).
-#' * `include_top_n_scoring` -        Single numeric value that defines how many
+#' * `includeTopNScoring` -        Single numeric value that defines how many
 #'                                    of the top scoring genomic regions (using
 #'                                    the column `score`) are retained. All
 #'                                    other genomic regions are discarded.
 #'                                    Importantly, applying this filter retains
-#'                                    `include_top_n_scoring` regions per
+#'                                    `includeTopNScoring` regions per
 #'                                    sample, which means that the minimum
 #'                                    enrichment levels may vary between
 #'                                    samples. Note that if multiple genomic
@@ -80,32 +80,32 @@
 #'
 #' @inheritParams centerExpandRegions
 #'
-#' @param include_by_chromosome_name
+#' @param includeByChromosomeName
 #'          * 'NULL' (default) - No chromosome name filtering will be done.
 #'          * Character vector that contains chromosomes names to be retained.
 #'
-#' @param exclude_by_blacklist
+#' @param excludeByBlacklist
 #'          * 'NULL' (default) - No blacklist filtering will be done.
 #'          * Data frame or tibble with columns `chrom`, `start`, and `end`.
 #'
-#' @param include_above_score_cutoff
+#' @param includeAboveScoreCutoff
 #'          * 'NULL' (default) - No score filtering will be done.
 #'          * Single numeric value that defines the `score` threshold above
 #'            which all genomic regions will be retained. This results in
 #'            variable number of sites per sample.
 #'
-#' @param include_top_n_scoring
+#' @param includeTopNScoring
 #'          * 'NULL' (default) - No score filtering will be done.
 #'          * Single numeric value representing the number of genomic regions
 #'            per sample to be retained. The genomic regions are selected from
-#'            highest to lowest score, and if include_top_n_scoring > number of
+#'            highest to lowest score, and if includeTopNScoring > number of
 #'            regions, then no filtering is done.
 #'            
-#' @param output_format Character value to define format of output object. 
+#' @param outputFormat Character value to define format of output object. 
 #'                      Accepted values are "GenomicRanges" (default), "tibble" 
 #'                      or "data.frame".  
 #'
-#' @param show_messages Logical value of TRUE (default) or FALSE. Defines if
+#' @param showMessages Logical value of TRUE (default) or FALSE. Defines if
 #'                      info messages are displayed or not.
 #'
 #' @return A tibble with the columns `chrom`, `start`, `end`, `name`, `score`,
@@ -127,29 +127,29 @@
 #'
 #' data_prepared <- prepareInputRegions(
 #'   data = syn_data_bed,
-#'   output_format = "tibble",
-#'   show_messages = TRUE
+#'   outputFormat = "tibble",
+#'   showMessages = TRUE
 #' )
 #'
 #' # Here use options for all four filtering methods.
 #'
 #' filterRegions(
 #'   data = data_prepared,
-#'   include_by_chromosome_name = c("chr1", "chr2", "chr4"),
-#'   exclude_by_blacklist = NULL,
-#'   include_above_score_cutoff = 10,
-#'   include_top_n_scoring = 100,
-#'   output_format = "tibble",
-#'   show_messages = TRUE
+#'   includeByChromosomeName = c("chr1", "chr2", "chr4"),
+#'   excludeByBlacklist = NULL,
+#'   includeAboveScoreCutoff = 10,
+#'   includeTopNScoring = 100,
+#'   outputFormat = "tibble",
+#'   showMessages = TRUE
 #' )
 #'
 filterRegions <- function(data,
-                           include_by_chromosome_name = NULL,
-                           exclude_by_blacklist = NULL,
-                           include_above_score_cutoff = NULL,
-                           include_top_n_scoring = NULL,
-                           output_format = "GenomicRanges",
-                           show_messages = TRUE) {
+                           includeByChromosomeName = NULL,
+                           excludeByBlacklist = NULL,
+                           includeAboveScoreCutoff = NULL,
+                           includeTopNScoring = NULL,
+                           outputFormat = "GenomicRanges",
+                           showMessages = TRUE) {
   ### -----------------------------------------------------------------------###
   ### Define parameters
   ### -----------------------------------------------------------------------###
@@ -199,7 +199,7 @@ filterRegions <- function(data,
       ">" = "Start preparing data."
     ))
   } else {
-    # show error independend of show_messages
+    # show error independend of showMessages
     options("rlib_message_verbosity" = "default")
     
     cli::cli_abort(c(
@@ -212,22 +212,22 @@ filterRegions <- function(data,
   ### Check if output format is valid
   ### -----------------------------------------------------------------------###
   
-  if (output_format %in% c("GenomicRanges", 
+  if (outputFormat %in% c("GenomicRanges", 
                            "GRanges", 
                            "tibble", 
                            "data.frame", 
                            "data.table")) {
     cli::cli_inform(c(
-      "i" = "Argument {.arg output_format} is set to {.val {output_format}}."
+      "i" = "Argument {.arg outputFormat} is set to {.val {outputFormat}}."
     ))
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
     
     cli::cli_abort(c(
-      "x" = "Argument {.arg output_format} has to be one of the following
+      "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
-      "i" = "Provided value is {.val {output_format}}."
+      "i" = "Provided value is {.val {outputFormat}}."
     ))
   }
   
@@ -235,25 +235,25 @@ filterRegions <- function(data,
   ### Show or hide messages
   ### -----------------------------------------------------------------------###
 
-  if (!is.logical(show_messages)) {
-    # show error message independent of parameter show_messages
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg show_messages} has to be {.cls logical}."
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
     ))
-  } else if (isTRUE(show_messages)) {
+  } else if (isTRUE(showMessages)) {
     options("rlib_message_verbosity" = "default")
-  } else if (isFALSE(show_messages)) {
+  } else if (isFALSE(showMessages)) {
     options("rlib_message_verbosity" = "quiet")
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument {.arg show_messages} is a non-accepted {.cls logical}
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
       value.",
-      "i" = "Argument {.arg show_messages} is {.val {show_messages}}."
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
     ))
   }
 
@@ -272,7 +272,7 @@ filterRegions <- function(data,
   data_filtered <-
     filter_by_chromosome_names(
       data = data_filtered,
-      include_by_chromosome_name = include_by_chromosome_name
+      includeByChromosomeName = includeByChromosomeName
     )
 
   ### -----------------------------------------------------------------------###
@@ -282,7 +282,7 @@ filterRegions <- function(data,
   data_filtered <-
     filter_by_blacklist(
       data = data_filtered,
-      exclude_by_blacklist = exclude_by_blacklist
+      excludeByBlacklist = excludeByBlacklist
     )
 
   ### -----------------------------------------------------------------------###
@@ -292,7 +292,7 @@ filterRegions <- function(data,
   data_filtered <-
     filter_by_significance(
       data = data_filtered,
-      include_above_score_cutoff = include_above_score_cutoff
+      includeAboveScoreCutoff = includeAboveScoreCutoff
     )
 
   ### -----------------------------------------------------------------------###
@@ -302,7 +302,7 @@ filterRegions <- function(data,
   data_filtered <-
     filter_by_top_enriched(
       data = data_filtered,
-      include_top_n_scoring = include_top_n_scoring
+      includeTopNScoring = includeTopNScoring
     )
 
   ### -----------------------------------------------------------------------###
@@ -322,9 +322,9 @@ filterRegions <- function(data,
   ### Adjust output format
   ### -----------------------------------------------------------------------###
   
-  if (output_format %in% c("GenomicRanges", "GRanges")) {
+  if (outputFormat %in% c("GenomicRanges", "GRanges")) {
     cli::cli_inform(c(
-      "i" = "Output format is set to {.val {output_format}}.")
+      "i" = "Output format is set to {.val {outputFormat}}.")
     )
     
     data_filtered <- 
@@ -333,18 +333,18 @@ filterRegions <- function(data,
         keep.extra.columns = TRUE,
       )
     
-  } else if (output_format %in% c("tibble", "data.frame", "data.table")) {
+  } else if (outputFormat %in% c("tibble", "data.frame", "data.table")) {
     cli::cli_inform(c(
       "i" = "Output format is set to {.val tibble}."
     ))
   } else {
-    # show error message independent of parameter show_messages
+    # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
     
     cli::cli_abort(c(
-      "x" = "Argument {.arg output_format} has to be one of the following
+      "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
-      "i" = "Provided value is {.val {output_format}}."
+      "i" = "Provided value is {.val {outputFormat}}."
     ))
   } 
   
@@ -352,7 +352,7 @@ filterRegions <- function(data,
   ### Set message display back to default
   ### -----------------------------------------------------------------------###
 
-  if (isFALSE(show_messages)) {
+  if (isFALSE(showMessages)) {
     options("rlib_message_verbosity" = "default")
   }
 

@@ -16,14 +16,14 @@ input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- peakCombiner::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
   center_by = "center_column",
   expand_by = NULL,
-  output_format = "tibble"
+  outputFormat = "tibble"
 )
 ##
 input_colnames <- colnames(test_data_center_expand)
@@ -32,7 +32,7 @@ filter_by_significance <- 40
 ##
 test_data_filtered <- peakCombiner:::filter_by_significance(
   data = test_data_center_expand,
-  include_above_score_cutoff = filter_by_significance
+  includeAboveScoreCutoff = filter_by_significance
 )
 ##
 result_colnames <- colnames(test_data_filtered)
@@ -44,7 +44,7 @@ result_colnames <- colnames(test_data_filtered)
 test_that("Test if function works with correct input", {
   expect_no_error(peakCombiner:::filter_by_significance(
     data = test_data_center_expand,
-    include_above_score_cutoff = filter_by_significance
+    includeAboveScoreCutoff = filter_by_significance
   ))
 })
 ##
@@ -71,24 +71,24 @@ test_that("Input data frame has the expected structure", {
 test_that("Required parameter 'filter_by_significance' has expected structure", {
   expect_no_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
-    include_above_score_cutoff = NULL
+    includeAboveScoreCutoff = NULL
   ))
   expect_no_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
-    include_above_score_cutoff = 0
+    includeAboveScoreCutoff = 0
   ))
   ##
   expect_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
-    include_above_score_cutoff = NA
+    includeAboveScoreCutoff = NA
   ))
   expect_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
-    include_above_score_cutoff = "nonexisting"
+    includeAboveScoreCutoff = "nonexisting"
   ))
   expect_error(peakCombiner:::filter_by_significance(
     data = test_data_filtered,
-    include_above_score_cutoff = c(1, 2, 3)
+    includeAboveScoreCutoff = c(1, 2, 3)
   ))
   ##
 })
