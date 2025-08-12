@@ -4,11 +4,14 @@
 \alias{checkDataStructure}
 \title{Control structure of peakCombiner data structure}
 \usage{
-checkDataStructure(data)
+checkDataStructure(data, showMessages = TRUE)
 }
 \arguments{
 \item{data}{A tibble with the columns \code{chrom}, \code{start}, \code{end}, \code{name},
 \code{score}, \code{strand}, \code{center}, \code{sample_name}. Additional columns are tolerated.}
+
+\item{showMessages}{Logical value of TRUE (default) or FALSE. Defines if
+info messages are displayed or not.}
 }
 \value{
 A tibble with the columns \code{chrom}, \code{start}, \code{end}, \code{name}, \code{score},
