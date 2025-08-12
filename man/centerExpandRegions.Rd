@@ -6,12 +6,12 @@
 \usage{
 centerExpandRegions(
   data,
-  center_by = "center_column",
-  expand_by = NULL,
+  centerBy = "center_column",
+  expandBy = NULL,
   genome = NA,
   trim_start = TRUE,
-  output_format = "GenomicRanges",
-  show_messages = TRUE
+  outputFormat = "GenomicRanges",
+  showMessages = TRUE
 )
 }
 \arguments{
@@ -20,16 +20,17 @@ named \code{chrom}, \code{start}, \code{end}, \code{name},
 \code{score}, \code{strand}, \code{center}, \code{sample_name}. Additional
 columns will be maintained.}
 
-\item{center_by}{Allowed values are 'center_column' (default) or
+\item{centerBy}{Allowed values are 'center_column' (default) or
 'midpoint'.
 \itemize{
 \item 'center_column' uses the value stored in the column \code{center} to center.
 \item 'midpoint' replaces the value stored in the column \code{center} based on the
-\link[GenomicRanges:intra-range-methods]{GenomicRanges::resize} followed by the expansion from based on the user
-input.
+\code{\link[GenomicRanges:intra-range-methods]{GenomicRanges::resize()}} followed by the expansion from based on the user
+input using \code{\link[GenomicRanges:intra-range-methods]{GenomicRanges::promoters()}} to allow symmetric and asymmetic
+expansion. Note that strand information, if provided is maintained.
 }}
 
-\item{expand_by}{Allowed values a numeric vector of length 1 or 2,
+\item{expandBy}{Allowed values a numeric vector of length 1 or 2,
 or 'NULL' (default).
 \itemize{
 \item The value from the numeric vector of length 1
@@ -44,7 +45,7 @@ region. Thus, the size of the genomic regions is
 the sum of the first value + the second value
 + 1 (for the center coordinate).
 \item 'NULL' allows for data-driven definition of the
-\code{expand_by} value. It calculates the median
+\code{expandBy} value. It calculates the median
 genomic region size of the input data and uses this
 value like a length 1 numeric vector for expansion.
 }}
@@ -55,18 +56,18 @@ based on GenomicRanges supported genomes like "GRCh38",
 "GRCh38.p13", "Amel_HAv3.1", "WBcel235", "TAIR10.1",
 "hg38", "mm10", "rn6", "bosTau9", "canFam3", "musFur1",
 "galGal6","dm6", "ce11", and "sacCer3". Please see also
-help for \link[GenomeInfoDb:Seqinfo-class]{GenomeInfoDb::Seqinfo} for more details.}
+help for \code{\link[GenomeInfoDb:Seqinfo-class]{GenomeInfoDb::Seqinfo()}} for more details.}
 
 \item{trim_start}{Logical value of TRUE or FALSE (default). If TRUE, and
 no valid reference genome are provided in \code{genome},
 resulting genomic results with negative starting
 coordinates will be set to 1.}
 
-\item{output_format}{Character value to define format of output object.
+\item{outputFormat}{Character value to define format of output object.
 Accepted values are "GenomicRanges" (default), "tibble"
 or "data.frame".}
 
-\item{show_messages}{Logical value of TRUE (default) or FALSE. Defines if
+\item{showMessages}{Logical value of TRUE (default) or FALSE. Defines if
 info messages are displayed or not.}
 }
 \value{
@@ -77,12 +78,12 @@ Use as input for functions \code{\link[=filterRegions]{filterRegions()}} and
 \code{\link[=combineRegions]{combineRegions()}}.
 }
 \description{
-\link{centerExpandRegions} is an optional step that re-defines the
+\code{\link[=centerExpandRegions]{centerExpandRegions()}} is an optional step that re-defines the
 genomic regions by expanding them from their center. The center information
 has to be stored in the input data column \code{center}, while the information for
 the expansion can either be user provided or input data derived. The accepted
-input is a data frame created from \link{prepareInputRegions}.
-Please see \link{prepareInputRegions} for more details.
+input is a data frame created from \code{\link[=prepareInputRegions]{prepareInputRegions()}}.
+Please see \code{\link[=prepareInputRegions]{prepareInputRegions()}} for more details.
 }
 \details{
 This is an optional function that resizes the genomic regions based on the
@@ -112,7 +113,7 @@ center of the peak region. You can either choose to define the center by
 using pre-defined summit information (e.g., obtained from a peak caller like
 MACS2) or re-compute the arithmetic mean and save that value in the column
 \code{center}. (For details see the help for
-\link{prepareInputRegions}).
+\code{\link[=prepareInputRegions]{prepareInputRegions()}}).
 }
 
 \subsection{How much to expand from the center}{
@@ -123,7 +124,7 @@ center position).
 
 In the symmetrical case, if you want to choose the size of your genomic
 region based on the input data, this function can also calculate the median
-peak size across all of your genomic regions and use that value (\code{expand_by}
+peak size across all of your genomic regions and use that value (\code{expandBy}
 = NULL). Alternatively, the user is free to provide a numeric vector to
 define the expansion. A numeric vector with one value is used to
 symmetrically expand, while a vector with two values allows to expand
@@ -137,16 +138,16 @@ utils::data(syn_data_bed)
 # Prepare input data
 data_prepared <- prepareInputRegions(
   data = syn_data_bed,
-  output_format = "tibble",
-  show_messages = TRUE
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 # Run center and expand
 data_center_expand <- centerExpandRegions(
   data = data_prepared,
-  center_by = "center_column",
-  expand_by = NULL,
-  output_format = "tibble",
-  show_messages = TRUE
+  centerBy = "center_column",
+  expandBy = NULL,
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 
 data_center_expand
@@ -155,12 +156,13 @@ data_center_expand
 
 data_center_expand <- centerExpandRegions(
   data = data_prepared,
-  center_by = "midpoint",
-  expand_by = c(100, 600),
-  output_format = "tibble",
-  show_messages = FALSE
+  centerBy = "midpoint",
+  expandBy = c(100, 600),
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 data_center_expand
 
+Extract info about genome from GenomicRanges file
 }
