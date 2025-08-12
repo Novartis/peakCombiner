@@ -132,6 +132,32 @@ combineRegions <- function(data,
                             outputFormat = "GenomicRanges",
                             showMessages = TRUE) {
   ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
+  ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
   ##
@@ -243,38 +269,13 @@ combineRegions <- function(data,
   
   ##
   ### -----------------------------------------------------------------------###
-  ### Show or hide messages
-  ### -----------------------------------------------------------------------###
-
-  if (!is.logical(showMessages)) {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
-    ))
-  } else if (isTRUE(showMessages)) {
-    options("rlib_message_verbosity" = "default")
-  } else if (isFALSE(showMessages)) {
-    options("rlib_message_verbosity" = "quiet")
-  } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
-      value.",
-      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
-    ))
-  }
-
-  ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
   ## Check the validity of the peakCombiner input data format
 
   data <- checkDataStructure(
-    data = data
+    data = data,
+    showMessages = showMessages
   )
 
   ### -----------------------------------------------------------------------###
