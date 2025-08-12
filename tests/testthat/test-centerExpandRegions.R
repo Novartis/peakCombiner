@@ -28,24 +28,24 @@ test_data <- syn_data_bed
 ##
 test_data_prepared <- peakCombiner::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  
+  outputFormat = "tibble"
 )
 ##
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
-  center_by = "center_column",
-  output_format = "tibble",
-  expand_by = 200,
-  show_messages = FALSE
+  centerBy = "center_column",
+  outputFormat = "tibble",
+  expandBy = 200,
+  showMessages = FALSE
 )
 
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
-  center_by = "midpoint",
-  output_format = "tibble",
-  expand_by = 200,
-  show_messages = FALSE
+  centerBy = "midpoint",
+  outputFormat = "tibble",
+  genome = "hg38",
+  expandBy = 200,
+  showMessages = FALSE
 )
 
 
@@ -53,30 +53,30 @@ restult_colnames <- colnames(test_data_center_expand)
 ##
 test_data_filtered <- peakCombiner::filterRegions(
   data = test_data_center_expand,
-  exclude_by_blacklist = NULL,
-  include_by_chromosome_name = NULL,
-  include_above_score_cutoff = NULL,
-  include_top_n_scoring = NULL,
-  output_format = "tibble",
-  show_messages = FALSE
+  excludeByBlacklist = NULL,
+  includeByChromosomeName = NULL,
+  includeAboveScoreCutoff = NULL,
+  includeTopNScoring = NULL,
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 ##
 test_data_combined <- peakCombiner::combineRegions(
   data = test_data_filtered,
-  found_in_samples = 2,
-  combined_center = "nearest",
-  annotate_with_input_names = TRUE,
-  combined_sample_name = "combined",
-  output_format = "tibble",
-  show_messages = FALSE
+  foundInSamples = 2,
+  combinedCenter = "nearest",
+  annotateWithInputNames = TRUE,
+  combinedSampleName = "combined",
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 ##
 test_data_combined_ce <- peakCombiner::centerExpandRegions(
   data = test_data_combined,
-  center_by = "center_column",
-  output_format = "tibble",
-  expand_by = NULL,
-  show_messages = FALSE
+  centerBy = "center_column",
+  outputFormat = "tibble",
+  expandBy = NULL,
+  showMessages = FALSE
 )
 
 
@@ -87,72 +87,72 @@ test_data_combined_ce <- peakCombiner::centerExpandRegions(
 testthat::test_that("Test if function works with genome input", {
   testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "center_column",
-    expand_by = NULL,
-    output_format = "tibble",
+    centerBy = "center_column",
+    expandBy = NULL,
+    outputFormat = "tibble",
     genome = "hg38",
     trim_start = FALSE,
-    show_messages = FALSE
+    showMessages = FALSE
   ))
 })
 
 testthat::test_that("Test if function works with genome input & trimming", {
   testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "center_column",
-    expand_by = NULL,
-    output_format = "tibble",
+    centerBy = "center_column",
+    expandBy = NULL,
+    outputFormat = "tibble",
     genome = "hg38",
     trim_start = TRUE,
-    show_messages = FALSE
+    showMessages = FALSE
   ))
 })
 
 testthat::test_that("Test if function fails with wrong genome", {
   testthat::expect_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "center_column",
-    expand_by = NULL,
-    output_format = "tibble",
-    genome = "HG38",
+    centerBy = "center_column",
+    expandBy = NULL,
+    outputFormat = "tibble",
+    genome = "HG39",
     trim_start = TRUE,
-    show_messages = FALSE
+    showMessages = FALSE
   ))
 })
 
 testthat::test_that("Test if function fails with wrong genome", {
   testthat::expect_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "center_column",
-    expand_by = NULL,
-    output_format = "tibble",
+    centerBy = "center_column",
+    expandBy = NULL,
+    outputFormat = "tibble",
     genome = "mm38",
     trim_start = TRUE,
-    show_messages = FALSE
+    showMessages = FALSE
   ))
 })
 
 testthat::test_that("Test if function fails with wrong trim", {
   testthat::expect_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "center_column",
-    expand_by = NULL,
-    output_format = "tibble",
+    centerBy = "center_column",
+    expandBy = NULL,
+    outputFormat = "tibble",
     genome = "hg38",
     trim_start = 10,
-    show_messages = FALSE
+    showMessages = FALSE
   ))
 })
 
 testthat::test_that("Test if function fails with wrong trim", {
   testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "center_column",
-    expand_by = NULL,
-    output_format = "tibble",
+    centerBy = "center_column",
+    expandBy = NULL,
+    outputFormat = "tibble",
     genome = NA,
     trim_start = TRUE,
-    show_messages = FALSE
+    showMessages = FALSE
   ))
 })
 
@@ -164,137 +164,137 @@ testthat::test_that("Test if function fails with wrong trim", {
 testthat::test_that("Test if function works with pre-combined input", {
   testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "center_column",
-    expand_by = NULL,
+    centerBy = "center_column",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   ))
 })
 
 testthat::test_that("Test if function works with post-combined input", {
   testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = test_data_combined,
-    center_by = "center_column",
-    expand_by = NULL,
+    centerBy = "center_column",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   ))
 })
 
 ### -----------------------------------------------------------------------###
 
-test_that("Required input data has the expected structure", {
+testthat::test_that("Required input data has the expected structure", {
   data <- test_data_prepared
   
-  expect_equal(length(names(data)), 8)
-  expect_identical(names(data), input_colnames_pre)
-  expect_true(is.character(data$chrom))
-  expect_true(is.numeric(data$start))
-  expect_true(is.numeric(data$end))
-  expect_true(is.character(data$name))
-  expect_true(is.numeric(data$score))
-  expect_true(is.character(data$strand))
-  expect_true(is.numeric(data$center))
-  expect_true(is.character(data$sample_name))
-  expect_true(sum(stringr::str_detect(data$name, "|")) > 0)
+  testthat::expect_equal(length(names(data)), 8)
+  testthat::expect_identical(names(data), input_colnames_pre)
+  testthat::expect_true(is.character(data$chrom))
+  testthat::expect_true(is.numeric(data$start))
+  testthat::expect_true(is.numeric(data$end))
+  testthat::expect_true(is.character(data$name))
+  testthat::expect_true(is.numeric(data$score))
+  testthat::expect_true(is.character(data$strand))
+  testthat::expect_true(is.numeric(data$center))
+  testthat::expect_true(is.character(data$sample_name))
+  testthat::expect_true(sum(stringr::str_detect(data$name, "|")) > 0)
 })
 
-test_that("Required input data has the expected structure", {
+testthat::test_that("Required input data has the expected structure", {
   data <- test_data_combined
   
-  expect_equal(length(names(data)), 9)
-  expect_identical(names(data), input_colnames_post)
-  expect_true(is.character(data$chrom))
-  expect_true(is.numeric(data$start))
-  expect_true(is.numeric(data$end))
-  expect_true(is.character(data$name))
-  expect_true(is.numeric(data$score))
-  expect_true(is.character(data$strand))
-  expect_true(is.numeric(data$center))
-  expect_true(sum(stringr::str_detect(data$input_names, "|")) > 0)
+  testthat::expect_equal(length(names(data)), 9)
+  testthat::expect_identical(names(data), input_colnames_post)
+  testthat::expect_true(is.character(data$chrom))
+  testthat::expect_true(is.numeric(data$start))
+  testthat::expect_true(is.numeric(data$end))
+  testthat::expect_true(is.character(data$name))
+  testthat::expect_true(is.numeric(data$score))
+  testthat::expect_true(is.character(data$strand))
+  testthat::expect_true(is.numeric(data$center))
+  testthat::expect_true(sum(stringr::str_detect(data$input_names, "|")) > 0)
 })
 
 ### -----------------------------------------------------------------------###
 
-test_that("Required paramter 'center_by' has the expected structure/value", {
-  expect_no_error(peakCombiner::centerExpandRegions(
-    data = test_data_prepared,
-    center_by = "center_Column",
-    expand_by = NULL,
-    genome = NA,
-    trim_start = FALSE,
-    output_format = "tibble"
-  ))
-  expect_error(peakCombiner::centerExpandRegions(
-    data = test_data_prepared,
-    center_by = c("center_column", "calculated_value"),
-    expand_by = NULL,
-    genome = NA,
-    trim_start = FALSE,
-    output_format = "tibble"
-  ), "center_by")
-  expect_error(peakCombiner::centerExpandRegions(
-    data = test_data_prepared,
-    center_by = "nonexisting",
-    expand_by = NULL,
-    genome = NA,
-    trim_start = FALSE,
-    output_format = "tibble"
-  ), "center_by")
-  expect_error(peakCombiner::centerExpandRegions(
-    data = test_data_prepared,
-    center_by = NULL,
-    expand_by = NULL,
-    genome = NA,
-    trim_start = FALSE,
-    output_format = "tibble"
-  ), "center_by")
-  expect_error(peakCombiner::centerExpandRegions(
-    data = test_data_prepared,
-    center_by = NA,
-    expand_by = NULL,
-    genome = NA,
-    trim_start = FALSE,
-    output_format = "tibble"
-  ), "center_by")
-})
-
-### -----------------------------------------------------------------------###
-
-testthat::test_that("Required paramter expand_by has the expected structure/value", {
+testthat:: test_that("Required paramter 'centerBy' has the expected structure/value", {
   testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "center_column",
-    expand_by = NULL,
+    centerBy = "center_Column",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   ))
   testthat::expect_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "column_value",
-    expand_by = NA,
+    centerBy = c("center_column", "calculated_value"),
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
+  ), "centerBy")
+  testthat::expect_error(peakCombiner::centerExpandRegions(
+    data = test_data_prepared,
+    centerBy = "nonexisting",
+    expandBy = NULL,
+    genome = NA,
+    trim_start = FALSE,
+    outputFormat = "tibble"
+  ), "centerBy")
+  testthat::expect_error(peakCombiner::centerExpandRegions(
+    data = test_data_prepared,
+    centerBy = NULL,
+    expandBy = NULL,
+    genome = NA,
+    trim_start = FALSE,
+    outputFormat = "tibble"
+  ), "centerBy")
+  testthat::expect_error(peakCombiner::centerExpandRegions(
+    data = test_data_prepared,
+    centerBy = NA,
+    expandBy = NULL,
+    genome = NA,
+    trim_start = FALSE,
+    outputFormat = "tibble"
+  ), "centerBy")
+})
+
+### -----------------------------------------------------------------------###
+
+testthat::test_that("Required paramter expandBy has the expected structure/value", {
+  testthat::expect_no_error(peakCombiner::centerExpandRegions(
+    data = test_data_prepared,
+    centerBy = "center_column",
+    expandBy = NULL,
+    genome = NA,
+    trim_start = FALSE,
+    outputFormat = "tibble"
+  ))
+  testthat::expect_error(peakCombiner::centerExpandRegions(
+    data = test_data_prepared,
+    centerBy = "column_value",
+    expandBy = NA,
+    genome = NA,
+    trim_start = FALSE,
+    outputFormat = "tibble"
   ), )
   testthat::expect_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "column_value",
-    expand_by = c(1, 2, 3),
+    centerBy = "column_value",
+    expandBy = c(1, 2, 3),
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   ), )
   testthat::expect_error(peakCombiner::centerExpandRegions(
     data = test_data_prepared,
-    center_by = "column_value",
-    expand_by = "nonexisting",
+    centerBy = "column_value",
+    expandBy = "nonexisting",
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   ), )
 })
 
@@ -302,148 +302,195 @@ testthat::test_that("Required paramter expand_by has the expected structure/valu
 ### Test Output
 ### -----------------------------------------------------------------------###
 
-test_that("Output data frame is correct for pre-combined", {
+testthat:: test_that("Output data frame is correct for pre-combined", {
   data <- test_data_center_expand
   
-  expect_setequal(colnames(data), output_colnames_pre)
-  expect_equal(ncol(data), 8)
+  testthat::expect_setequal(colnames(data), output_colnames_pre)
+  testthat::expect_equal(ncol(data), 8)
   
-  expect_identical(class(data)[2], "tbl")
+  testthat::expect_identical(class(data)[2], "tbl")
   
-  expect_true(is.character(data$chrom))
-  expect_true(is.numeric(data$start))
-  expect_true(is.numeric(data$end))
-  expect_true(is.character(data$name))
-  expect_true(is.numeric(data$score))
-  expect_true(is.character(data$strand))
-  expect_true(is.numeric(data$center))
-  expect_true(is.character(data$sample_name))
+  testthat::expect_true(is.character(data$chrom))
+  testthat::expect_true(is.numeric(data$start))
+  testthat::expect_true(is.numeric(data$end))
+  testthat::expect_true(is.character(data$name))
+  testthat::expect_true(is.numeric(data$score))
+  testthat::expect_true(is.character(data$strand))
+  testthat::expect_true(is.numeric(data$center))
+  testthat::expect_true(is.character(data$sample_name))
   
-  expect_equal(mean(data$center), 2495.6827)
-  expect_identical(nrow(data), as.integer(52))
-  expect_identical(data$start[1], 250)
+  testthat::expect_equal(mean(data$center), 2899.32558)
+  testthat::expect_identical(nrow(data), as.integer(43))
+  testthat::expect_identical(data$start[1], 450L)
 })
 
 test_that("Output data frame is correct for post-combined", {
-  data <- test_data_combined_ce
+  data <- test_data_combined
   
-  expect_setequal(colnames(data), output_colnames_post)
-  expect_equal(ncol(data), 9)
+  testthat::expect_setequal(colnames(data), output_colnames_post)
+  testthat::expect_equal(ncol(data), 9)
   
-  expect_identical(class(data)[2], "tbl")
+  testthat::expect_identical(class(data)[2], "tbl")
   
-  expect_true(is.character(data$chrom))
-  expect_true(is.numeric(data$start))
-  expect_true(is.numeric(data$end))
-  expect_true(is.character(data$name))
-  expect_true(is.numeric(data$score))
-  expect_true(is.character(data$strand))
-  expect_true(is.numeric(data$center))
-  expect_equal(mean(data$center), 2770.00)
-  expect_identical(nrow(data), as.integer(10))
-  expect_identical(data$start[1], 350L)
-  expect_identical(data$end[1], 750)
+  testthat::expect_true(is.character(data$chrom))
+  testthat::expect_true(is.numeric(data$start))
+  testthat::expect_true(is.numeric(data$end))
+  testthat::expect_true(is.character(data$name))
+  testthat::expect_true(is.numeric(data$score))
+  testthat::expect_true(is.character(data$strand))
+  testthat::expect_true(is.numeric(data$center))
+  testthat::expect_equal(mean(data$center), 3312.9375)
+  testthat::expect_identical(nrow(data), as.integer(8))
+  testthat::expect_identical(data$start[1], 250)
+  testthat::expect_identical(data$end[1], 850)
 })
 
-test_that("Output data frame is correct for data_prepared", {
+testthat:: test_that("Output data frame is correct for data_prepared", {
   ##
   data <- test_data_prepared
   result <- peakCombiner::centerExpandRegions(
     data = data,
-    center_by = "center_column",
-    expand_by = NULL,
+    centerBy = "center_column",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   )
   ##
-  expect_no_error(peakCombiner::centerExpandRegions(
+  testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = data,
-    center_by = "center_column",
-    expand_by = NULL,
+    centerBy = "center_column",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   ))
   ##
-  expect_identical(nrow(result), 52L)
+  testthat::expect_identical(nrow(result), 52L)
 })
+
 ##
-test_that("Output data frame is correct for data_center_expand", {
+testthat:: test_that("Output data frame is correct for data_center_expand", {
   ##
   data <- test_data_center_expand
   result <- peakCombiner::centerExpandRegions(
     data = data,
-    center_by = "center_column",
-    expand_by = NULL,
+    centerBy = "center_column",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   )
   ##
-  expect_no_error(peakCombiner::centerExpandRegions(
+  testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = data,
-    center_by = "center_column",
-    expand_by = NULL,
+    centerBy = "center_column",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   ))
   ##
-  expect_identical(nrow(result), 52L)
+  testthat::expect_identical(nrow(result), 43L)
 })
 ##
-test_that("Output data frame is correct for data_filtered", {
+testthat:: test_that("Output data frame is correct for data_filtered", {
   ##
   data <- test_data_filtered
   result <- peakCombiner::centerExpandRegions(
     data = data,
-    center_by = "center_column",
-    expand_by = NULL,
+    centerBy = "center_column",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   )
   ##
-  expect_no_error(peakCombiner::centerExpandRegions(
+  testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = data,
-    center_by = "center_column",
-    expand_by = NULL,
+    centerBy = "center_column",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble"
+    outputFormat = "tibble"
   ))
   ##
-  expect_identical(nrow(result), 52L)
+  testthat::expect_identical(nrow(result), 43L)
 })
 ##
-test_that("Output data frame is correct for data_combined", {
+testthat:: test_that("Output data frame is correct for data_combined", {
   ##
   data <- test_data_combined
   result <- peakCombiner::centerExpandRegions(
     data = data,
-    center_by = "midpoint",
-    expand_by = NULL,
+    centerBy = "midpoint",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble",
-    show_messages = FALSE
+    outputFormat = "tibble",
+    showMessages = FALSE
   )
-  expect_identical(nrow(result), 10L)
+  testthat::expect_identical(nrow(result), 8L)
   
   ##
-  expect_no_error(peakCombiner::centerExpandRegions(
+  testthat::expect_no_error(peakCombiner::centerExpandRegions(
     data = data,
-    center_by = "midpoint",
-    expand_by = NULL,
+    centerBy = "midpoint",
+    expandBy = NULL,
     genome = NA,
     trim_start = FALSE,
-    output_format = "tibble",
-    show_messages = FALSE
+    outputFormat = "tibble",
+    showMessages = FALSE
   ))
   ##
 })
 ##
 ### -----------------------------------------------------------------------###
 ##
+testthat:: test_that("Check if default output is GRanges", {
+  testthat::expect_no_error(peakCombiner::centerExpandRegions(
+      data = test_data_prepared,
+      genome = "hg38",
+      showMessages = FALSE) 
+    |> inherits("GRanges")
+    )
+})
+
+testthat:: test_that("Check if genome is hg38 in output", {
+  testthat::expect_no_error(
+    testthat::expect_identical(GenomeInfoDb::genome(
+      peakCombiner::centerExpandRegions(
+    data = test_data_prepared,
+    genome = "hg38",
+    showMessages = FALSE) 
+    ) |> unique(), "hg38")
+  )
+})
+
+testthat:: test_that("Using a not supported genome", {
+  testthat::expect_error(
+   peakCombiner::centerExpandRegions(
+      data = test_data_prepared,
+      genome = "mm9",
+      showMessages = FALSE) 
+    )
+})
+
+testthat:: test_that("Using a not wrong spelling of the genome", {
+  testthat::expect_error(
+    peakCombiner::centerExpandRegions(
+      data = test_data_prepared,
+      genome = "MM10",
+      showMessages = FALSE) 
+  )
+})
+
+testthat:: test_that("Using a not wrong spelling of the genome", {
+  testthat::expect_error(
+    peakCombiner::centerExpandRegions(
+      data = test_data_prepared,
+      genome = c("mm10", "hg38"),
+      showMessages = FALSE) 
+  )
+})
 
