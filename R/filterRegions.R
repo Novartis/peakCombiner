@@ -35,15 +35,17 @@
 #'                                    these chromosomes can be removed. If set
 #'                                    to 'NULL' (default), this step will be
 #'                                    skipped (optional).
-#' * `excludeByBlacklist` -         A data frame or tibble can be provided 
-#'                                    listing the genomic regions to remove 
-#'                                    (having `chrom`, `start`, and `end` column
-#'                                    names). If set to 'NULL' (default), this 
-#'                                    step will be skipped (optional).
+#' * `excludeByBlacklist` -         A GenomicRanges file, dataframe or tibble 
+#'                                    can be provided listing the genomic 
+#'                                    regions to remove (having `chrom` (
+#'                                    `seqnames` for GenomicRanges) , `start`, 
+#'                                    and `end` column names). If set to 'NULL' 
+#'                                    (default), this step will be skipped 
+#'                                    (optional).
 #'                                    Please note that if there are not matching
 #'                                    entries in the 'chrom' columns of input
 #'                                    and blacklist, an information message is
-#'                                    displayed. This can happend und does not
+#'                                    displayed. This can happend and does not
 #'                                    cause any problems with the script.
 #' * `includeAboveScoreCutoff` -   Single numeric value that defines the
 #'                                    `score` threshold above which all genomic
@@ -86,7 +88,8 @@
 #'
 #' @param excludeByBlacklist
 #'          * 'NULL' (default) - No blacklist filtering will be done.
-#'          * Data frame or tibble with columns `chrom`, `start`, and `end`.
+#'          * GenomicRanges object (default setup) or data frame/tibble with 
+#'            columns `chrom`, `start`, and `end`.
 #'
 #' @param includeAboveScoreCutoff
 #'          * 'NULL' (default) - No score filtering will be done.
@@ -154,6 +157,34 @@ filterRegions <- function(data,
   ### Define parameters
   ### -----------------------------------------------------------------------###
   ##
+  
+  ### -----------------------------------------------------------------------###
+  ### Check if GenomicRanges object contains only one genome
+  ### -----------------------------------------------------------------------###
+  
+  if (inherits(data, "GRanges")) {
+    cli::cli_inform(c(
+      "i" = "Input data {.arg data} is a class {.cls GRanges}."
+    ))    
+    
+    #' Extract info about genome from GenomicRanges file
+    input_file_genome <- GenomeInfoDb::genome(data) |> unique()
+    
+    if (length(input_file_genome) > 1) {
+      cli::cli_abort(c(
+        "i" = "Input data {.arg data} is a class {.cls GRanges}.",
+        "x" = "Input data {.arg data} has multiple assigned genomes.
+        Input data has to have be from the same genome.",
+        "i" = "Values of assigned genomes are: {.val {input_file_genome}}."
+      ))
+    }
+    cli::cli_inform(c(
+      "i" = "Input data {.arg data} assigned genomes is 
+      {.val {input_file_genome}}."
+    ))  
+    
+  }
+  
   ##
   ## Pass data into new variable
   ### -----------------------------------------------------------------------###
@@ -171,6 +202,8 @@ filterRegions <- function(data,
       converted to class {.cls tibble}.",
       ">" = "Start converting and preparing data."
     ))
+    
+    input_seqinfo <- GenomeInfoDb::seqinfo(data)
     
     data_filtered <-
       tibble::as_tibble(data) |>
@@ -261,7 +294,7 @@ filterRegions <- function(data,
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
   ## Check the validity of the peakCombiner input data format
-  data <- check_data_structure(
+  data <- checkDataStructure(
     data = data_filtered
   )
 
@@ -270,7 +303,7 @@ filterRegions <- function(data,
   ### -----------------------------------------------------------------------###
 
   data_filtered <-
-    filter_by_chromosome_names(
+    filterByChromosomeNames(
       data = data_filtered,
       includeByChromosomeName = includeByChromosomeName
     )
@@ -280,7 +313,7 @@ filterRegions <- function(data,
   ### -----------------------------------------------------------------------###
 
   data_filtered <-
-    filter_by_blacklist(
+    filterByBlacklist(
       data = data_filtered,
       excludeByBlacklist = excludeByBlacklist
     )
@@ -290,7 +323,7 @@ filterRegions <- function(data,
   ### -----------------------------------------------------------------------###
 
   data_filtered <-
-    filter_by_significance(
+    filterBySignificance(
       data = data_filtered,
       includeAboveScoreCutoff = includeAboveScoreCutoff
     )
@@ -300,7 +333,7 @@ filterRegions <- function(data,
   ### -----------------------------------------------------------------------###
 
   data_filtered <-
-    filter_by_top_enriched(
+    filterByTopEnriched(
       data = data_filtered,
       includeTopNScoring = includeTopNScoring
     )
@@ -323,16 +356,29 @@ filterRegions <- function(data,
   ### -----------------------------------------------------------------------###
   
   if (outputFormat %in% c("GenomicRanges", "GRanges")) {
-    cli::cli_inform(c(
-      "i" = "Output format is set to {.val {outputFormat}}.")
-    )
-    
-    data_filtered <- 
-      data_filtered |>
-      GenomicRanges::makeGRangesFromDataFrame(
-        keep.extra.columns = TRUE,
+    if(exists("input_seqinfo")) {
+      cli::cli_inform(c(
+        "i" = "Output format is set to {.val {outputFormat}}.",
+        "i" = "Assigning input genome annotation to ouutput. ")
       )
-    
+      
+      data_filtered <- 
+        data_filtered |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE,
+          seqinfo = input_seqinfo
+        )
+    } else{
+      cli::cli_inform(c(
+        "i" = "Output format is set to {.val {outputFormat}}.",
+        "i" = "No input genome annotation assigned to ouutput. ")
+      )
+      data_filtered <- 
+        data_filtered |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE
+        )
+    }
   } else if (outputFormat %in% c("tibble", "data.frame", "data.table")) {
     cli::cli_inform(c(
       "i" = "Output format is set to {.val tibble}."
