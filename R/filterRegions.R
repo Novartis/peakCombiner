@@ -153,6 +153,43 @@ filterRegions <- function(data,
                            includeTopNScoring = NULL,
                            outputFormat = "GenomicRanges",
                            showMessages = TRUE) {
+  
+  
+  ### -----------------------------------------------------------------------###
+  ### Pre-Check up
+  ### -----------------------------------------------------------------------###
+  ## Check the validity of the peakCombiner input data format
+  data <- checkDataStructure(
+    data = data_filtered, 
+    showMessages = showMessages
+  )
+  
+  ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
   ### -----------------------------------------------------------------------###
   ### Define parameters
   ### -----------------------------------------------------------------------###
@@ -232,9 +269,6 @@ filterRegions <- function(data,
       ">" = "Start preparing data."
     ))
   } else {
-    # show error independend of showMessages
-    options("rlib_message_verbosity" = "default")
-    
     cli::cli_abort(c(
       "x" = "Provide input {.arg data} does not have the required format.",
       "!" = "Please check your column names in {.arg data}."
@@ -254,9 +288,6 @@ filterRegions <- function(data,
       "i" = "Argument {.arg outputFormat} is set to {.val {outputFormat}}."
     ))
   } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-    
     cli::cli_abort(c(
       "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
@@ -265,47 +296,14 @@ filterRegions <- function(data,
   }
   
   ### -----------------------------------------------------------------------###
-  ### Show or hide messages
-  ### -----------------------------------------------------------------------###
-
-  if (!is.logical(showMessages)) {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
-    ))
-  } else if (isTRUE(showMessages)) {
-    options("rlib_message_verbosity" = "default")
-  } else if (isFALSE(showMessages)) {
-    options("rlib_message_verbosity" = "quiet")
-  } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
-      value.",
-      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
-    ))
-  }
-
-  ### -----------------------------------------------------------------------###
-  ### Pre-Check up
-  ### -----------------------------------------------------------------------###
-  ## Check the validity of the peakCombiner input data format
-  data <- checkDataStructure(
-    data = data_filtered
-  )
-
-  ### -----------------------------------------------------------------------###
   ### Filter by chromosomes names
   ### -----------------------------------------------------------------------###
 
   data_filtered <-
     filterByChromosomeNames(
       data = data_filtered,
-      includeByChromosomeName = includeByChromosomeName
+      includeByChromosomeName = includeByChromosomeName,
+      showMessages = showMessages
     )
 
   ### -----------------------------------------------------------------------###
@@ -315,7 +313,8 @@ filterRegions <- function(data,
   data_filtered <-
     filterByBlacklist(
       data = data_filtered,
-      excludeByBlacklist = excludeByBlacklist
+      excludeByBlacklist = excludeByBlacklist,
+      showMessages = showMessages
     )
 
   ### -----------------------------------------------------------------------###
@@ -325,7 +324,8 @@ filterRegions <- function(data,
   data_filtered <-
     filterBySignificance(
       data = data_filtered,
-      includeAboveScoreCutoff = includeAboveScoreCutoff
+      includeAboveScoreCutoff = includeAboveScoreCutoff,
+      showMessages = showMessages
     )
 
   ### -----------------------------------------------------------------------###
@@ -335,7 +335,8 @@ filterRegions <- function(data,
   data_filtered <-
     filterByTopEnriched(
       data = data_filtered,
-      includeTopNScoring = includeTopNScoring
+      includeTopNScoring = includeTopNScoring,
+      showMessages = showMessages
     )
 
   ### -----------------------------------------------------------------------###
@@ -384,9 +385,6 @@ filterRegions <- function(data,
       "i" = "Output format is set to {.val tibble}."
     ))
   } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-    
     cli::cli_abort(c(
       "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
