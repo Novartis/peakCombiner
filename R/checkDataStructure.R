@@ -11,13 +11,43 @@
 #' @param data A tibble with the columns `chrom`, `start`, `end`, `name`,
 #' `score`, `strand`, `center`, `sample_name`. Additional columns are tolerated.
 #'
+#' @param showMessages Logical value of TRUE (default) or FALSE. Defines if
+#'                      info messages are displayed or not.
+#'                      
 #' @return A tibble with the columns `chrom`, `start`, `end`, `name`, `score`,
 #' `strand`, `center`, `sample_name`. The definitions of these columns are
 #' described in full in the Details below. Use as input for functions
 #' [peakCombiner::centerExpandRegions()], [peakCombiner::filterRegions()] and
 #' [peakCombiner::combineRegions()].
 #'
-checkDataStructure <- function(data) {
+checkDataStructure <- function(data,
+                               showMessages = TRUE) {
+  ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
   ### -----------------------------------------------------------------------###
   ### Define variables
   ### -----------------------------------------------------------------------###
@@ -247,6 +277,6 @@ checkDataStructure <- function(data) {
     "v" = "Structure of data was successfully checked to be an accepted input.",
     " " = " "
   ))
-
+ 
   return(data)
 }
