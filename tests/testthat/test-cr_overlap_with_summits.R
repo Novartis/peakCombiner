@@ -34,21 +34,21 @@ test_data_center_expand <- peakCombiner::centerExpandRegions(
 )
 test_data_filtered <- peakCombiner::filterRegions(
   data = test_data_center_expand,
-  exclude_by_blacklist = NULL,
-  include_by_chromosome_name = c("chr1", "chr10", "chr2", "chr42"),
-  include_above_score_cutoff = NULL,
-  include_top_n_scoring = NULL,
+  excludeByBlacklist = NULL,
+  includeByChromosomeName = c("chr1", "chr10", "chr2", "chr42"),
+  includeAboveScoreCutoff = NULL,
+  includeTopNScoring = NULL,
   outputFormat = "tibble"
 )
-test_data_disjoin_filter <- peakCombiner:::cr_disjoin_filter(
+test_data_disjoin_filter <- peakCombiner:::crDisjoinFilter(
   data = test_data_filtered,
-  found_in_samples = 2
+  foundInSamples = 2
 )
-test_data_reduce <- peakCombiner:::cr_reduce(
+test_data_reduce <- peakCombiner:::crReduce(
   data = test_data_disjoin_filter
 )
 ##
-test_data_overlap <- peakCombiner:::cr_overlap_with_summits(
+test_data_overlap <- peakCombiner:::crOverlapWithSummits(
   data = test_data_reduce,
   input = test_data_filtered
 )

@@ -21,14 +21,14 @@ test_data_prepared <- peakCombiner::prepareInputRegions(
 )
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
-  center_by = "center_column",
-  expand_by = NULL,
+  centerBy = "center_column",
+  expandBy = NULL,
   outputFormat = "tibble"
 )
 ##
 input_colnames <- colnames(test_data_center_expand)
 ##
-test_data_filtered <- peakCombiner:::filter_by_top_enriched(
+test_data_filtered <- peakCombiner:::filterByTopEnriched(
   data = test_data_center_expand,
   includeTopNScoring = 10
 )
@@ -42,7 +42,7 @@ table(test_data_filtered$sample_name)
 ### -----------------------------------------------------------------------###
 ##
 test_that("Test if function works with correct input", {
-  expect_no_error(peakCombiner:::filter_by_top_enriched(
+  expect_no_error(peakCombiner:::filterByTopEnriched(
     data = test_data_center_expand,
     includeTopNScoring = 10
   ))
@@ -68,29 +68,29 @@ test_that("Input data frame has the expected structure", {
 ##
 ### -----------------------------------------------------------------------###
 ##
-test_that("Required parameter 'filter_by_top_enriched' has expected structure", {
-  expect_no_error(peakCombiner:::filter_by_top_enriched(
+test_that("Required parameter 'filterByTopEnriched' has expected structure", {
+  expect_no_error(peakCombiner:::filterByTopEnriched(
     data = test_data_center_expand,
     includeTopNScoring = NULL
   ))
-  expect_no_error(peakCombiner:::filter_by_top_enriched(
+  expect_no_error(peakCombiner:::filterByTopEnriched(
     data = test_data_center_expand,
     includeTopNScoring = 5
   ))
   ##
-  expect_error(peakCombiner:::filter_by_top_enriched(
+  expect_error(peakCombiner:::filterByTopEnriched(
     data = test_data_center_expand,
     includeTopNScoring = 0
   ))
-  expect_error(peakCombiner:::filter_by_top_enriched(
+  expect_error(peakCombiner:::filterByTopEnriched(
     data = test_data_center_expand,
     includeTopNScoring = NA
   ))
-  expect_error(peakCombiner:::filter_by_top_enriched(
+  expect_error(peakCombiner:::filterByTopEnriched(
     data = test_data_center_expand,
     includeTopNScoring = "notexisting"
   ))
-  expect_error(peakCombiner:::filter_by_top_enriched(
+  expect_error(peakCombiner:::filterByTopEnriched(
     data = test_data_center_expand,
     includeTopNScoring = c(1, 2, 3)
   ))

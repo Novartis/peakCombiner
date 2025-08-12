@@ -31,18 +31,18 @@ test_data_center_expand <- peakCombiner::centerExpandRegions(
 test_data_filtered <- peakCombiner::filterRegions(
   data = test_data_center_expand,
   excludeByBlacklist = NULL,
-  includeByChromosome_name = c("chr1", "chr10", "chr2", "chr42"),
+  includeByChromosomeName = c("chr1", "chr10", "chr2", "chr42"),
   includeAboveScoreCutoff = NULL,
   includeTopNScoring = NULL,
   outputFormat = "tibble"
 )
 ##
-test_data_disjoin_filter <- peakCombiner:::cr_disjoin_filter(
+test_data_disjoin_filter <- peakCombiner:::crDisjoinFilter(
   data = test_data_filtered,
   foundInSamples = 2
 )
 ##
-test_data_reduce <- peakCombiner:::cr_reduce(
+test_data_reduce <- peakCombiner:::crReduce(
   data = test_data_disjoin_filter
 )
 ##

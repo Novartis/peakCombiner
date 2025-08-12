@@ -116,7 +116,7 @@ test_that("Output data frame is correct for data_prepared", {
   expect_no_error(peakCombiner::filterRegions(
     data = data,
     excludeByBlacklist = NULL,
-    includeByChromosomeNamey_chromosome_name = NULL,
+    includeByChromosomeName = NULL,
     includeAboveScoreCutoff = NULL,
     includeTopNScoring = NULL,
     outputFormat = "tibble"

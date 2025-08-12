@@ -28,18 +28,18 @@ test_data_prepared <- peakCombiner:::prepareInputRegions(
 
 test_data_center_expand <- peakCombiner:::centerExpandRegions(
   data = test_data_prepared,
-  center_by = "center_column",
-  expand_by = NULL,
+  centerBy = "center_column",
+  expandBy = NULL,
   outputFormat = "tibble",
   showMessages = TRUE
 )
 
 test_data_filtered <- peakCombiner:::filterRegions(
   data = test_data_center_expand,
-  include_by_chromosome_name = NULL,
-  exclude_by_blacklist = NULL,
-  include_above_score_cutoff = NULL,
-  include_top_n_scoring = NULL,
+  includeByChromosomeName = NULL,
+  excludeByBlacklist = NULL,
+  includeAboveScoreCutoff = NULL,
+  includeTopNScoring = NULL,
   outputFormat = "tibble",
   showMessages = TRUE
 )
@@ -306,7 +306,7 @@ testthat::test_that("Input data frame has the expected structure", {
 ### -----------------------------------------------------------------------###
 
 testthat::test_that("Output data has the correct classes and structure", {
-  testthat::expect_no_error(peakCombiner:::check_data_structure(test_data_combined))
+  testthat::expect_no_error(peakCombiner:::checkDataStructure(test_data_combined))
 })
 
 testthat::test_that("Output data frame has correct colnames", {

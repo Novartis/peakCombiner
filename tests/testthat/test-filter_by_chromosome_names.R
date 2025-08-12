@@ -31,7 +31,7 @@ input_colnames <- colnames(test_data_center_expand)
 ##
 keep_chromosomes <- c("chr1", "chr10", "chr42")
 ##
-test_data_filtered <- peakCombiner:::filter_by_chromosome_names(
+test_data_filtered <- peakCombiner:::filterByChromosomeNames(
   data = test_data_center_expand,
   includeByChromosomeName = keep_chromosomes
 )
@@ -43,7 +43,7 @@ result_colnames <- colnames(test_data_filtered)
 ### -----------------------------------------------------------------------###
 ##
 test_that("Test if function works with correct input", {
-  expect_no_error(peakCombiner:::filter_by_chromosome_names(
+  expect_no_error(peakCombiner:::filterByChromosomeNames(
     data = test_data_center_expand,
     includeByChromosomeName = keep_chromosomes
   ))
@@ -69,22 +69,22 @@ test_that("Input data frame has the expected structure", {
 ##
 ### -----------------------------------------------------------------------###
 ##
-test_that("Required parameter 'filter_by_chromosome_names' has expected
+test_that("Required parameter 'filterByChromosomeNames' has expected
           structure", {
-  expect_no_error(peakCombiner:::filter_by_chromosome_names(
+  expect_no_error(peakCombiner:::filterByChromosomeNames(
     data = test_data_filtered,
     includeByChromosomeName = NULL
   ))
-  expect_no_error(peakCombiner:::filter_by_chromosome_names(
+  expect_no_error(peakCombiner:::filterByChromosomeNames(
     data = test_data_filtered,
     includeByChromosomeName = "chr1"
   ))
-  expect_no_error(peakCombiner:::filter_by_chromosome_names(
+  expect_no_error(peakCombiner:::filterByChromosomeNames(
     data = test_data_filtered,
     includeByChromosomeName = keep_chromosomes
   ))
   ##
-  expect_error(peakCombiner:::filter_by_chromosome_names(
+  expect_error(peakCombiner:::filterByChromosomeNames(
     data = test_data_filtered,
     includeByChromosomeName = NA
   ))

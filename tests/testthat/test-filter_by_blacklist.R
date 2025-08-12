@@ -22,12 +22,12 @@ test_data_prepared <- peakCombiner::prepareInputRegions(
 ##
 test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
-  center_by = "center_column",
-  expand_by = NULL,
+  centerBy = "center_column",
+  expandBy = NULL,
   outputFormat = "tibble"
 )
 ##
-test_data_filtered <- peakCombiner:::filter_by_chromosome_names(
+test_data_filtered <- peakCombiner:::filterByChromosomeNames(
   data = test_data_center_expand,
   includeByChromosomeName = c("chr1", "chr10", "chr42")
 )
@@ -40,7 +40,7 @@ blacklist <- backlist <- tibble::tibble(chrom = c("chr1"),
 backlist
 
 ##
-test_data_filtered_bl <- peakCombiner:::filter_by_blacklist(
+test_data_filtered_bl <- peakCombiner:::filterByBlacklist(
   data = test_data_filtered,
   excludeByBlacklist = blacklist
 )
@@ -53,11 +53,11 @@ result_colnames <- colnames(test_data_filtered)
 ##
 ##
 test_that("Test if function works with correct input", {
-  expect_no_error(peakCombiner:::filter_by_blacklist(
+  expect_no_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = blacklist
   ))
-  expect_no_error(peakCombiner:::filter_by_blacklist(
+  expect_no_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = NULL
   ))
@@ -84,37 +84,55 @@ test_that("Input data frame has the expected structure", {
 ##
 ### -----------------------------------------------------------------------###
 ##
-test_that("Required parameter 'filter_by_blacklist' has expected structure", {
-  expect_no_error(peakCombiner:::filter_by_blacklist(
+test_that("Required parameter 'filterByBlacklist' has expected structure", {
+  expect_no_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = NULL
   ))
   ##
-  expect_error(peakCombiner:::filter_by_blacklist(
+  expect_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = "HG38"
   ))
-  expect_error(peakCombiner:::filter_by_blacklist(
+  expect_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
-    filter_by_blacklist = blacklist[1:2]
+    excludeByBlacklist = blacklist[1:2]
   ))
 })
 ##
+test_that("Required parameter 'filterByBlacklist' is GRanges object", {
+  blacklist_gr <- blacklist |>
+    GenomicRanges::makeGRangesFromDataFrame(
+      keep.extra.columns = TRUE, 
+    ) 
+  expect_no_error(peakCombiner:::filterByBlacklist(
+    data = test_data_filtered,
+    excludeByBlacklist = blacklist_gr
+  ))
+  expect_no_error(peakCombiner:::filterByBlacklist(
+    data = test_data_filtered,
+    excludeByBlacklist = blacklist
+  ))
+})
+
+
+
+##
 ### -----------------------------------------------------------------------###
 ##
-test_that("For 'filter_by_blacklist' providing blacklist with different
+test_that("For 'filterByBlacklist' providing blacklist with different
           names", {
   blacklist2 <- blacklist
   colnames(blacklist2) <- c("CHROM", "start", "end")
   ##
-  expect_no_error(peakCombiner:::filter_by_blacklist(
+  expect_no_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = blacklist2
   ))
   ##
   colnames(blacklist2) <- c("seqnames", "start", "end")
   ##
-  expect_error(peakCombiner:::filter_by_blacklist(
+  expect_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = blacklist2
   ))
@@ -122,20 +140,20 @@ test_that("For 'filter_by_blacklist' providing blacklist with different
 ##
 ### -----------------------------------------------------------------------###
 ##
-test_that("Wrong input for excludeByBlacklist for 'filter_by_blacklist'", {
-  expect_error(peakCombiner:::filter_by_blacklist(
+test_that("Wrong input for excludeByBlacklist for 'filterByBlacklist'", {
+  expect_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = "mm38"
   ))
-  expect_error(peakCombiner:::filter_by_blacklist(
+  expect_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = hg38
   ))
-  expect_error(peakCombiner:::filter_by_blacklist(
+  expect_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = 1
   ))
-  expect_error(peakCombiner:::filter_by_blacklist(
+  expect_error(peakCombiner:::filterByBlacklist(
     data = test_data_filtered,
     excludeByBlacklist = c(1, 2)
   ))

@@ -18,8 +18,8 @@ input_colnames <- colnames(test_data)
 ##
 test_data_prepared <- peakCombiner::prepareInputRegions(
   data = test_data,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 ##
 ### -----------------------------------------------------------------------###
@@ -27,9 +27,9 @@ test_data_prepared <- peakCombiner::prepareInputRegions(
 ### -----------------------------------------------------------------------###
 ##
 test_that("Test if function works with correct input", {
-  expect_no_error(peakCombiner:::define_expansion(
+  expect_no_error(peakCombiner:::defineExpansion(
     data = test_data,
-    expand_by = NULL
+    expandBy = NULL
   ))
 })
 ##
@@ -71,31 +71,31 @@ test_that("Required colnumn names has the expected structure", {
 test_that("Required paramter 'expand_by' has the expected structure", {
   expect_error(define_expansion(
     data = test_data,
-    expand_by = NuLL
+    expandBy = NuLL
   ))
   expect_error(define_expansion(
     data = test_data,
-    expand_by = "NULL"
+    expandBy = "NULL"
   ))
   expect_error(define_expansion(
     data = test_data,
-    expand_by = 0
+    expandBy = 0
   ))
   expect_error(define_expansion(
     data = test_data,
-    expand_by = NA
+    expandBy = NA
   ))
   expect_error(define_expansion(
     data = test_data,
-    expand_by = c(1, NA)
+    expandBy = c(1, NA)
   ))
   expect_error(define_expansion(
     data = test_data,
-    expand_by = c(1, "unexpected")
+    expandBy = c(1, "unexpected")
   ))
   expect_error(define_expansion(
     data = test_data,
-    expand_by = c(1, 2, 3)
+    expandBy = c(1, 2, 3)
   ))
 })
 ##
