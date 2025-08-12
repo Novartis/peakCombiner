@@ -14,7 +14,35 @@
 #' @noRd
 #'
 filterByChromosomeNames <- function(data,
-                                       includeByChromosomeName = NULL) {
+                                    includeByChromosomeName = NULL,
+                                    showMessages = FALSE) {
+  
+  ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
@@ -139,6 +167,14 @@ filterByChromosomeNames <- function(data,
 
     rm(not_retained_chr_names)
   }
+  
+  ### -----------------------------------------------------------------------###
+  ### Set message display back to default
+  ### -----------------------------------------------------------------------###
+  
+  if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  }
 
   return(data)
 }
@@ -161,7 +197,35 @@ filterByChromosomeNames <- function(data,
 #' @noRd
 #'
 filterByBlacklist <- function(data,
-                                excludeByBlacklist = NULL) {
+                              excludeByBlacklist = NULL,
+                              showMessages = FALSE) {
+  
+  ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
   ### -----------------------------------------------------------------------###
   ### Define parameters
   ### -----------------------------------------------------------------------###
@@ -297,7 +361,6 @@ filterByBlacklist <- function(data,
     ))
   }
   rm(not_found_blacklist, not_found_input)
-
   
   if (inherits(excludeByBlacklist, "GRanges")) {
     cli::cli_inform(c(
@@ -352,7 +415,13 @@ filterByBlacklist <- function(data,
     "v" = "Input data was filtered by blacklist.",
     " " = " "
   ))
-
+  ### -----------------------------------------------------------------------###
+  ### Set message display back to default
+  ### -----------------------------------------------------------------------###
+  
+  if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  }
 
   ### -----------------------------------------------------------------------###
   ### Return data frame
@@ -383,7 +452,35 @@ filterByBlacklist <- function(data,
 #' @noRd
 #'
 filterBySignificance <- function(data,
-                                   includeAboveScoreCutoff = NULL) {
+                                 includeAboveScoreCutoff = NULL,
+                                 showMessages = FALSE) {
+  
+  ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
   ##
   if (is.null(includeAboveScoreCutoff)) {
     cli::cli_inform(c(
@@ -430,7 +527,15 @@ filterBySignificance <- function(data,
         {.cls {class(includeAboveScoreCutoff)}}"
     ))
   }
-
+  
+  ### -----------------------------------------------------------------------###
+  ### Set message display back to default
+  ### -----------------------------------------------------------------------###
+  
+  if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  }
+  
   ### -----------------------------------------------------------------------###
   ### Return data
   ### -----------------------------------------------------------------------###
@@ -463,8 +568,36 @@ filterBySignificance <- function(data,
 #'
 filterByTopEnriched <- 
   function(data,
-           includeTopNScoring = includeTopNScoring) {
-  ##
+           includeTopNScoring = includeTopNScoring,
+           showMessages = FALSE) {
+  
+  ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
+    ##
   ##
   if (is.null(includeTopNScoring)) {
     cli::cli_inform(c(
@@ -527,6 +660,14 @@ filterByTopEnriched <-
         '{.par {includeTopNScoring}}'.",
       "i" = "Allowed values are NULL or single numeric value greater 1."
     ))
+  }
+    
+  ### -----------------------------------------------------------------------###
+  ### Set message display back to default
+  ### -----------------------------------------------------------------------###
+
+  if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
   }
 
   ### -----------------------------------------------------------------------###
