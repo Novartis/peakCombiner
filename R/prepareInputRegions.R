@@ -87,8 +87,12 @@
 #' be annotated within the sqme genomic regions (defined by `chrom`, `start`
 #' and `end`). To avoid mutliple entries, this script is checking the input for
 #' multiple summits within the same regions and maintains only the strongest
-#' enriched (based on the values in the column `score`). This step is mantory
-#' to quaranty an optimal result.
+#' enriched (based on the values in the column `score`). This step is mandatory
+#' to guaranty an optimal result.
+#' 
+#' An additional option is to provide already here a genome (details see below) 
+#' and maintain this information for the function 
+#' [peakCombiner::centerExpandRegions()].
 #'
 #'
 #' @param data  Data frame or GRanges object with the input data. Several
@@ -98,6 +102,22 @@
 #'   sample, or
 #' * in memory GRanges object listing the peaks themselves that are found in
 #'   each sample.
+#'
+#' @param genome      Character value to define the matching genome reference to 
+#'                      the input data. Default value is NA. Allows values are 
+#'                      based on GenomicRanges supported genomes like "GRCh38", 
+#'                      "GRCh38.p13", "Amel_HAv3.1", "WBcel235", "TAIR10.1", 
+#'                      "hg38", "mm10", "rn6", "bosTau9", "canFam3", "musFur1", 
+#'                      "galGal6","dm6", "ce11", and "sacCer3". Please see also
+#'                      help for [GenomeInfoDb::Seqinfo()] for more details. 
+#'
+#' @param starsAreBased Either 0, 1 (Default), or NA. Define if the provided 
+#'                        input data is 0 or 1-based. Only, if paramter is NA 
+#'                        then GenomicRanges object, tibbles and dataframes are
+#'                        considered 1-based, while data loaded from a
+#'                        sample_sheet is considered 0-based (expected to load a
+#'                        BED file). 
+#'
 #'
 #' @param outputFormat Character value to define format of output object. 
 #'                      Accepted values are "GenomicRanges" (default), "tibble" 
@@ -149,6 +169,8 @@
 prepareInputRegions <- function(
     data, 
     outputFormat = "GenomicRanges",
+    genome = NA, 
+    starsAreBased = 1, 
     showMessages = TRUE
     ) {
   ### -----------------------------------------------------------------------###
@@ -190,6 +212,33 @@ prepareInputRegions <- function(
   }
   
   ### -----------------------------------------------------------------------###
+  ### Check if GenomicRanges object contains only one genome
+  ### -----------------------------------------------------------------------###
+  
+  if (inherits(data, "GRanges")) {
+    cli::cli_inform(c(
+      "i" = "Input data {.arg data} is a class {.cls GRanges}."
+    ))    
+    
+    #' Extract info about genome from GenomicRanges file
+    input_file_genome <- GenomeInfoDb::genome(data) |> unique()
+    
+    if (length(input_file_genome) > 1) {
+      cli::cli_abort(c(
+        "i" = "Input data {.arg data} is a class {.cls GRanges}.",
+        "x" = "Input data {.arg data} has multiple assigned genomes.
+        Input data has to have be from the same genome.",
+        "i" = "Values of assigned genomes are: {.val {input_file_genome}}."
+      ))
+    }
+    cli::cli_inform(c(
+      "i" = "Input data {.arg data} assigned genomes is 
+      {.val {input_file_genome}}."
+    ))  
+    
+  }
+  
+  ### -----------------------------------------------------------------------###
   ### Check if output format is valid
   ### -----------------------------------------------------------------------###
   
@@ -211,6 +260,70 @@ prepareInputRegions <- function(
       "i" = "Provided value is {.val {outputFormat}}."
     ))
   }
+  
+  ### -----------------------------------------------------------------------###
+  ### Check if input is 0 or 1 based
+  ### -----------------------------------------------------------------------###
+  
+  if(!is.na(starsAreBased) & !is.numeric(starsAreBased)) {
+    cli::cli_abort(c(
+      "x" = "Argument {.arg starsAreBased} has to be either numeric {.val 0}, 
+      numeric {.num 1} or {.val NA}}.",
+      "i" = "Argument {.arg starsAreBased} is {.val {starsAreBased}}."
+    ))
+  }
+  
+  if(is.na(starsAreBased)) {
+    cli::cli_inform(c(
+      "i" = "Argument {.arg starsAreBased} is {.val {starsAreBased}}."
+    ))
+    
+    if (all(required_samplesheet_colnames %in% colnames(data))) {
+      cli::cli_inform(c(
+        "i" = "Provide input {.arg data} is a {.cls data.frame} with three or four
+      columns and paths to existing files.",
+        "i" = "Data is considered to be 0-based."
+      ))
+      starts.in.df.are.0based <- TRUE
+      
+    } else {
+      cli::cli_inform(c(
+        "i" = "Provide input {.arg data} is a {.cls GRanges}, 
+        {.cls data.frame}, or {.cls tibble}.",
+        "i" = "Data is considered to be 1-based."
+      ))
+      starts.in.df.are.0based <- FALSE
+      
+    }
+    
+  } else if (starsAreBased %in% c(0,1)) {
+    cli::cli_inform(c(
+      "i" = "Argument {.arg starsAreBased} is {.val {starsAreBased}}."
+    ))
+    
+    #' Define parameter for make GenomicRanges object
+    if (starsAreBased == 1) {
+      starts.in.df.are.0based <- FALSE
+      cli::cli_inform(c(
+        "i" = "Argument {.arg starts.in.df.are.0based} is 
+        {.val {starts.in.df.are.0based}}."
+      ))
+    } else if (starsAreBased == 0) {
+      starts.in.df.are.0based <- TRUE
+      cli::cli_inform(c(
+        "i" = "Argument {.arg starts.in.df.are.0based} is 
+        {.val {starts.in.df.are.0based}}."
+      ))
+    }
+    
+  } else {
+    cli::cli_abort(c(
+      "x" = "Argument {.arg starsAreBased} has to be either {.val 0}, {.val 1} 
+      or {.val NA}}.",
+      "i" = "Argument {.arg starsAreBased} is {.val {starsAreBased}}."
+    ))
+  }
+  
   
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
@@ -246,7 +359,9 @@ prepareInputRegions <- function(
       converted to class {.cls tibble}.",
       ">" = "Start converting and preparing data."
     ))
-
+    
+    input_seqinfo <- GenomeInfoDb::seqinfo(data)
+    
     data_prepared <-
       tibble::as_tibble(data) |>
       dplyr::rename(chrom = .data$seqnames) |>
@@ -264,12 +379,24 @@ prepareInputRegions <- function(
     ))
 
     data_prepared <-
-      load_input_regions(
+      loadInputRegions(
         data = data
       )
   } else if (all(required_colnames %in% colnames(data))) {
-    data_prepared <- data
-
+    
+    #if (!is.na(starsAreBased) | starsAreBased == 2) {
+    #  cli::cli_inform(c(
+    #    "i" = "Provide input {.arg data} is a tibble and the parameter 
+    #    {.arg starsAreBased} was set to {.var 0} by user.",
+    #    ">" = "Converting input to 1-based."
+    #  ))
+    #  data_prepared <- data |>
+    #    dplyr::mutate(start = start + 1)
+    #  
+    #} else {
+      data_prepared <- data
+    #}
+    
     cli::cli_inform(c(
       "i" = "Provide input {.arg data} is a pre-loaded {.cls data.frame}  with
       the required column names.",
@@ -421,7 +548,7 @@ prepareInputRegions <- function(
   ### -----------------------------------------------------------------------###
   ## Check for NAs in data - REPLACE WITH FUNCTION; MOVE AFTER THE MODIFING
 
-  data_prepared <- check_data_structure(
+  data_prepared <- checkDataStructure(
     data = data_prepared
   )
 
@@ -429,7 +556,7 @@ prepareInputRegions <- function(
   ### Collapse duplicated regions within each sample to unique coordinates
   ### -----------------------------------------------------------------------###
 
-  data_prepared <- collapse_summits(
+  data_prepared <- collapseSummits(
     data = data_prepared
   ) |> dplyr::arrange(.data$sample_name, .data$chrom, .data$start, .data$end)
 
@@ -454,20 +581,50 @@ prepareInputRegions <- function(
   ### -----------------------------------------------------------------------###
   
   if (outputFormat %in% c("GenomicRanges", "GRanges")) {
-    cli::cli_inform(c(
-      "i" = "Output format is set to {.val {outputFormat}}.")
+    if(exists("input_seqinfo")) {
+      cli::cli_inform(c(
+        "i" = "Output format is set to {.val {outputFormat}}.",
+        "i" = "Assigning input genome annotation to ouutput. ")
       )
-    
-    data_prepared <- 
-      data_prepared |>
-      GenomicRanges::makeGRangesFromDataFrame(
-        keep.extra.columns = TRUE,
+      
+      data_prepared <- 
+        data_prepared |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE,
+          seqinfo = input_seqinfo,
+          starts.in.df.are.0based = starts.in.df.are.0based
+        )
+    } else{
+      cli::cli_inform(c(
+        "i" = "Output format is set to {.val {outputFormat}}.",
+        "i" = "No input genome annotation assigned to ouutput. ")
       )
-    
+      data_prepared <- 
+        data_prepared |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE,
+          starts.in.df.are.0based = starts.in.df.are.0based)
+    }
+        
   } else if (outputFormat %in% c("tibble", "data.frame", "data.table")) {
     cli::cli_inform(c(
       "i" = "Output format is set to {.val tibble}."
     ))
+    
+    if (inherits(data, "GRanges")) {
+      data_prepared <- data_prepared
+    } else if (inherits(data, "tbl_df") || inherits(data, "data.frame")) {
+      
+      if (starsAreBased %in% c(1)) {
+        data_prepared <- data_prepared
+        
+      } else if (starsAreBased %in% c(0, NA)) {
+        data_prepared <- data_prepared |>
+          dplyr::mutate(start = start + 1)
+        }
+      
+    }
+ 
     } else {
     # show error message independent of parameter showMessages
     options("rlib_message_verbosity" = "default")
