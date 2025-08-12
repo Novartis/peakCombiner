@@ -20,7 +20,7 @@ Authors@R: c(person("Markus", "Muckenhuber",
                 comment = c(ORCID = "0000-0001-7081-2598")),
              person("Novartis Biomedical Research", 
                 role = c("cph")))
-Depends: R (>= 4.3.0)
+Depends: R (>= 4.5.0)
 License: MIT + file LICENSE
 LazyData: FALSE
 biocViews:
@@ -44,7 +44,8 @@ Suggests:
     BiocStyle,
     BiocManager,
     usethis,
-    utils
+    utils,
+    AnnotationHub
 Imports: 
     tidyr,
     dplyr (>= 1.1.2),
