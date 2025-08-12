@@ -62,7 +62,8 @@
 #' * 'center_column' uses the value stored in the column `center` to center.
 #' * 'midpoint' replaces the value stored in the column `center` based on the 
 #' [GenomicRanges::resize()] followed by the expansion from based on the user 
-#' input.
+#' input using [GenomicRanges::promoters()] to allow symmetric and asymmetic 
+#' expansion. Note that strand information, if provided is maintained.
 #'
 #' @param expandBy   Allowed values a numeric vector of length 1 or 2,
 #'                      or 'NULL' (default).
@@ -158,7 +159,7 @@ centerExpandRegions <- function(data,
   ### -----------------------------------------------------------------------###
   ### Allowed genomes from GenomicRanges
   ### -----------------------------------------------------------------------###
-  
+
   gr_genome_seqinfo <- c("GRCh38", 
                          "GRCh38.p13", 
                          "Amel_HAv3.1", 
@@ -177,19 +178,45 @@ centerExpandRegions <- function(data,
   
   column_order <- colnames(data)
   
-  if(is.na(genome)) {
-    cli::cli_inform(c(
-      "i" = "Argument {.arg outputFormat} is set to NA"
-    ))
-  } else if(genome %in% gr_genome_seqinfo) {
-    cli::cli_inform(c(
-      "i" = "Argument {.arg outputFormat} is set to {.val {genome}}."
-    ))
-  } else {
+  ### -----------------------------------------------------------------------###
+  ### Prepare parameters
+  ### -----------------------------------------------------------------------###
+  center_values <- c("center_column", "midpoint")
+  
+  ## Check parameter value correctness and calculate if needed
+  expansion_value <- defineExpansion(
+    data = data,
+    expandBy = expandBy
+  )
+  
+  ## Calculate the values to expand the regions
+  length_expansion_value <- length(expansion_value)
+  expand_1 <- expansion_value[1]
+  expand_2 <- expansion_value[length_expansion_value]
+  
+  ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
     cli::cli_abort(c(
-      "x" = "Argument {.arg genome} has to be one of the following
-      values: {.val {gr_genome_seqinfo}}.",
-      "i" = "Provided value is {.val {genome}}."
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
     ))
   }
   
@@ -198,10 +225,10 @@ centerExpandRegions <- function(data,
   ### -----------------------------------------------------------------------###
   
   if (outputFormat %in% c("GenomicRanges", 
-                           "GRanges", 
-                           "tibble", 
-                           "data.frame", 
-                           "data.table")) {
+                          "GRanges", 
+                          "tibble", 
+                          "data.frame", 
+                          "data.table")) {
     cli::cli_inform(c(
       "i" = "Argument {.arg outputFormat} is set to {.val {outputFormat}}."
     ))
@@ -217,6 +244,84 @@ centerExpandRegions <- function(data,
   }
   
   ### -----------------------------------------------------------------------###
+  ### Check if GenomicRanges object contains only one genome
+  ### -----------------------------------------------------------------------###
+  
+  if (inherits(data, "GRanges")) {
+    cli::cli_inform(c(
+      "i" = "Input data {.arg data} is a class {.cls GRanges}."
+    ))    
+    
+    #' Extract info about genome from GenomicRanges file
+    input_file_genome <- GenomeInfoDb::genome(data) |> unique()
+    
+    if (length(input_file_genome) > 1) {
+      cli::cli_abort(c(
+        "i" = "Input data {.arg data} is a class {.cls GRanges}.",
+        "x" = "Input data {.arg data} has multiple assigned genomes.
+        Input data has to have be from the same genome.",
+        "i" = "Values of assigned genomes are: {.val {input_file_genome}}."
+      ))
+    }
+    cli::cli_inform(c(
+      "i" = "Input data {.arg data} assigned genomes is 
+      {.val {input_file_genome}}."
+    ))  
+    
+  } else {
+    cli::cli_inform(c(
+      "i" = "Input data {.arg data} has no assigned genome."
+    ))  
+    input_file_genome <- NA
+  }
+  
+  
+  if (!is.na(input_file_genome) & is.na(genome)) {
+    cli::cli_inform(c(
+    "i" = "Input data {.arg data} assigned genome ({.val {input_file_genome}})
+    is used for trimming."
+    ))
+    
+    genome_used <- input_file_genome
+      
+    } else if (!is.na(input_file_genome) & genome %in% gr_genome_seqinfo){
+      cli::cli_inform(c(
+        "!" = "Input data {.arg data} assigned genome 
+      ({.val {input_file_genome}}) is replaced by provided {.arg genome}.",
+        "i" = "Argument {.arg genome} set to {.val {genome}} is used."
+      ))
+      
+      genome_used <- genome
+      
+    } else if (is.na(input_file_genome) & genome %in% gr_genome_seqinfo) {
+      cli::cli_inform(c(
+        "!" = "Input data {.arg data} has no assigned genome 
+      ({.val {input_file_genome}}).",
+        "i" = "Argument {.arg genome} set to {.val {genome}} is used."
+      ))
+      
+      genome_used <- genome
+      
+    } else if (is.na(input_file_genome) & is.na(genome)) {
+      cli::cli_inform(c(
+        "!" = "Input data {.arg data} has no assigned genome 
+      ({.val {input_file_genome}}).",
+        "i" = "Argument {.arg genome} set to {.val {genome}}.",
+        "i" = "Only start will be trimmed."
+      ))
+      
+      genome_used <- NA
+      
+    } else {
+      cli::cli_abort(c(
+        "x" = "Argument {.arg genome} has to be one of the following
+      values: {.val {gr_genome_seqinfo}}.",
+        "i" = "Provided value is {.val {genome}}."
+      ))
+    }
+    
+  
+  ### -----------------------------------------------------------------------###
   ### Figure out what kind of input data was entered by the user and
   ### load the initial data for follow-up quality checks
   ### -----------------------------------------------------------------------###
@@ -227,12 +332,13 @@ centerExpandRegions <- function(data,
   
   if (inherits(data, "GRanges")) {
     cli::cli_inform(c(
-      "!" = "Provided input {.arg data} is a class {.cls GRanges} and will be
-      converted to class {.cls tibble}.",
+      "!" = "Provided input {.arg data} is a class {.cls GRanges}.",
       ">" = "Start converting and preparing data."
     ))
     
-    data_filtered <-
+    input_seqinfo <- GenomeInfoDb::seqinfo(data)
+    
+    data <-
       tibble::as_tibble(data) |>
       dplyr::rename(chrom = "seqnames") |>
       dplyr::mutate(
@@ -241,6 +347,7 @@ centerExpandRegions <- function(data,
         strand = as.character(.data$strand)
       ) |>
       dplyr::mutate(strand = ifelse(.data$strand == "*", ".", .data$strand))
+    
   } else if (all(required_colnames %in% colnames(data))) {
     cli::cli_inform(c(
       "i" = "Provide input {.arg data} is a {.cls data.frame} with three or four
@@ -248,16 +355,6 @@ centerExpandRegions <- function(data,
       ">" = "Start loading and preparing data."
     ))
     
-    data_filtered <- data
-    
-  } else if (all(required_colnames %in% colnames(data))) {
-    data_filtered <- data
-    
-    cli::cli_inform(c(
-      "i" = "Provide input {.arg data} is a pre-loaded {.cls data.frame}  with
-      the required column names.",
-      ">" = "Start preparing data."
-    ))
   } else {
     # show error independend of showMessages
     options("rlib_message_verbosity" = "default")
@@ -284,48 +381,7 @@ centerExpandRegions <- function(data,
       "i" = "Argument {.arg trim_start} is {.val {trim_start}}."
     ))
   }
-  ### -----------------------------------------------------------------------###
-  ### Show or hide messages
-  ### -----------------------------------------------------------------------###
-
-  if (!is.logical(showMessages)) {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
-    ))
-  } else if (isTRUE(showMessages)) {
-    options("rlib_message_verbosity" = "default")
-  } else if (isFALSE(showMessages)) {
-    options("rlib_message_verbosity" = "quiet")
-  } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
-      value.",
-      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
-    ))
-  }
-
-  ### -----------------------------------------------------------------------###
-  ### Prepare parameters
-  ### -----------------------------------------------------------------------###
-  center_values <- c("center_column", "midpoint")
-
-  ## Check parameter value correctness and calculate if needed
-  expansion_value <- define_expansion(
-    data = data,
-    expandBy = expandBy
-  )
-
-  ## Calculate the values to expand the regions
-  length_expansion_value <- length(expansion_value)
-  expand_1 <- expansion_value[1]
-  expand_2 <- expansion_value[length_expansion_value]
-
+ 
   ### -----------------------------------------------------------------------###
   ### Check input parameters
   ### -----------------------------------------------------------------------###
@@ -372,17 +428,13 @@ centerExpandRegions <- function(data,
 
   ## Check the validity of the peakCombiner input data format
 
-  data <- check_data_structure(
+  data <- checkDataStructure(
     data = data
   )
 
   ### -----------------------------------------------------------------------###
   ### Center and expand
   ### -----------------------------------------------------------------------###
-
-  cli::cli_inform(c(
-    ">" = "Genomic regions will be centered and expanded."
-  ))
   
   if (centerBy == "center_column") {
     
@@ -390,27 +442,27 @@ centerExpandRegions <- function(data,
       ">" = "Starting with expanding genomic regions from the column 
       {.field center}."
     ))
-
-    if(!is.na(genome)) {
-      
-      cli::cli_inform(c(
-        ">" = "Using {.field genome} {.val {genome}} to assign genome."
-      ))
-      
+    
+  cli::cli_inform(c(
+    ">" = "Genomic regions will be centered and expanded.",
+    "i" = "Used {.field genome} for trimming is {.val {genome_used}}."
+  ))
+  
+  if(!is.na(genome_used)) {
       # Use provided genome
-      gr_genome <- GenomeInfoDb::Seqinfo(genome = genome)
+      gr_genome <- GenomeInfoDb::Seqinfo(genome = genome_used)
       gr_seqlevels <- GenomeInfoDb::seqlevels(gr_genome)
       
       # Filter not matching chromsomes
       data_filtered <- data |>
         dplyr::filter(.data$chrom %in% gr_seqlevels)
       
-      # Convert to GRanges
       data_gr <- data_filtered |>
         dplyr::mutate(center = round(.data$center, 0),
                       start = .data$center,
                       end = .data$center + 1)
       
+      # Convert to GRanges
       gr_resized <- data_gr |>
         GenomicRanges::makeGRangesFromDataFrame(
         keep.extra.columns = TRUE,
@@ -427,15 +479,11 @@ centerExpandRegions <- function(data,
         suppressWarnings()
 
     } else {
-      cli::cli_inform(c(
-        ">" = "Option {.field genome} is empty, so no genome is assigned."
-      ))
-      
       # Convert to GRanges
       data_gr <- data |>
         dplyr::mutate(center = round(.data$center, 0),
                       start = .data$center,
-                      end = .data$center + 1) 
+                      end = .data$center) 
       
       gr_resized <- data_gr |>
         GenomicRanges:: makeGRangesFromDataFrame(
@@ -483,7 +531,10 @@ centerExpandRegions <- function(data,
         )
         
         # Expand with reference genome and trimming
-        gr_resized <- GenomicRanges::resize(data_gr, width = 2, fix = "center")
+        gr_resized <- GenomicRanges::resize(data_gr, 
+                                            width = 2, 
+                                            fix = "center",
+                                            ignore.strand=FALSE)
         
         data_center_expand <- GenomicRanges::trim(
           GenomicRanges::promoters(gr_resized, 
@@ -517,11 +568,10 @@ centerExpandRegions <- function(data,
     }
   
   # Convert back to tibble
-  data_center_expand <- dplyr::as_tibble(as.data.frame(data_center_expand)) |>
-    dplyr::select(-"width") |>
+  data_center_expand <- dplyr::as_tibble(data_center_expand) |>
     dplyr::rename(chrom = "seqnames" ) |>
-    dplyr::mutate(end = .data$end +1,
-                  strand = ".",
+    dplyr::select(column_order[c(1:3, 6, 4:5, 7:8)]) |>
+    dplyr::mutate(strand = ".",
                   chrom = as.character(.data$chrom)) |>
     dplyr::select(any_of(column_order))
   
@@ -581,16 +631,32 @@ centerExpandRegions <- function(data,
   ### -----------------------------------------------------------------------###
   
   if (outputFormat %in% c("GenomicRanges", "GRanges")) {
+    #if(exists("input_seqinfo")) {
+    if(!is.na(genome_used)) {
     cli::cli_inform(c(
-      "i" = "Output format is set to {.val {outputFormat}}.")
-    )
-    
-    data_center_expand <- 
-      data_center_expand |>
-      GenomicRanges::makeGRangesFromDataFrame(
-        keep.extra.columns = TRUE,
+        "i" = "Output format is set to {.val {outputFormat}}.",
+        "i" = "Assigning {.val {genome_used}} genome annotation to output. ")
       )
-    
+      
+      data_center_expand <- 
+        data_center_expand |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE,
+          seqinfo = gr_genome, 
+          starts.in.df.are.0based = FALSE
+        )
+    } else {
+      cli::cli_inform(c(
+        "i" = "Output format is set to {.val {outputFormat}}.",
+        "i" = "No input genome annotation assigned to ouutput. ")
+      )
+      data_center_expand <- 
+        data_center_expand |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE,
+          starts.in.df.are.0based = FALSE
+        )
+    }
   } else if (outputFormat %in% c("tibble", "data.frame", "data.table")) {
     cli::cli_inform(c(
       "i" = "Output format is set to {.val tibble}."
@@ -613,7 +679,6 @@ centerExpandRegions <- function(data,
   if (isFALSE(showMessages)) {
     options("rlib_message_verbosity" = "default")
   }
-
 
   return(data_center_expand)
 }
