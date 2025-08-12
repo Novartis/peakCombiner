@@ -174,6 +174,29 @@ prepareInputRegions <- function(
     showMessages = TRUE
     ) {
   ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
+  ### -----------------------------------------------------------------------###
   ### Define variables
   ### -----------------------------------------------------------------------###
 
@@ -203,9 +226,6 @@ prepareInputRegions <- function(
   ### -----------------------------------------------------------------------###
 
   if (!exists("data")) {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_abort(c(
       "x" = "Argument {.arg data} does not exist."
     ))
@@ -251,10 +271,7 @@ prepareInputRegions <- function(
       "i" = "Argument {.arg outputFormat} is set to {.val {outputFormat}}."
     ))
   } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
+     cli::cli_abort(c(
       "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
       "i" = "Provided value is {.val {outputFormat}}."
@@ -324,30 +341,6 @@ prepareInputRegions <- function(
     ))
   }
   
-  
-  ### -----------------------------------------------------------------------###
-  ### Show or hide messages
-  ### -----------------------------------------------------------------------###
-
-  if (!is.logical(showMessages)) {
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
-    ))
-  } else if (isTRUE(showMessages)) {
-    options("rlib_message_verbosity" = "default")
-  } else if (isFALSE(showMessages)) {
-    options("rlib_message_verbosity" = "quiet")
-  } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
-      value.",
-      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
-    ))
-  }
-
   ### -----------------------------------------------------------------------###
   ### Figure out what kind of input data was entered by the user and
   ### load the initial data for follow-up quality checks
@@ -403,9 +396,7 @@ prepareInputRegions <- function(
       ">" = "Start preparing data."
     ))
   } else {
-    # show error independend of showMessages
-    options("rlib_message_verbosity" = "default")
-
+    
     cli::cli_abort(c(
       "x" = "Provide input {.arg data} does not have the required format.",
       "!" = "Please check your column names in {.arg data}."
@@ -516,8 +507,6 @@ prepareInputRegions <- function(
       dplyr::pull()
 
     if (n_bad_summits > 0) {
-      # show error independend of showMessages
-      options("rlib_message_verbosity" = "default")
       cli::cli_abort(c(
         "x" = "Column {.field 'summit'} exceeds the calculated peak width
         ({.field 'end'} - {.field 'start'}). Input values have to be smaller
@@ -549,7 +538,8 @@ prepareInputRegions <- function(
   ## Check for NAs in data - REPLACE WITH FUNCTION; MOVE AFTER THE MODIFING
 
   data_prepared <- checkDataStructure(
-    data = data_prepared
+    data = data_prepared,
+    showMessages = showMessages
   )
 
   ### -----------------------------------------------------------------------###
@@ -568,14 +558,6 @@ prepareInputRegions <- function(
     "v" = "Preparation of data finished successfully."
   ))
 
-  ### -----------------------------------------------------------------------###
-  ### Set message display back to default
-  ### -----------------------------------------------------------------------###
-
-  if (isFALSE(showMessages)) {
-    options("rlib_message_verbosity" = "default")
-  }
-  
   ### -----------------------------------------------------------------------###
   ### Adjust output format
   ### -----------------------------------------------------------------------###
@@ -626,15 +608,21 @@ prepareInputRegions <- function(
     }
  
     } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
+   
     cli::cli_abort(c(
       "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
       "i" = "Provided value is {.val {outputFormat}}."
     ))
   } 
-      
+  
+  ### -----------------------------------------------------------------------###
+  ### Set message display back to default
+  ### -----------------------------------------------------------------------###
+  
+  if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  }
+  
   return(data_prepared)
 }
