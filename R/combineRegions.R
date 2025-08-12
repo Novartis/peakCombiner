@@ -135,6 +135,35 @@ combineRegions <- function(data,
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
   ##
+  
+  ### -----------------------------------------------------------------------###
+  ### Check if GenomicRanges object contains only one genome
+  ### -----------------------------------------------------------------------###
+  
+  if (inherits(data, "GRanges")) {
+    cli::cli_inform(c(
+      "i" = "Input data {.arg data} is a class {.cls GRanges}."
+    ))    
+    
+    #' Extract info about genome from GenomicRanges file
+    input_file_genome <- GenomeInfoDb::genome(data) |> unique()
+    
+    if (length(input_file_genome) > 1) {
+      cli::cli_abort(c(
+        "i" = "Input data {.arg data} is a class {.cls GRanges}.",
+        "x" = "Input data {.arg data} has multiple assigned genomes.
+        Input data has to have be from the same genome.",
+        "i" = "Values of assigned genomes are: {.val {input_file_genome}}."
+      ))
+    }
+    cli::cli_inform(c(
+      "i" = "Input data {.arg data} assigned genomes is 
+      {.val {input_file_genome}}."
+    ))  
+    
+  }
+  
+  
   ### -----------------------------------------------------------------------###
   ### Check if output format is valid
   ### -----------------------------------------------------------------------###
@@ -173,6 +202,8 @@ combineRegions <- function(data,
       converted to class {.cls tibble}.",
       ">" = "Start converting and preparing data."
     ))
+    
+    input_seqinfo <- GenomeInfoDb::seqinfo(data)
     
     data_filtered <-
       tibble::as_tibble(data) |>
@@ -242,7 +273,7 @@ combineRegions <- function(data,
   ### -----------------------------------------------------------------------###
   ## Check the validity of the peakCombiner input data format
 
-  data <- check_data_structure(
+  data <- checkDataStructure(
     data = data
   )
 
@@ -250,7 +281,7 @@ combineRegions <- function(data,
   ### Combine peaks - Disjoin & Filter
   ### -----------------------------------------------------------------------###
   ## 1: Do a disjoin to separate the peaks and filter based on foundInSamples
-  data_disjoin <- cr_disjoin_filter(
+  data_disjoin <- crDisjoinFilter(
     data = data,
     foundInSamples = foundInSamples
   )
@@ -259,7 +290,7 @@ combineRegions <- function(data,
   ### Combine peaks - Reduce
   ### -----------------------------------------------------------------------###
   ## 2: Reduce the disjoined data and prepare combined table
-  data_reduce <- cr_reduce(
+  data_reduce <- crReduce(
     data = data_disjoin
   )
 
@@ -267,7 +298,7 @@ combineRegions <- function(data,
   ### Combine peaks - Overlap with summit
   ### -----------------------------------------------------------------------###
   ## 3: Remove false positive peaks without summit
-  data_overlap_summit <- cr_overlap_with_summits(
+  data_overlap_summit <- crOverlapWithSummits(
     data = data_reduce,
     input = data
   )
@@ -276,7 +307,7 @@ combineRegions <- function(data,
   ### Combine peaks - Link to best summit
   ### -----------------------------------------------------------------------###
   ## 4: Identify top enriched summit for new defined peaks
-  data_combined_with_summit <- cr_add_summit(
+  data_combined_with_summit <- crAddSummit(
     data = data_overlap_summit,
     input = data,
     combinedCenter = combinedCenter,
@@ -305,16 +336,29 @@ combineRegions <- function(data,
   ### -----------------------------------------------------------------------###
   
   if (outputFormat %in% c("GenomicRanges", "GRanges")) {
-    cli::cli_inform(c(
-      "i" = "Output format is set to {.val {outputFormat}}.")
-    )
-    
-    data_combined_with_summit <- 
-      data_combined_with_summit |>
-      GenomicRanges::makeGRangesFromDataFrame(
-        keep.extra.columns = TRUE,
+    if(exists("input_seqinfo")) {
+      cli::cli_inform(c(
+        "i" = "Output format is set to {.val {outputFormat}}.",
+        "i" = "Assigning input genome annotation to ouutput. ")
       )
-    
+      
+      data_combined_with_summit <- 
+        data_combined_with_summit |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE,
+          seqinfo = input_seqinfo
+        )
+    } else{
+      cli::cli_inform(c(
+        "i" = "Output format is set to {.val {outputFormat}}.",
+        "i" = "No input genome annotation assigned to ouutput. ")
+      )
+      data_combined_with_summit <- 
+        data_combined_with_summit |>
+        GenomicRanges::makeGRangesFromDataFrame(
+          keep.extra.columns = TRUE
+        )
+    }
   } else if (outputFormat %in% c("tibble", "data.frame", "data.table")) {
     cli::cli_inform(c(
       "i" = "Output format is set to {.val tibble}."
