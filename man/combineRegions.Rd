@@ -7,12 +7,12 @@ a single set of consensus genomic regions}
 \usage{
 combineRegions(
   data,
-  found_in_samples = 2,
-  combined_center = "nearest",
-  annotate_with_input_names = FALSE,
-  combined_sample_name = NULL,
-  output_format = "GenomicRanges",
-  show_messages = TRUE
+  foundInSamples = 2,
+  combinedCenter = "nearest",
+  annotateWithInputNames = FALSE,
+  combinedSampleName = NULL,
+  outputFormat = "GenomicRanges",
+  showMessages = TRUE
 )
 }
 \arguments{
@@ -21,15 +21,15 @@ named \code{chrom}, \code{start}, \code{end}, \code{name},
 \code{score}, \code{strand}, \code{center}, \code{sample_name}. Additional
 columns will be dropped}
 
-\item{found_in_samples}{Only include genomic regions that are found
-in at least \code{found_in_samples} \strong{number}
-of samples. If \code{found_in_samples} is a fraction
+\item{foundInSamples}{Only include genomic regions that are found
+in at least \code{foundInSamples} \strong{number}
+of samples. If \code{foundInSamples} is a fraction
 between 0 and 1, then only include genomic
 regions that ar found in at least
-\code{found_in_samples} \strong{fraction} of samples.
+\code{foundInSamples} \strong{fraction} of samples.
 Default value is 2.}
 
-\item{combined_center}{Defines how the column 'center' will be
+\item{combinedCenter}{Defines how the column 'center' will be
 populated for each genomic region in the output
 data. Allowed options are
 * \code{middle}        - the mathematical center of the new region
@@ -40,7 +40,7 @@ regions
 to mean of the 'center's of all overlapping
 input regions (default)}
 
-\item{annotate_with_input_names}{TRUE / FALSE (default). If TRUE, a new
+\item{annotateWithInputNames}{TRUE / FALSE (default). If TRUE, a new
 column named 'input_names' is created
 in the output data that is populated for
 each combined genomic region with the
@@ -48,18 +48,18 @@ each combined genomic region with the
 If the column 'input_names' already
 exists, it will be overwritten.}
 
-\item{combined_sample_name}{Optionally defines how the column 'sample_name'
+\item{combinedSampleName}{Optionally defines how the column 'sample_name'
 is populated for the output data.
 If not used, then the default is to simply
 concatenate all input
 sample_names into a single comma-separated
 string}
 
-\item{output_format}{Character value to define format of output object.
+\item{outputFormat}{Character value to define format of output object.
 Accepted values are "GenomicRanges" (default), "tibble"
 or "data.frame".}
 
-\item{show_messages}{Logical value of TRUE (default) or FALSE. Defines if
+\item{showMessages}{Logical value of TRUE (default) or FALSE. Defines if
 info messages are displayed or not.}
 }
 \value{
@@ -88,7 +88,7 @@ The general steps within this function are:
 \itemize{
 \item Identify overlapping genomic regions from the input samples
 \item Retain overlapping genomic regions that are found in at least
-\code{found_in_samples} samples. In this way, you can remove rare or
+\code{foundInSamples} samples. In this way, you can remove rare or
 sample-specific regions
 \item Note that overlapping genomic regions must contain at least one 'center'
 from its input sample regions to be considered a valid genomic region.
@@ -97,7 +97,7 @@ center and expand the new set of consensus regions), we must define
 the 'center', 'score', 'sample_name', and 'name' values for the new
 genomic regions. We do this as follows:
 \itemize{
-\item 'center' is defined by the \code{combined_center} parameter, which has three
+\item 'center' is defined by the \code{combinedCenter} parameter, which has three
 options.
 * \code{middle}        - the mathematical center of the new region
 * \code{strongest}     - the 'center' of the input region that has the
@@ -108,8 +108,8 @@ to mean of the 'center's of all overlapping
 input regions (default)
 \item 'score' is the score of the genomic region from the sample whose
 'center's was used, or the mean of the 'score's if \code{middle} was selected
-for the \code{combined_center} parameter
-\item 'sample_name' can be user defined (\code{combined_sample_name}) or is a
+for the \code{combinedCenter} parameter
+\item 'sample_name' can be user defined (\code{combinedSampleName}) or is a
 concatenated string of all input 'sample_names' (default).
 \item 'name' is created by combining 'sample_name' and row number to create a
 unique identifier for each newly created genomic region.
@@ -125,19 +125,20 @@ utils::data(syn_data_bed)
 
 data_prepared <- prepareInputRegions(
   data = syn_data_bed,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
 # Lets combine the input data by defining all potential option
 combineRegions(
   data = data_prepared,
-  found_in_samples = 2,
-  combined_center = "nearest",
-  annotate_with_input_names = TRUE,
-  combined_sample_name = "consensus",
-  output_format = "tibble",
-  show_messages = TRUE
+  foundInSamples = 2,
+  combinedCenter = "nearest",
+  annotateWithInputNames = TRUE,
+  combinedSampleName = "consensus",
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 
+Extract info about genome from GenomicRanges file
 }

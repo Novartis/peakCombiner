@@ -6,8 +6,10 @@
 \usage{
 prepareInputRegions(
   data,
-  output_format = "GenomicRanges",
-  show_messages = TRUE
+  outputFormat = "GenomicRanges",
+  genome = NA,
+  starsAreBased = 1,
+  showMessages = TRUE
 )
 }
 \arguments{
@@ -21,11 +23,26 @@ sample, or
 each sample.
 }}
 
-\item{output_format}{Character value to define format of output object.
+\item{outputFormat}{Character value to define format of output object.
 Accepted values are "GenomicRanges" (default), "tibble"
 or "data.frame".}
 
-\item{show_messages}{Logical value of TRUE (default) or FALSE. Defines if
+\item{genome}{Character value to define the matching genome reference to
+the input data. Default value is NA. Allows values are
+based on GenomicRanges supported genomes like "GRCh38",
+"GRCh38.p13", "Amel_HAv3.1", "WBcel235", "TAIR10.1",
+"hg38", "mm10", "rn6", "bosTau9", "canFam3", "musFur1",
+"galGal6","dm6", "ce11", and "sacCer3". Please see also
+help for \code{\link[GenomeInfoDb:Seqinfo-class]{GenomeInfoDb::Seqinfo()}} for more details.}
+
+\item{starsAreBased}{Either 0, 1 (Default), or NA. Define if the provided
+input data is 0 or 1-based. Only, if paramter is NA
+then GenomicRanges object, tibbles and dataframes are
+considered 1-based, while data loaded from a
+sample_sheet is considered 0-based (expected to load a
+BED file).}
+
+\item{showMessages}{Logical value of TRUE (default) or FALSE. Defines if
 info messages are displayed or not.}
 }
 \value{
@@ -127,8 +144,12 @@ region. This can occure when using called peak files as multiple summits can
 be annotated within the sqme genomic regions (defined by \code{chrom}, \code{start}
 and \code{end}). To avoid mutliple entries, this script is checking the input for
 multiple summits within the same regions and maintains only the strongest
-enriched (based on the values in the column \code{score}). This step is mantory
-to quaranty an optimal result.
+enriched (based on the values in the column \code{score}). This step is mandatory
+to guaranty an optimal result.
+
+An additional option is to provide already here a genome (details see below)
+and maintain this information for the function
+\code{\link[=centerExpandRegions]{centerExpandRegions()}}.
 }
 \examples{
 # Load in and prepare a an accepted tibble
@@ -136,8 +157,8 @@ utils::data(syn_data_tibble)
 
 data_prepared <- prepareInputRegions(
   data = syn_data_tibble,
-  output_format = "tibble",
-  show_messages = TRUE
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 data_prepared
 
@@ -153,8 +174,10 @@ combined_input <- syn_data_control01 |>
 
 prepareInputRegions(
   data = combined_input,
-  output_format = "tibble",
-  show_messages = FALSE
+  outputFormat = "tibble",
+  showMessages = FALSE
 )
 
+Extract info about genome from GenomicRanges file
+Define parameter for make GenomicRanges object
 }

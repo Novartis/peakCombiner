@@ -6,12 +6,12 @@
 \usage{
 filterRegions(
   data,
-  include_by_chromosome_name = NULL,
-  exclude_by_blacklist = NULL,
-  include_above_score_cutoff = NULL,
-  include_top_n_scoring = NULL,
-  output_format = "GenomicRanges",
-  show_messages = TRUE
+  includeByChromosomeName = NULL,
+  excludeByBlacklist = NULL,
+  includeAboveScoreCutoff = NULL,
+  includeTopNScoring = NULL,
+  outputFormat = "GenomicRanges",
+  showMessages = TRUE
 )
 }
 \arguments{
@@ -20,36 +20,37 @@ named \code{chrom}, \code{start}, \code{end}, \code{name},
 \code{score}, \code{strand}, \code{center}, \code{sample_name}. Additional
 columns will be maintained.}
 
-\item{include_by_chromosome_name}{\itemize{
+\item{includeByChromosomeName}{\itemize{
 \item 'NULL' (default) - No chromosome name filtering will be done.
 * Character vector that contains chromosomes names to be retained.
 }}
 
-\item{exclude_by_blacklist}{\itemize{
+\item{excludeByBlacklist}{\itemize{
 \item 'NULL' (default) - No blacklist filtering will be done.
-* Data frame or tibble with columns \code{chrom}, \code{start}, and \code{end}.
+* GenomicRanges object (default setup) or data frame/tibble with
+columns \code{chrom}, \code{start}, and \code{end}.
 }}
 
-\item{include_above_score_cutoff}{\itemize{
+\item{includeAboveScoreCutoff}{\itemize{
 \item 'NULL' (default) - No score filtering will be done.
 * Single numeric value that defines the \code{score} threshold above
 which all genomic regions will be retained. This results in
 variable number of sites per sample.
 }}
 
-\item{include_top_n_scoring}{\itemize{
+\item{includeTopNScoring}{\itemize{
 \item 'NULL' (default) - No score filtering will be done.
 * Single numeric value representing the number of genomic regions
 per sample to be retained. The genomic regions are selected from
-highest to lowest score, and if include_top_n_scoring > number of
+highest to lowest score, and if includeTopNScoring > number of
 regions, then no filtering is done.
 }}
 
-\item{output_format}{Character value to define format of output object.
+\item{outputFormat}{Character value to define format of output object.
 Accepted values are "GenomicRanges" (default), "tibble"
 or "data.frame".}
 
-\item{show_messages}{Logical value of TRUE (default) or FALSE. Defines if
+\item{showMessages}{Logical value of TRUE (default) or FALSE. Defines if
 info messages are displayed or not.}
 }
 \value{
@@ -88,24 +89,26 @@ input BED files.
 set, allowing a user to select regions of interest using a step-wise
 optimization approach.
 \itemize{
-\item \code{include_by_chromosome_name} -   Retains only chromosomes that are in the
+\item \code{includeByChromosomeName} -   Retains only chromosomes that are in the
 provided vector. By not including
 mitochondrial, sex, or non-classical
 chromosomes, genomic regions found on
 these chromosomes can be removed. If set
 to 'NULL' (default), this step will be
 skipped (optional).
-\item \code{exclude_by_blacklist} -         A data frame or tibble can be provided
-listing the genomic regions to remove
-(having \code{chrom}, \code{start}, and \code{end} column
-names). If set to 'NULL' (default), this
-step will be skipped (optional).
+\item \code{excludeByBlacklist} -         A GenomicRanges file, dataframe or tibble
+can be provided listing the genomic
+regions to remove (having \code{chrom} (
+\code{seqnames} for GenomicRanges) , \code{start},
+and \code{end} column names). If set to 'NULL'
+(default), this step will be skipped
+(optional).
 Please note that if there are not matching
 entries in the 'chrom' columns of input
 and blacklist, an information message is
-displayed. This can happend und does not
+displayed. This can happend and does not
 cause any problems with the script.
-\item \code{include_above_score_cutoff} -   Single numeric value that defines the
+\item \code{includeAboveScoreCutoff} -   Single numeric value that defines the
 \code{score} threshold above which all genomic
 regions will be retained. The \code{score}
 column in the peakCombiner input data
@@ -118,15 +121,15 @@ file from MACS2 as input). Importantly,
 applying this filter retains a variable
 number of genomic regions per sample, all
 having a score greater than the
-\code{include_above_score_cutoff} parameter. If
+\code{includeAboveScoreCutoff} parameter. If
 set to 'NULL' (default), this step will
 be skipped (optional).
-\item \code{include_top_n_scoring} -        Single numeric value that defines how many
+\item \code{includeTopNScoring} -        Single numeric value that defines how many
 of the top scoring genomic regions (using
 the column \code{score}) are retained. All
 other genomic regions are discarded.
 Importantly, applying this filter retains
-\code{include_top_n_scoring} regions per
+\code{includeTopNScoring} regions per
 sample, which means that the minimum
 enrichment levels may vary between
 samples. Note that if multiple genomic
@@ -146,20 +149,21 @@ utils::data(syn_data_bed)
 
 data_prepared <- prepareInputRegions(
   data = syn_data_bed,
-  output_format = "tibble",
-  show_messages = TRUE
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 
 # Here use options for all four filtering methods.
 
 filterRegions(
   data = data_prepared,
-  include_by_chromosome_name = c("chr1", "chr2", "chr4"),
-  exclude_by_blacklist = NULL,
-  include_above_score_cutoff = 10,
-  include_top_n_scoring = 100,
-  output_format = "tibble",
-  show_messages = TRUE
+  includeByChromosomeName = c("chr1", "chr2", "chr4"),
+  excludeByBlacklist = NULL,
+  includeAboveScoreCutoff = 10,
+  includeTopNScoring = 100,
+  outputFormat = "tibble",
+  showMessages = TRUE
 )
 
+Extract info about genome from GenomicRanges file
 }
