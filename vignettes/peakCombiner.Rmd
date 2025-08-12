@@ -101,6 +101,16 @@ data_prepared <- prepareInputRegions(
   showMessages = FALSE
 )
 
+centerExpandRegions(
+  data = data_prepared,
+  centerBy = "center_column",
+  expandBy = NULL,
+  genome = NA,
+  trim_start = TRUE,
+  outputFormat = "GenomicRanges",
+  showMessages = FALSE
+)
+
 data_center_expand <- centerExpandRegions(
   data = data_prepared,
   centerBy = "center_column",
@@ -414,7 +424,7 @@ centerExpandRegions(
   centerBy = "center_column",
   expandBy = NULL,
   outputFormat = "tibble",
-  show_message = FALSE
+  showMessage = FALSE
 )
 ```
 
@@ -643,6 +653,47 @@ It is often recommended to exclude blacklisted genomic regions from your analyse
 
 While we recommend to use the provided ENCODE blacklists, you can alternatively provide your own blacklist as a tibble containing genomic regions with columns named 'chrom', 'start' and 'end'. In more general terms, you can use any file with genomic locations here to remove overlapping regions, for instance if you want to remove regions overlapping with promoters you can use this functions here to remove these. 
 
+Here is some code to directly download the file from ENCODE, save it locally and load it to your enviroment.
+
+```{r download_blacklist_bed, eval=FALSE}
+# Download the blacklist BED file from ENCODE and save it as "blacklist_human.bed"
+download.file(
+  url = "https://www.encodeproject.org/files/ENCFF356LFX/@@download/ENCFF356LFX.bed.gz",
+  destfile = "blacklist_human.bed.gz",
+  mode = "wb"
+)
+
+
+# Import the BED file
+blacklist_granges <- import("blacklist_human.bed")
+```
+
+An alternative is to load it via the package [AnnotationHub](https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html) to creates and manages a local cache for such files. 
+
+```{r }
+# Load library (AnnotationHub would need to be added to DESCRIPTION under Suggests if used in the vignette)
+library(AnnotationHub)
+
+# Get annotation hub handle (will download index if called for the first time)
+ah <- AnnotationHub::AnnotationHub()
+
+# List ENCODE related data providers
+unique(grep("ENCODE", ah$dataprovider, value = TRUE))
+
+# Query for "blacklist"
+dm <- AnnotationHub::query(ah, "blacklist")
+dm
+
+# get specific object (will be downloaded if called for the first time)
+blacklist <- dm[["AH107343"]]
+
+# get info for a specific object
+AnnotationHub::recordStatus(ah, "AH107343")
+AnnotationHub::getInfoOnIds(ah, "AH107343")
+mcols(dm)["AH107343",]
+mcols(dm)["AH107343","description"]
+```
+
 Additionally, other R packages as [excluderages](https://www.bioconductor.org/packages/release/data/annotation/html/excluderanges.html) do also provide regions to be used within this function. 
 
 If you would like to remove blacklisted regions from multiple sources, you can run `filterRegions` repeatedly, for example first to remove the ENCODE blacklisted regions and then to remove your own blacklisted sites. We show how to do this below. 
@@ -731,7 +782,7 @@ combineRegions(
   annotateWithInputNames = FALSE,
   combinedSampleName = "my_new_sample_name",
   outputFormat = "tibble",
-  show_message = FALSE
+  showMessage = FALSE
 )
 ```
 
