@@ -1,5 +1,5 @@
 # Load the entire synthetic data
-synthetic_data <- read_tsv("data-raw/synthetic_data.bed", show_col_types = FALSE)
+synthetic_data <- readr::read_tsv("data-raw/synthetic_data.bed", show_col_types = FALSE)
 
 # Filter synthetic data for treatment rep 2
 synthetic_data |>
@@ -14,4 +14,4 @@ synthetic_data |>
     score = 0
   ) |>
   select(-center) |>
-  write_tsv("data-raw/syn_treatment_rep2.narrowPeak", col_names = FALSE)
+  readr::write_tsv("data-raw/syn_treatment_rep2.narrowPeak", col_names = FALSE)
