@@ -13,73 +13,73 @@
 #'
 #' @noRd
 #'
-filter_by_chromosome_names <- function(data,
-                                       include_by_chromosome_name = NULL) {
+filterByChromosomeNames <- function(data,
+                                       includeByChromosomeName = NULL) {
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
   ##
   ##
   ## check if input vector is numeric and if so change to character
-  if (!is.character(include_by_chromosome_name) &&
-    !is.null(include_by_chromosome_name)) {
+  if (!is.character(includeByChromosomeName) &&
+    !is.null(includeByChromosomeName)) {
     cli::cli_inform(c(
-      "!" = "{.arg include_by_chromosome_name} has the wrong class.",
-      ">" = "{.arg include_by_chromosome_name} is converted to
+      "!" = "{.arg includeByChromosomeName} has the wrong class.",
+      ">" = "{.arg includeByChromosomeName} is converted to
       {.cls character}."
     ))
 
-    include_by_chromosome_name <- as.character(include_by_chromosome_name)
+    includeByChromosomeName <- as.character(includeByChromosomeName)
   }
 
-  if (!is.null(include_by_chromosome_name) &&
-    !is.vector(include_by_chromosome_name)) {
+  if (!is.null(includeByChromosomeName) &&
+    !is.vector(includeByChromosomeName)) {
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg include_by_chromosome_name} has to be a
+      "x" = "{.arg includeByChromosomeName} has to be a
         {.cls character} vector or {.val NULL}.",
       "!" = "Provided dataset is a
-        {.cls {class(include_by_chromosome_name)}}."
+        {.cls {class(includeByChromosomeName)}}."
     ))
-  } else if (length(include_by_chromosome_name) > 1 &&
-    any(is.null(include_by_chromosome_name))) {
+  } else if (length(includeByChromosomeName) > 1 &&
+    any(is.null(includeByChromosomeName))) {
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg include_by_chromosome_name} has a length of
-      {length(include_by_chromosome_name)} and contains {.val NULL}.",
-      "i" = " Allowed values for {.arg include_by_chromosome_name} are
+      "x" = "{.arg includeByChromosomeName} has a length of
+      {length(includeByChromosomeName)} and contains {.val NULL}.",
+      "i" = " Allowed values for {.arg includeByChromosomeName} are
       either a single {.val NULL} (length = 1) or vector with chromosome names
       (length >= 1)."
     ))
-  } else if (any(is.na(include_by_chromosome_name))) {
+  } else if (any(is.na(includeByChromosomeName))) {
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "{.arg include_by_chromosome_name} has a length of
-      {length(include_by_chromosome_name)} and contains {.val NA}.",
-      "i" = " Allowed values for {.arg include_by_chromosome_name} are
+      "x" = "{.arg includeByChromosomeName} has a length of
+      {length(includeByChromosomeName)} and contains {.val NA}.",
+      "i" = " Allowed values for {.arg includeByChromosomeName} are
       either a single {.val NA} (length = 1) or vector with chromosome names
       (length >= 1)."
     ))
-  } else if (is.null(include_by_chromosome_name)) {
+  } else if (is.null(includeByChromosomeName)) {
     cli::cli_inform(c(
-      "i" = "The argument {.arg include_by_chromosome_name} is {.val NULL}.",
+      "i" = "The argument {.arg includeByChromosomeName} is {.val NULL}.",
       "v" = "No filtering for chromosome names in {.field chrom} is done.",
       " " = " "
     ))
 
     return(data)
-  } else if (is.vector(include_by_chromosome_name)) {
+  } else if (is.vector(includeByChromosomeName)) {
     # looks good so let's move on and check the goodness of the input vector
 
     cli::cli_inform(c(
-      ">" = "The argument {.arg include_by_chromosome_name} is a class
-      {.cls character} of length {length(include_by_chromosome_name)} and will
+      ">" = "The argument {.arg includeByChromosomeName} is a class
+      {.cls character} of length {length(includeByChromosomeName)} and will
       be used to retain matchhing chromsome names in {.field chrom}."
     ))
 
@@ -92,27 +92,27 @@ filter_by_chromosome_names <- function(data,
     # get the chromosome names from the user that are NOT found
     # as a chromosome name in the data
     not_found_chr_names <-
-      include_by_chromosome_name[!unique(include_by_chromosome_name) %in%
+      includeByChromosomeName[!unique(includeByChromosomeName) %in%
         data_chr] |>
       unique()
 
     if (length(not_found_chr_names) > 0) {
       cli::cli_inform(c(
-        "!" = "Input for {.arg include_by_chromosome_name} contains values not
+        "!" = "Input for {.arg includeByChromosomeName} contains values not
             found in the input data.",
         "i" = "The following chromosome name{?s} you entered {?is/are}
                not used: {.val {not_found_chr_names}}.",
-        ">" = "{.emph Is {.val include_by_chromosome_name} correctly defined?}"
+        ">" = "{.emph Is {.val includeByChromosomeName} correctly defined?}"
       ))
     }
     rm(not_found_chr_names)
 
     # Get the chromosomes that were will be filtered out to report
     not_retained_chr_names <-
-      data_chr[!data_chr %in% include_by_chromosome_name] |> unique()
+      data_chr[!data_chr %in% includeByChromosomeName] |> unique()
 
     retained_chr_names <-
-      data_chr[data_chr %in% include_by_chromosome_name] |> unique()
+      data_chr[data_chr %in% includeByChromosomeName] |> unique()
 
     ## Here is where the filtering happens!
     data <- data |>
@@ -160,8 +160,8 @@ filter_by_chromosome_names <- function(data,
 #'
 #' @noRd
 #'
-filter_by_blacklist <- function(data,
-                                exclude_by_blacklist = NULL) {
+filterByBlacklist <- function(data,
+                                excludeByBlacklist = NULL) {
   ### -----------------------------------------------------------------------###
   ### Define parameters
   ### -----------------------------------------------------------------------###
@@ -174,12 +174,12 @@ filter_by_blacklist <- function(data,
   ### Pre-Check up
   ### -----------------------------------------------------------------------###
 
-  if (!exists("exclude_by_blacklist")) {
+  if (!exists("excludeByBlacklist")) {
     # show error message independent of parameter show_messages
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Parameter {.arg exclude_by_blacklist} doesn't exists.",
+      "x" = "Parameter {.arg excludeByBlacklist} doesn't exists.",
       "i" = "Allowed values are {.val {c('NULL')}} or
       a data frame with genomic coordinates in columns named {.field {c('chrom',
       'start', 'end')}}."
@@ -187,39 +187,39 @@ filter_by_blacklist <- function(data,
   }
 
   ### -----------------------------------------------------------------------###
-  if (is.null(exclude_by_blacklist)) {
+  if (is.null(excludeByBlacklist)) {
     cli::cli_inform(c(
-      "i" = "The argument {.arg exclude_by_blacklist} is {.val NULL}.",
+      "i" = "The argument {.arg excludeByBlacklist} is {.val NULL}.",
       "v" = "No filtering by blacklisted regions is done.",
       " " = " "
     ))
 
     return(data)
-  } else if (is.data.frame(exclude_by_blacklist)) {
+  } else if (is.data.frame(excludeByBlacklist)) {
     ## Check for correct colnames
-    colnames(exclude_by_blacklist) <- tolower(colnames(exclude_by_blacklist))
+    colnames(excludeByBlacklist) <- tolower(colnames(excludeByBlacklist))
 
     ## Check if data frame has chrom, start and end
-    if (!all(required_colnames_blacklist %in% names(exclude_by_blacklist))) {
+    if (!all(required_colnames_blacklist %in% names(excludeByBlacklist))) {
       # show error message independent of parameter show_messages
       options("rlib_message_verbosity" = "default")
 
       cli::cli_abort(c(
-        "x" = "{.arg exclude_by_blacklist} is a data frame and misses
+        "x" = "{.arg excludeByBlacklist} is a data frame and misses
           some required column names.",
         "i" = "Required column names are:
         {.field {required_colnames_blacklist}}."
       ))
     }
     ## Check if chrom is character, start and end are numeric
-    if (!is.character(exclude_by_blacklist$chrom) &&
-      !is.numeric(exclude_by_blacklist$start) &&
-      !is.numeric(exclude_by_blacklist$end)) {
+    if (!is.character(excludeByBlacklist$chrom) &&
+      !is.numeric(excludeByBlacklist$start) &&
+      !is.numeric(excludeByBlacklist$end)) {
       # show error message independent of parameter show_messages
       options("rlib_message_verbosity" = "default")
 
       cli::cli_abort(c(
-        "x" = "{.arg exclude_by_blacklist} is a data frame and some columns
+        "x" = "{.arg excludeByBlacklist} is a data frame and some columns
           are the wrong data type",
         "!" = "Required types for columns are: {.field chrom} as
         {.cls character}, {.field start} as {.cls numeric}, {.field end} as
@@ -231,10 +231,27 @@ filter_by_blacklist <- function(data,
       ">" = "User provied dataframe will be used for blacklist filtering."
     ))
 
-    blacklist_data <- exclude_by_blacklist
+    blacklist_data <- excludeByBlacklist
+    
+  } else if (inherits(excludeByBlacklist, "GRanges")) {
+    cli::cli_inform(c(
+      ">" = "User provied GenomicRanges object will be used for 
+      blacklist filtering."
+    ))
+    
+    blacklist_data <- dplyr::as_tibble(excludeByBlacklist) |>
+      dplyr::rename(chrom = "seqnames") |>
+      dplyr::select(-"width") |>
+      dplyr::mutate(
+        strand = ".",
+        chrom = as.character(.data$chrom),
+        strand = as.character(.data$strand)
+      ) |>
+      dplyr::ungroup()
+    
     } else {
     cli::cli_inform(c(
-      ">" = "Blacklist for annotation {.val {exclude_by_blacklist}} will be
+      ">" = "Blacklist for annotation {.val {excludeByBlacklist}} will be
       used for filtering."
     ))
       } 
@@ -281,29 +298,56 @@ filter_by_blacklist <- function(data,
   }
   rm(not_found_blacklist, not_found_input)
 
-
-  ## Do filtering: match of CHR between input and blacklist
-  data <-
-    data |>
-    GenomicRanges::makeGRangesFromDataFrame(keep.extra.columns = TRUE) |>
-    IRanges::subsetByOverlaps(
-      blacklist_data |>
-        GenomicRanges::makeGRangesFromDataFrame(
-          keep.extra.columns = TRUE, 
-        ),
-      invert = TRUE
-    ) |> 
-    suppressWarnings() |> #Recently added to solve warning
-    tibble::as_tibble() |>
-    dplyr::rename(chrom = "seqnames") |>
-    dplyr::select(-"width") |>
-    dplyr::mutate(
-      strand = ".",
-      chrom = as.character(.data$chrom),
-      strand = as.character(.data$strand)
-    ) |>
-    dplyr::ungroup()
-
+  
+  if (inherits(excludeByBlacklist, "GRanges")) {
+    cli::cli_inform(c(
+      "i" = "The argument {.arg excludeByBlacklist} is a class {.cls GRanges}.",
+      ">" = "Using GenmoicRanges option for filtering."
+    ))
+    
+    ## Do filtering: match of CHR between input and blacklist
+    data <-
+      data |>
+      GenomicRanges::makeGRangesFromDataFrame(keep.extra.columns = TRUE) |>
+      IRanges::subsetByOverlaps(
+        excludeByBlacklist,
+        invert = TRUE
+      ) |> 
+      suppressWarnings() |> #Recently added to solve warning
+      tibble::as_tibble() |>
+      dplyr::rename(chrom = "seqnames") |>
+      dplyr::select(-"width") |>
+      dplyr::mutate(
+        strand = ".",
+        chrom = as.character(.data$chrom),
+        strand = as.character(.data$strand)
+      ) |>
+      dplyr::ungroup()
+    
+  } else {
+    
+    data <-
+      data |>
+      GenomicRanges::makeGRangesFromDataFrame(keep.extra.columns = TRUE) |>
+      IRanges::subsetByOverlaps(
+        blacklist_data |>
+          GenomicRanges::makeGRangesFromDataFrame(
+            keep.extra.columns = TRUE, 
+          ),
+        invert = TRUE
+      ) |> 
+      suppressWarnings() |> #Recently added to solve warning
+      tibble::as_tibble() |>
+      dplyr::rename(chrom = "seqnames") |>
+      dplyr::select(-"width") |>
+      dplyr::mutate(
+        strand = ".",
+        chrom = as.character(.data$chrom),
+        strand = as.character(.data$strand)
+      ) |>
+      dplyr::ungroup()
+  }
+  
   cli::cli_inform(c(
     "v" = "Input data was filtered by blacklist.",
     " " = " "
@@ -331,45 +375,45 @@ filter_by_blacklist <- function(data,
 #' -log10(FDR) if possible (e.g., using a .narrowPeak file from MACS2 as input).
 #' Importantly, applying this filter retains a variable number of genomic
 #' regions per sample, all having a score greater than the
-#' `include_above_score_cutoff` parameter. If set to 'NULL' (default), this
+#' `includeAboveScoreCutoff` parameter. If set to 'NULL' (default), this
 #' step will be skipped.
 #'
 #' @inheritParams filterRegions
 #'
 #' @noRd
 #'
-filter_by_significance <- function(data,
-                                   include_above_score_cutoff = NULL) {
+filterBySignificance <- function(data,
+                                   includeAboveScoreCutoff = NULL) {
   ##
-  if (is.null(include_above_score_cutoff)) {
+  if (is.null(includeAboveScoreCutoff)) {
     cli::cli_inform(c(
-      "i" = "The argument {.arg include_above_score_cutoff} is {.val NULL}.",
+      "i" = "The argument {.arg includeAboveScoreCutoff} is {.val NULL}.",
       "v" = "No filtering by {.field score} threshold is done.",
       " " = " "
     ))
 
     return(data)
-  } else if (is.numeric(include_above_score_cutoff) &&
-    length(include_above_score_cutoff) == 1) {
+  } else if (is.numeric(includeAboveScoreCutoff) &&
+    length(includeAboveScoreCutoff) == 1) {
     cli::cli_inform(c(
       ">" = "Significance in {.field score} is filtered and all regions above
-      {.val {include_above_score_cutoff}} will be retained."
+      {.val {includeAboveScoreCutoff}} will be retained."
     ))
 
-    ## Format looks good, filter by the include_above_score_cutoff value
+    ## Format looks good, filter by the includeAboveScoreCutoff value
 
     input_rows <- nrow(data)
 
     data <-
       data |>
       dplyr::arrange(.data$sample_name, .data$score) |>
-      dplyr::filter(.data$score >= include_above_score_cutoff) |>
+      dplyr::filter(.data$score >= includeAboveScoreCutoff) |>
       dplyr::ungroup()
 
     cli::cli_inform(c(
       "i" = "A total of {nrow(data)} of {input_rows} input regions are
       retained with value in {.field score} a above
-      {include_above_score_cutoff}. ",
+      {includeAboveScoreCutoff}. ",
       "v" = "Input data was filtered to retain regions with a {.field score}
       above the defined threshold.",
       " " = " "
@@ -380,10 +424,10 @@ filter_by_significance <- function(data,
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Argument 'include_above_score_cutoff' has to be a
+      "x" = "Argument 'includeAboveScoreCutoff' has to be a
         {.cls numeric}.",
       "!" = "Provided argument is a
-        {.cls {class(include_above_score_cutoff)}}"
+        {.cls {class(includeAboveScoreCutoff)}}"
     ))
   }
 
@@ -403,7 +447,7 @@ filter_by_significance <- function(data,
 #' @description
 #' Single numeric value that defines how many of the top scoring genomic regions
 #' (using the column `score`) are retained. All other genomic regions are
-#' discarded. Importantly, applying this filter retains `include_top_n_scoring`
+#' discarded. Importantly, applying this filter retains `includeTopNScoring`
 #' regions per sample, which means that the minimum enrichment levels may vary
 #' between samples. Note that if multiple genomic regions have the same `score`
 #' cutoff value, then all of those genomic regions are included. In this case,
@@ -417,29 +461,29 @@ filter_by_significance <- function(data,
 #'
 #' @noRd
 #'
-filter_by_top_enriched <- 
+filterByTopEnriched <- 
   function(data,
-           include_top_n_scoring = include_top_n_scoring) {
+           includeTopNScoring = includeTopNScoring) {
   ##
   ##
-  if (is.null(include_top_n_scoring)) {
+  if (is.null(includeTopNScoring)) {
     cli::cli_inform(c(
-      "i" = "The argument {.arg include_top_n_scoring} is {.val NULL}.",
+      "i" = "The argument {.arg includeTopNScoring} is {.val NULL}.",
       "v" = "No top enriched regions were selected. All input regions are
       retained.",
       " " = " "
     ))
 
     return(data)
-  } else if (is.numeric(include_top_n_scoring) &&
-    include_top_n_scoring > 0) {
+  } else if (is.numeric(includeTopNScoring) &&
+    includeTopNScoring > 0) {
     ### ---------------------------------------------------------------------###
 
     cli::cli_inform(c(
-      "i" = "The argument {.arg include_top_n_scoring} extracted the the top
-      {.num {include_top_n_scoring}} regions by {.field score} per sample (based
+      "i" = "The argument {.arg includeTopNScoring} extracted the the top
+      {.num {includeTopNScoring}} regions by {.field score} per sample (based
       on the values in {.field sample_name}).",
-      ">" = "The top enriched {.num {include_top_n_scoring}} regions per sample
+      ">" = "The top enriched {.num {includeTopNScoring}} regions per sample
       will be retained."
     ))
 
@@ -447,15 +491,15 @@ filter_by_top_enriched <-
       data |>
       dplyr::group_by(.data$sample_name) |>
       dplyr::summarise(counts = dplyr::n(), .groups = "drop") |>
-      dplyr::filter(.data$counts < include_top_n_scoring) |>
+      dplyr::filter(.data$counts < includeTopNScoring) |>
       dplyr::pull(.data$sample_name)
 
     if (length(too_few_regions_left) > 0) {
       cli::cli_inform(c(
-        "i" = "The argument {.arg include_top_n_scoring} was defined as
-        {include_top_n_scoring}.",
+        "i" = "The argument {.arg includeTopNScoring} was defined as
+        {includeTopNScoring}.",
         ">" = "The following {.val sample_names} contain less regions then
-        defined by {.arg include_top_n_scoring}: {too_few_regions_left}",
+        defined by {.arg includeTopNScoring}: {too_few_regions_left}",
         "!" = "No genomic regions will be removed for such samples."
       ))
     }
@@ -465,11 +509,11 @@ filter_by_top_enriched <-
     data <-
       data |>
       dplyr::group_by(.data$sample_name) |>
-      dplyr::top_n(n = !!include_top_n_scoring, wt = .data$score) |>
+      dplyr::top_n(n = !!includeTopNScoring, wt = .data$score) |>
       dplyr::ungroup()
 
     cli::cli_inform(c(
-      "v" = "Input data was filtered and the top {include_top_n_scoring}
+      "v" = "Input data was filtered and the top {includeTopNScoring}
       enriched regions per sample are retained.",
       " " = " "
     ))
@@ -478,9 +522,9 @@ filter_by_top_enriched <-
     options("rlib_message_verbosity" = "default")
 
     cli::cli_abort(c(
-      "x" = "Given argument {.arg include_top_n_scoring} is not allowed.",
-      "!" = "argument {.arg include_top_n_scoring} is
-        '{.par {include_top_n_scoring}}'.",
+      "x" = "Given argument {.arg includeTopNScoring} is not allowed.",
+      "!" = "argument {.arg includeTopNScoring} is
+        '{.par {includeTopNScoring}}'.",
       "i" = "Allowed values are NULL or single numeric value greater 1."
     ))
   }

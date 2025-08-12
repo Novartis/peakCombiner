@@ -11,7 +11,7 @@
 #' @return A vector of length 1 to define region expansion.
 #'
 
-define_expansion <- function(data = data,
+defineExpansion <- function(data = data,
                              expandBy = expandBy) {
   ### -----------------------------------------------------------------------###
   ### Pre-Check up

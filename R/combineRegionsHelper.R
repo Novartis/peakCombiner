@@ -16,7 +16,7 @@
 #' @return A tibble with the following columns: `chrom`, `start`, `end`,
 #' `width`, `strand`, `revmap`, `ranking_comb_ref`, `name`, `rowname_disjoin`.
 #'
-cr_disjoin_filter <- function(data,
+crDisjoinFilter <- function(data,
                               foundInSamples) {
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
@@ -188,7 +188,7 @@ cr_disjoin_filter <- function(data,
 #' `width`, `strand`, `name`.
 #'
 #'
-cr_reduce <- function(data) {
+crReduce <- function(data) {
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
@@ -299,7 +299,7 @@ cr_reduce <- function(data) {
 #' @return A tibble with the following columns: `chrom`, `start`, `end`,
 #' `width`, `strand`, `name`.
 #'
-cr_overlap_with_summits <- function(data,
+crOverlapWithSummits <- function(data,
                                     input) {
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
@@ -464,7 +464,7 @@ cr_overlap_with_summits <- function(data,
 #' @return A tibble with the following columns: `chrom`, `start`, `end`, `name`,
 #' `score`, `strand`, `center`, `sample_name`.
 #'
-cr_add_summit <- function(data,
+crAddSummit <- function(data,
                           input,
                           combinedCenter = "nearest",
                           annotateWithInputNames = FALSE,

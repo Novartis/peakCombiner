@@ -17,7 +17,7 @@
 #' [peakCombiner::centerExpandRegions()], [peakCombiner::filterRegions()] and
 #' [peakCombiner::combineRegions()].
 #'
-check_data_structure <- function(data) {
+checkDataStructure <- function(data) {
   ### -----------------------------------------------------------------------###
   ### Define variables
   ### -----------------------------------------------------------------------###

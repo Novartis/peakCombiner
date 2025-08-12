@@ -15,7 +15,7 @@
 #'
 #'
 #' @noRd
-load_input_regions <- function(data) {
+loadInputRegions <- function(data) {
   ### -----------------------------------------------------------------------###
   ### Define variables
   ### -----------------------------------------------------------------------###
@@ -314,7 +314,7 @@ load_input_regions <- function(data) {
 #' [peakCombiner::centerExpandRegions()], [peakCombiner::filterRegions()] and
 #' [peakCombiner::combineRegions()].
 #'
-collapse_summits <- function(data) {
+collapseSummits <- function(data) {
   cli::cli_inform(c(
     ">" = "Checking whether duplicated regions exist and need to be collapsed."
   ))
