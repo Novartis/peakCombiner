@@ -665,8 +665,18 @@ download.file(
 
 
 # Import the BED file
-blacklist_granges <- import("blacklist_human.bed")
+blacklist_granges <- readr::read_tsv("blacklist_human.bed.gz", col_names = c("chrom", "start", "end"))
+blacklist_granges
 ```
+
+```{r apply_downloaded_blacklist_bed, eval=FALSE}
+filterRegions(
+  data = data_center_expand,
+  excludeByBlacklist = blacklist_granges,
+  showMessages = FALSE)
+```
+
+
 
 An alternative is to load it via the package [AnnotationHub](https://bioconductor.org/packages/release/bioc/html/AnnotationHub.html) to creates and manages a local cache for such files. 
 
@@ -685,7 +695,7 @@ dm <- AnnotationHub::query(ah, "blacklist")
 dm
 
 # get specific object (will be downloaded if called for the first time)
-blacklist <- dm[["AH107343"]]
+blacklist_ah <- dm[["AH107343"]]
 
 # get info for a specific object
 AnnotationHub::recordStatus(ah, "AH107343")
@@ -693,6 +703,17 @@ AnnotationHub::getInfoOnIds(ah, "AH107343")
 mcols(dm)["AH107343",]
 mcols(dm)["AH107343","description"]
 ```
+```{r view_black_list_annotationhub, eval=FALSE}
+blacklist_ah
+```
+
+```{r apply_downloaded_blacklist_bed, eval=FALSE}
+filterRegions(
+  data = data_center_expand,
+  excludeByBlacklist = blacklist_ah,
+  showMessages = FALSE)
+```
+
 
 Additionally, other R packages as [excluderages](https://www.bioconductor.org/packages/release/data/annotation/html/excluderanges.html) do also provide regions to be used within this function. 
 
