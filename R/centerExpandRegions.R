@@ -157,6 +157,32 @@ centerExpandRegions <- function(data,
                                   showMessages = TRUE) {
   
   ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
+  ### -----------------------------------------------------------------------###
   ### Allowed genomes from GenomicRanges
   ### -----------------------------------------------------------------------###
 
@@ -195,32 +221,6 @@ centerExpandRegions <- function(data,
   expand_2 <- expansion_value[length_expansion_value]
   
   ### -----------------------------------------------------------------------###
-  ### Show or hide messages
-  ### -----------------------------------------------------------------------###
-  
-  if (!is.logical(showMessages)) {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-    
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
-    ))
-  } else if (isTRUE(showMessages)) {
-    options("rlib_message_verbosity" = "default")
-  } else if (isFALSE(showMessages)) {
-    options("rlib_message_verbosity" = "quiet")
-  } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-    
-    cli::cli_abort(c(
-      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
-      value.",
-      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
-    ))
-  }
-  
-  ### -----------------------------------------------------------------------###
   ### Check if output format is valid
   ### -----------------------------------------------------------------------###
   
@@ -233,9 +233,6 @@ centerExpandRegions <- function(data,
       "i" = "Argument {.arg outputFormat} is set to {.val {outputFormat}}."
     ))
   } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-    
     cli::cli_abort(c(
       "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
@@ -356,9 +353,6 @@ centerExpandRegions <- function(data,
     ))
     
   } else {
-    # show error independend of showMessages
-    options("rlib_message_verbosity" = "default")
-    
     cli::cli_abort(c(
       "x" = "Provide input {.arg data} does not have the required format.",
       "!" = "Please check your column names in {.arg data}."
@@ -374,9 +368,6 @@ centerExpandRegions <- function(data,
       "x" = "Argument {.arg trim_start} has to be {.cls logical}."
     ))
   } else {
-    # show error message independent of parameter trim_start
-    options("rlib_message_verbosity" = "default")
-    
     cli::cli_inform(c(
       "i" = "Argument {.arg trim_start} is {.val {trim_start}}."
     ))
@@ -388,25 +379,17 @@ centerExpandRegions <- function(data,
 
   if (is.null(centerBy)) {
     # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_abort(c(
       "x" = "{.arg centerBy} has to be {.val center_column} or
       {.val midpoint}.",
       "i" = "{.arg centerBy} is {.val NULL}."
     ))
   } else if (length(centerBy) != 1) {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_abort(c(
       "x" = "{.arg centerBy} has a length of {length(centerBy)}.",
       "i" = "{.arg centerBy} allowed length is 1."
     ))
   } else if (!tolower(centerBy) %in% center_values) {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_abort(c(
       "x" = "{.arg centerBy} has to be {.val center_column} or
       {.val midpoint}.",
@@ -416,9 +399,6 @@ centerExpandRegions <- function(data,
     ## good values!
     centerBy <- tolower(centerBy)
   } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_abort(c(
       "x" = "{.arg centerBy} has to be {.val center_column} or
       {.val midpoint}.",
@@ -429,7 +409,8 @@ centerExpandRegions <- function(data,
   ## Check the validity of the peakCombiner input data format
 
   data <- checkDataStructure(
-    data = data
+    data = data,
+    showMessages = showMessages
   )
 
   ### -----------------------------------------------------------------------###
@@ -662,9 +643,6 @@ centerExpandRegions <- function(data,
       "i" = "Output format is set to {.val tibble}."
     ))
   } else {
-    # show error message independent of parameter showMessages
-    options("rlib_message_verbosity" = "default")
-    
     cli::cli_abort(c(
       "x" = "Argument {.arg outputFormat} has to be one of the following
       values: {.val GenomicRanges}, {.val tibble}, or {.val data.frame}.",
