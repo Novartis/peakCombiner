@@ -164,5 +164,4 @@ data_center_expand <- centerExpandRegions(
 
 data_center_expand
 
-Extract info about genome from GenomicRanges file
 }

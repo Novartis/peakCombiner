@@ -178,6 +178,4 @@ prepareInputRegions(
   showMessages = FALSE
 )
 
-Extract info about genome from GenomicRanges file
-Define parameter for make GenomicRanges object
 }

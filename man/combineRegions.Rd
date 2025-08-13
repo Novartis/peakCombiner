@@ -140,5 +140,4 @@ combineRegions(
   showMessages = TRUE
 )
 
-Extract info about genome from GenomicRanges file
 }
