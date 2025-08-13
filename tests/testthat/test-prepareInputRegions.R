@@ -78,7 +78,7 @@ test_that("Test if function works with correct input", {
 })
 
 test_that("Input data has at least 7 number of columns", {
-  expect_equal(length(colnames(test_data)), 7)
+  expect_equal(length(colnames(test_data)), 8)
 })
 
 test_that("Column names of input data are identical with required once.", {
@@ -90,7 +90,7 @@ test_that("Column names of input data are identical with required once.", {
 ### -----------------------------------------------------------------------###
 
 test_that("Input data has the right number of columns", {
-  expect_equal(length(input_colnames), 7)
+  expect_equal(length(input_colnames), 8)
 })
 
 test_that("Input column 'chr' is a class 'character'.", {

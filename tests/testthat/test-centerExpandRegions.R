@@ -35,7 +35,7 @@ test_data_center_expand <- peakCombiner::centerExpandRegions(
   data = test_data_prepared,
   centerBy = "center_column",
   outputFormat = "tibble",
-  expandBy = 200,
+  expandBy = 9e0,
   showMessages = FALSE
 )
 
@@ -44,8 +44,8 @@ test_data_center_expand <- peakCombiner::centerExpandRegions(
   centerBy = "midpoint",
   outputFormat = "tibble",
   genome = "hg38",
-  expandBy = 200,
-  showMessages = FALSE
+  expandBy = 90,
+  showMessages = F
 )
 
 
@@ -321,7 +321,7 @@ testthat:: test_that("Output data frame is correct for pre-combined", {
   
   testthat::expect_equal(mean(data$center), 2954.761905)
   testthat::expect_identical(nrow(data), as.integer(42))
-  testthat::expect_identical(data$start[1], 449L)
+  testthat::expect_identical(data$start[1], 559L)
 })
 
 test_that("Output data frame is correct for post-combined", {
@@ -339,10 +339,10 @@ test_that("Output data frame is correct for post-combined", {
   testthat::expect_true(is.numeric(data$score))
   testthat::expect_true(is.character(data$strand))
   testthat::expect_true(is.numeric(data$center))
-  testthat::expect_equal(mean(data$center), 3312.50)
+  testthat::expect_equal(mean(data$center), 3318.750)
   testthat::expect_identical(nrow(data), as.integer(8))
-  testthat::expect_identical(data$start[1], 249)
-  testthat::expect_identical(data$end[1], 848)
+  testthat::expect_identical(data$start[1], 459)
+  testthat::expect_identical(data$end[1], 738)
 })
 
 testthat:: test_that("Output data frame is correct for data_prepared", {

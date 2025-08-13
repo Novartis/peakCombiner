@@ -38,7 +38,7 @@ test_that("Test if function works with correct input", {
 test_that("Required colnumn names has the expected structure", {
   data <- test_data
 
-  expect_equal(length(input_colnames), 7)
+  expect_equal(length(input_colnames), 8)
   expect_identical(names(test_data_prepared), required_colnames)
   expect_true(is.character(data$chrom))
   expect_true(is.numeric(data$start))

@@ -48,7 +48,7 @@ result_colnames <- colnames(test_data_disjoin_filter)
 test_that("Input data frame has the expected structure", {
   data <- test_data_filtered
   ##
-  expect_equal(length(input_colnames), 7)
+  expect_equal(length(input_colnames), 8)
   expect_identical(names(data), required_colnames)
   expect_true(is.character(data$chrom))
   expect_true(is.numeric(data$start))
