@@ -529,7 +529,7 @@ prepareInputRegions <- function(
   }
 
   ### -----------------------------------------------------------------------###
-  ## Seclect required column
+  ## Select required column
   data_prepared <-
     data_prepared |>
     dplyr::select(tidyselect::all_of(output_colnames))
@@ -541,7 +541,29 @@ prepareInputRegions <- function(
     data = data_prepared,
     showMessages = showMessages
   )
-
+  ### -----------------------------------------------------------------------###
+  ### Show or hide messages
+  ### -----------------------------------------------------------------------###
+  
+  if (!is.logical(showMessages)) {
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} has to be {.cls logical}."
+    ))
+  } else if (isTRUE(showMessages)) {
+    options("rlib_message_verbosity" = "default")
+  } else if (isFALSE(showMessages)) {
+    options("rlib_message_verbosity" = "quiet")
+  } else {
+    # show error message independent of parameter showMessages
+    options("rlib_message_verbosity" = "default")
+    
+    cli::cli_abort(c(
+      "x" = "Argument {.arg showMessages} is a non-accepted {.cls logical}
+      value.",
+      "i" = "Argument {.arg showMessages} is {.val {showMessages}}."
+    ))
+  }
+  
   ### -----------------------------------------------------------------------###
   ### Collapse duplicated regions within each sample to unique coordinates
   ### -----------------------------------------------------------------------###
@@ -602,7 +624,7 @@ prepareInputRegions <- function(
         
       } else if (starsAreBased %in% c(0, NA)) {
         data_prepared <- data_prepared |>
-          dplyr::mutate(start = start + 1)
+          dplyr::mutate(start = .data$start + 1)
         }
       
     }
