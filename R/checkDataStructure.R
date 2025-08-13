@@ -59,10 +59,7 @@ checkDataStructure <- function(data,
   ### -----------------------------------------------------------------------###
 
   if (!exists("data")) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_abort(c(
+     cli::cli_abort(c(
       "x" = "{.arg data} does not exist."
     ))
   }
@@ -83,9 +80,6 @@ checkDataStructure <- function(data,
   )
 
   if (length(cols_w_na) > 0) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_abort(c(
       "x" = "Data contains {.val NA} values in {length(cols_w_na)} columns.",
       "!" = "The following column{?s} contain{?s/} {.val NA}{?s}:
@@ -101,10 +95,7 @@ checkDataStructure <- function(data,
   ## Check chrom
 
   if (!is.character(data$chrom)) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
-    cli::cli_alert(c(
+     cli::cli_inform(c(
       ">" = "Column {.field 'chrom'} is not class {.cls character}. It will be
       converted to class {.cls character}."
     ))
@@ -118,9 +109,6 @@ checkDataStructure <- function(data,
   ## Check start
 
   if (!is.numeric(data$start)) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_alert(c(
       ">" = "Column {.field 'start'} is not class {.cls numeric}. It will be
       converted to class {.cls numeric}."
@@ -135,9 +123,6 @@ checkDataStructure <- function(data,
   ## Check end
 
   if (!is.numeric(data$end)) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_alert(c(
       "x" = "Column {.field 'end'} is not {.cls numeric}. It will be converted
       to {.cls numeric}."
@@ -162,9 +147,6 @@ checkDataStructure <- function(data,
       data |>
       dplyr::filter((.data$end - .data$start) >= 0)
 
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_alert(c(
       "x" = "Column {.field 'end'} is smaller than column 'start' in
       {n_negative_widths} rows. These rows have been deleted."
@@ -177,9 +159,6 @@ checkDataStructure <- function(data,
   ## Check name
 
   if (!is.character(data$name)) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_alert(c(
       ">" = "Column {.field 'name'} is not class {.cls name}. It will be
       converted to class {.cls name}."
@@ -193,9 +172,6 @@ checkDataStructure <- function(data,
   ### -----------------------------------------------------------------------###
   ## Check for score class
   if (!is.numeric(data$score)) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_alert(c(
       "x" = "Column {.field 'score'} is not class {.cls numeric}. It will be
       converted to class {.cls numeric}."
@@ -208,9 +184,6 @@ checkDataStructure <- function(data,
   ### -----------------------------------------------------------------------###
   ## Check for strand class
   if (!is.character(data$strand)) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_alert(c(
       "x" = "Column {.field 'strand'} is not class {.cls character}. It will be
       converted to class {.cls character}."
@@ -229,9 +202,6 @@ checkDataStructure <- function(data,
     dplyr::pull()
 
   if (n_unaccepted_strand_values > 0) {
-    # show error message independent of parameter show_messages
-    options("rlib_message_verbosity" = "default")
-
     cli::cli_abort(c(
       "x" = "Column {.field strand} contains {n_unaccepted_strand_values}
       row{?s} with unexpected values.",
