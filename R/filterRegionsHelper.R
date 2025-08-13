@@ -15,7 +15,7 @@
 #'
 filterByChromosomeNames <- function(data,
                                     includeByChromosomeName = NULL,
-                                    showMessages = FALSE) {
+                                    showMessages = TRUE) {
   
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
@@ -198,7 +198,7 @@ filterByChromosomeNames <- function(data,
 #'
 filterByBlacklist <- function(data,
                               excludeByBlacklist = NULL,
-                              showMessages = FALSE) {
+                              showMessages = TRUE) {
   
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
@@ -232,7 +232,6 @@ filterByBlacklist <- function(data,
   ##
   ##
   
-  required_colnames_blacklist <- c("chrom", "start", "end")
 
   ### -----------------------------------------------------------------------###
   ### Pre-Check up
@@ -260,6 +259,8 @@ filterByBlacklist <- function(data,
 
     return(data)
   } else if (is.data.frame(excludeByBlacklist)) {
+    required_colnames_blacklist <- c("chrom", "start", "end")
+    
     ## Check for correct colnames
     colnames(excludeByBlacklist) <- tolower(colnames(excludeByBlacklist))
 
@@ -314,12 +315,13 @@ filterByBlacklist <- function(data,
       dplyr::ungroup()
     
     } else {
-    cli::cli_inform(c(
-      ">" = "Blacklist for annotation {.val {excludeByBlacklist}} will be
-      used for filtering."
-    ))
-      } 
-
+      cli::cli_abort(c(
+        "x" = "The argument {.arg excludeByBlacklist} contains an 
+        invalide value.",
+        "i" = "The provided value is {.val {excludeByBlacklist}}"
+      ))
+    } 
+  
   ### -----------------------------------------------------------------------###
   ### Filter by blacklist
   ### -----------------------------------------------------------------------###
@@ -453,7 +455,7 @@ filterByBlacklist <- function(data,
 #'
 filterBySignificance <- function(data,
                                  includeAboveScoreCutoff = NULL,
-                                 showMessages = FALSE) {
+                                 showMessages = TRUE) {
   
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
@@ -569,7 +571,7 @@ filterBySignificance <- function(data,
 filterByTopEnriched <- 
   function(data,
            includeTopNScoring = includeTopNScoring,
-           showMessages = FALSE) {
+           showMessages = TRUE) {
   
   ### -----------------------------------------------------------------------###
   ### Show or hide messages
