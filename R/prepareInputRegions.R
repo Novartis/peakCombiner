@@ -240,7 +240,6 @@ prepareInputRegions <- function(
       "i" = "Input data {.arg data} is a class {.cls GRanges}."
     ))    
     
-    #' Extract info about genome from GenomicRanges file
     input_file_genome <- GenomeInfoDb::genome(data) |> unique()
     
     if (length(input_file_genome) > 1) {
@@ -318,7 +317,6 @@ prepareInputRegions <- function(
       "i" = "Argument {.arg starsAreBased} is {.val {starsAreBased}}."
     ))
     
-    #' Define parameter for make GenomicRanges object
     if (starsAreBased == 1) {
       starts.in.df.are.0based <- FALSE
       cli::cli_inform(c(

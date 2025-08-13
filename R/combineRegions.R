@@ -171,7 +171,6 @@ combineRegions <- function(data,
       "i" = "Input data {.arg data} is a class {.cls GRanges}."
     ))    
     
-    #' Extract info about genome from GenomicRanges file
     input_file_genome <- GenomeInfoDb::genome(data) |> unique()
     
     if (length(input_file_genome) > 1) {

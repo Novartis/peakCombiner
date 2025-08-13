@@ -67,9 +67,9 @@ synthetic_data <- tibble("chr1", 200, 900, NA, 100, ".", 500, "treatment_rep1") 
 write_tsv(synthetic_data, "data-raw/synthetic_data.bed")
 
 syn_data_tibble <- synthetic_data |> 
-  mutate(center = center - start +1) |>
-  select(-name) |>
-  relocate(sample_name, .after = end)
+  mutate(center = center - start +1) #|>
+  #select(-name) |>
+  #relocate(sample_name, .after = end)
 usethis::use_data(syn_data_tibble, overwrite = TRUE)
 ###Save as GRanges
 #syn_data_granges <- as(syn_data_tibble, "GRanges") |> data.frame() |> select(-name) #|>
