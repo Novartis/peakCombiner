@@ -160,7 +160,7 @@ filterRegions <- function(data,
   ### -----------------------------------------------------------------------###
   ## Check the validity of the peakCombiner input data format
   data <- checkDataStructure(
-    data = data_filtered, 
+    data = data, 
     showMessages = showMessages
   )
   
