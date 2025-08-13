@@ -83,10 +83,6 @@ library("ggplot2")
 
 # An overview of a complete run
 Here you find an overview of a complete run of the `r Biocpkg("peakCombiner")` recommended workflow.
-```{r, eval=F}
-#devtools::load_all()
-#library("peakCombiner")
-```
 
 Lets use some of the provided synthetic data sets.
 ```{r, eval=TRUE}
@@ -163,9 +159,11 @@ rtracklayer::export.bed(consensus_final, paste0(here::here(), "/lists/consensus_
 # Prepare input data
 In this section, we explain how to prepare the accepted, standardized input files and how to add needed features to these files. `prepareInputRegions` is the mandatory first step to prepare your input data in the format needed for all of the following steps in `r Biocpkg("peakCombiner")` (for details see section "[Standard genomic regions format]"). This function accepts three types of input formats: 
 
-+ a tibble or data.frame of genomic regions and specifically named columns, 
-+ a GenomicRanges object of genomic regions and specifically named columns, or 
++ a GenomicRanges object of genomic regions and specifically named columns,
++ a tibble or data.frame of genomic regions and specifically named columns, or 
 + a tibble (sample sheet) that specifies file paths of BED-like files for a set of samples (e.g. standard output files from peak callers like ‘narrowPeak’ files).
+
+*Please note* when a GenomicRanges object, a tibble or data.frame (not the sample sheet) is used as input, the package assumes the input is 1-based. When using a sample sheet, the input is expected to be a standard BED (or BED-like) file which is 0-based. The packages takes care of this for the user and all outputs are 1-based to be aligned with GenomicRanges. 
 
 *Please note* that the function `prepareInputRegions` also has a filtering step, which automatically checks for genomic regions with the same values in the columns 'chrom', 'start', 'end' and 'sample_name' and filters for the strongest enriched summit (based on the 'score' values) per region. Additional summits are removed. Regions from peak callers can have multiple summits annotated per enriched genomic regions. This step is *not optional*.
 
@@ -211,9 +209,22 @@ combined_input |>
 prepareInputRegions(
   data = combined_input,
   outputFormat = "tibble",
+  starsAreBased = 1,
   showMessages = FALSE
 )
 ```
+
+If you set the `starsAreBased = 0`, the package assumes the input is 0-based and the value in the column `start` is adjusted. 
+
+```{r, eval=TRUE}
+prepareInputRegions(
+  data = combined_input,
+  outputFormat = "tibble",
+  starsAreBased = 0,
+  showMessages = FALSE
+)
+```
+
 
 ## Load from sample sheet
 We recommend that you use a sample sheet to prepare your data, especially if you have 'narrowPeak' or 'broadPeak' files. `prepareInputRegions` loads in the genomic regions file and formats them so that they are ready to be used in peakCombiner’s other functions. The sample sheet has three required columns and one optional column, and is described as follows.
@@ -224,6 +235,8 @@ We recommend that you use a sample sheet to prepare your data, especially if you
 |'file_path' | required  | Path to the file in which the genomic regions are stored. | For example, the path to a 'BED' or 'narrowPeak' file. Can be a relative path.
 |'file_format' | required | Recognized values are: 'BED', 'narrowPeak', and 'broadPeak'. | Used to correctly name columns from input files. Must be the same for all samples loaded at once.
 |'score_colname' | optional | The exact name of the original column to be used as score or the number of the column having the the metric used to rank peak importance, where bigger values are more important. | If not provided, column '9' will be used for 'narrowPeak' or 'broadPeak' file formats. Column '9' corresponds to the `qValue` as described in the UCSC documentation [here](https://genome.ucsc.edu/FAQ/FAQformat.html#format12).
+
+*Please note* if you load your data with a sample_sheet, the loaded BEd (BED-like) files are supposed to be in 0-based and consequently the starting coordinate will be ajusted to have the output as 1-based.
 
 The following code illustrates how you prepare an accepted sample sheet in R.
 
@@ -255,6 +268,7 @@ sample_sheet
     ```{r, eval = FALSE}
 prepareInputRegions(
   data = sample_sheet,
+  starsAreBased = 0,
   showMessages = FALSE
 )
     ```
@@ -329,6 +343,7 @@ combined_input |>
 prepareInputRegions(
   data = combined_input,
   outputFormat = "tibble",
+  starsAreBased = 1,
   showMessages = FALSE
 )
     ```
@@ -384,6 +399,8 @@ syn_data_bed |>
   dplyr::arrange(sample_name)
 ```
 
+By default the chromosomal coordinates are 0-based.
+
 When we pull the 'sample_name' column we see the different number of entries for each sample name.
 
 ```{r, eval=TRUE}
@@ -398,7 +415,8 @@ And now we use it as input for `prepareInputRegions`.
 prepareInputRegions(
   data = syn_data_bed,
   outputFormat = "data.frame",
-  showMessages = TRUE
+   starsAreBased = 0,
+  showMessages = FALSE
 )
 ```
 
@@ -707,7 +725,7 @@ mcols(dm)["AH107343","description"]
 blacklist_ah
 ```
 
-```{r apply_downloaded_blacklist_bed, eval=FALSE}
+```{r apply_annotationhub_blacklist, eval=FALSE}
 filterRegions(
   data = data_center_expand,
   excludeByBlacklist = blacklist_ah,
