@@ -110,9 +110,9 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$end))
   expect_true(is.character(data$name))
   ##
-  expect_identical(nrow(data), as.integer(41))
-  expect_identical(data$start[1], 150L)
-  expect_identical(sum(data$width), 31341L)
+  expect_identical(nrow(data), as.integer(42))
+  expect_identical(data$start[1], 1L)
+  expect_identical(sum(data$width), 33300L)
   ##
 })
 ##

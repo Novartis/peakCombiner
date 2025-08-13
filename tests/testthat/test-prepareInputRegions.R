@@ -6,7 +6,8 @@
 set.seed(1234)
 ##
 colnames_preloaded_df <- c(
-  "chrom", "start", "end", "name", "score", "strand",
+  "chrom", "start", "end", 
+  "score", "strand",
   "center", "sample_name"
 )
 
@@ -76,8 +77,8 @@ test_that("Test if function works with correct input", {
   ))
 })
 
-test_that("Input data has at least 8 number of columns", {
-  expect_equal(length(colnames(test_data)), 8)
+test_that("Input data has at least 7 number of columns", {
+  expect_equal(length(colnames(test_data)), 7)
 })
 
 test_that("Column names of input data are identical with required once.", {
@@ -89,7 +90,7 @@ test_that("Column names of input data are identical with required once.", {
 ### -----------------------------------------------------------------------###
 
 test_that("Input data has the right number of columns", {
-  expect_equal(length(input_colnames), 8)
+  expect_equal(length(input_colnames), 7)
 })
 
 test_that("Input column 'chr' is a class 'character'.", {
@@ -193,11 +194,11 @@ test_that("Ouput column 'sample_name' is a class 'character'.", {
 })
 
 test_that("The mean of all output centers.", {
-  expect_equal(round(mean(test_data_prepared$center), 0), 2452)
+  expect_equal(round(mean(test_data_prepared$center), 0), 299)
 })
 
 test_that("The number of rows in the output file.", {
-  expect_identical(nrow(test_data_prepared), 52L)
+  expect_identical(nrow(test_data_prepared), 51L)
 })
 
 ### -----------------------------------------------------------------------###

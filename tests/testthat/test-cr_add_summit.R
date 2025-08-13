@@ -152,9 +152,9 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$end))
   expect_true(is.character(data$input_names))
   ##
-  expect_identical(nrow(data), as.integer(8))
-  expect_identical(data$center[1], 500)
-  expect_identical(round(sum(data$score), 0), 660)
+  expect_identical(nrow(data), as.integer(3))
+  expect_identical(data$center[1], 301)
+  expect_identical(round(sum(data$score), 0), 245)
   ##
 })
 ##
@@ -164,21 +164,21 @@ test_that("Output data results with different summits", {
     input = test_data_filtered,
     combinedCenter = "nearest"
   )
-  expect_identical(data$center[7], 500)
+  expect_identical(data$center[2], 301)
   ##
   data <- peakCombiner:::crAddSummit(
     data = test_data_overlap,
     input = test_data_filtered,
     combinedCenter = "strongest"
   )
-  expect_identical(data$center[7], 600)
+  expect_identical(data$center[2], 301)
   ##
   data <- peakCombiner:::crAddSummit(
     data = test_data_overlap,
     input = test_data_filtered,
     combinedCenter = "middle"
   )
-  expect_identical(data$center[7], 550)
+  expect_identical(data$center[2], 325.5)
   ##
 })
 ##

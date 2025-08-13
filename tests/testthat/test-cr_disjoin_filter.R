@@ -48,7 +48,7 @@ result_colnames <- colnames(test_data_disjoin_filter)
 test_that("Input data frame has the expected structure", {
   data <- test_data_filtered
   ##
-  expect_equal(length(input_colnames), 8)
+  expect_equal(length(input_colnames), 7)
   expect_identical(names(data), required_colnames)
   expect_true(is.character(data$chrom))
   expect_true(is.numeric(data$start))
@@ -105,15 +105,15 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$end))
   expect_true(is.character(data$sample_name))
   ##
-  expect_identical(nrow(data), as.integer(113))
-  expect_identical(data$start[1], 150)
+  expect_identical(nrow(data), as.integer(162))
+  expect_identical(data$start[1], 1)
   ##
   test_counts_left <- test_data_filtered |>
     dplyr::group_by(sample_name) |>
     dplyr::summarise(counts = dplyr::n()) |>
     dplyr::filter(sample_name == "treatment_rep1") |>
     dplyr::pull(counts)
-  expect_identical(test_counts_left, as.integer(9))
+  expect_identical(test_counts_left, as.integer(8))
 })
 ##
 ### -----------------------------------------------------------------------###

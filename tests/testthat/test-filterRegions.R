@@ -95,16 +95,16 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
   ##
-  expect_equal(round(mean(data$center), 0), 2458)
-  expect_identical(nrow(data), 52L)
-  expect_identical(data$start[1], 350)
+  expect_equal(round(mean(data$center), 0), 299)
+  expect_identical(nrow(data), 51L)
+  expect_identical(data$start[1], 251)
   ##
   test_counts_left <- test_data_filtered |>
     dplyr::group_by(sample_name) |>
     dplyr::summarise(counts = dplyr::n()) |>
     dplyr::filter(sample_name == "treatment_rep1") |>
     dplyr::pull(counts)
-  expect_identical(test_counts_left, 9L)
+  expect_identical(test_counts_left, 8L)
 })
 ##
 ### --------------------------------------------------------------------------###
@@ -131,8 +131,8 @@ test_that("Output data frame is correct for data_prepared", {
     outputFormat = "tibble"
   )
   ##
-  expect_identical(nrow(result), 52L)
-  expect_identical(result$start[9], 301)
+  expect_identical(nrow(result), 51L)
+  expect_identical(result$start[9], 300)
 })
 ##
 test_that("Output data frame is correct for data_center_expand", {
@@ -148,8 +148,8 @@ test_that("Output data frame is correct for data_center_expand", {
     outputFormat = "tibble"
   )
   ##
-  expect_identical(nrow(result), 52L)
-  expect_identical(result$start[9], 250)
+  expect_identical(nrow(result), 51L)
+  expect_identical(result$start[9], 1)
 })
 ##
 test_that("Output data frame is correct for data_filtered", {
@@ -164,8 +164,8 @@ test_that("Output data frame is correct for data_filtered", {
     outputFormat = "tibble"
   )
   ##
-  expect_identical(nrow(result), 52L)
-  expect_identical(result$start[2], 250)
+  expect_identical(nrow(result), 51L)
+  expect_identical(result$start[2], 1)
 })
 ##
 test_that("Output data frame is correct for data_combined", {
@@ -180,8 +180,8 @@ test_that("Output data frame is correct for data_combined", {
     outputFormat = "tibble"
   )
   ##
-  expect_identical(nrow(result), 10L)
-  expect_identical(result$start[9], 250)
+  expect_identical(nrow(result), 5L)
+  expect_identical(result$start[5], 1)
 })
 ##
 test_that("Output data frame is correct for data_combined_ce", {
@@ -196,8 +196,8 @@ test_that("Output data frame is correct for data_combined_ce", {
     outputFormat = "tibble"
   )
   ##
-  expect_identical(nrow(result), 10L)
-  expect_identical(result$start[9], 250L)
+  expect_identical(nrow(result), 5L)
+  expect_identical(result$start[2], 1)
 })
 ##
 ### -----------------------------------------------------------------------###

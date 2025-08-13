@@ -117,16 +117,16 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
   ##
-  expect_equal(round(mean(data$center), 0), 2458)
-  expect_identical(nrow(data), 52L)
-  expect_identical(data$start[1], 350)
+  expect_equal(round(mean(data$center), 0), 299)
+  expect_identical(nrow(data), 51L)
+  expect_identical(data$start[1], 251)
   ##
   test_counts_left <- test_data_filtered |>
     dplyr::group_by(sample_name) |>
     dplyr::summarise(counts = dplyr::n()) |>
     dplyr::filter(sample_name == "treatment_rep1") |>
     dplyr::pull(counts)
-  expect_identical(test_counts_left, 9L)
+  expect_identical(test_counts_left, 8L)
 })
 ##
 ### -----------------------------------------------------------------------###

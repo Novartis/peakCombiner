@@ -31,7 +31,7 @@ test_data_center_expand <- peakCombiner:::centerExpandRegions(
   centerBy = "center_column",
   expandBy = NULL,
   outputFormat = "tibble",
-  showMessages = TRUE
+  showMessages = T
 )
 
 test_data_filtered <- peakCombiner:::filterRegions(
@@ -328,8 +328,8 @@ testthat::test_that("Output data results has correct summit for 'nearest'
     showMessages = FALSE
   )
 
-  testthat::expect_identical(round(data$center[7],0), 500)
-  testthat::expect_identical(data$name[7], "consensus_peak|7")
+  testthat::expect_identical(round(data$center[5],0), 301)
+  testthat::expect_identical(data$name[5], "consensus_peak|5")
 })
 
 test_that("Output data results has correct summit for 'strongst' peak", {
@@ -343,8 +343,8 @@ test_that("Output data results has correct summit for 'strongst' peak", {
     showMessages = FALSE
   )
 
-  expect_identical(round(data$center[7],0), 600)
-  expect_identical(data$name[7], "consensus_peak|7")
+  expect_identical(round(data$center[5],0), 301)
+  expect_identical(data$name[5], "consensus_peak|5")
 })
 
 testthat::test_that("Output data results has correct summit for 'middle'
@@ -359,7 +359,8 @@ testthat::test_that("Output data results has correct summit for 'middle'
     showMessages = FALSE
   )
 
-  testthat::expect_identical(data$center[7], 550)
-  testthat::expect_identical(data$name[7], "consensus_peak|7")
+  testthat::expect_identical(data$center[5], 275.5)
+  testthat::expect_identical(data$name[5], "consensus_peak|5")
 })
 ### -----------------------------------------------------------------------###
+

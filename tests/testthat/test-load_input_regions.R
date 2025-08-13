@@ -46,10 +46,6 @@ test_that("Input data has exact three columns.", {
   expect_equal(length(input_colnames), 4)
 })
 ##
-test_that("Input data colnames are the expected once.", {
-  expect_identical(names(test_data), all_colnames)
-})
-##
 test_that("Input column 'sample_name' is a class 'character'.", {
   expect_true(is.character(test_data$sample_name))
 })

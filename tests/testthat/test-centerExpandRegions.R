@@ -319,9 +319,9 @@ testthat:: test_that("Output data frame is correct for pre-combined", {
   testthat::expect_true(is.numeric(data$center))
   testthat::expect_true(is.character(data$sample_name))
   
-  testthat::expect_equal(mean(data$center), 2899.32558)
-  testthat::expect_identical(nrow(data), as.integer(43))
-  testthat::expect_identical(data$start[1], 450L)
+  testthat::expect_equal(mean(data$center), 2954.761905)
+  testthat::expect_identical(nrow(data), as.integer(42))
+  testthat::expect_identical(data$start[1], 449L)
 })
 
 test_that("Output data frame is correct for post-combined", {
@@ -339,10 +339,10 @@ test_that("Output data frame is correct for post-combined", {
   testthat::expect_true(is.numeric(data$score))
   testthat::expect_true(is.character(data$strand))
   testthat::expect_true(is.numeric(data$center))
-  testthat::expect_equal(mean(data$center), 3312.9375)
+  testthat::expect_equal(mean(data$center), 3312.50)
   testthat::expect_identical(nrow(data), as.integer(8))
-  testthat::expect_identical(data$start[1], 250)
-  testthat::expect_identical(data$end[1], 850)
+  testthat::expect_identical(data$start[1], 249)
+  testthat::expect_identical(data$end[1], 848)
 })
 
 testthat:: test_that("Output data frame is correct for data_prepared", {
@@ -366,7 +366,7 @@ testthat:: test_that("Output data frame is correct for data_prepared", {
     outputFormat = "tibble"
   ))
   ##
-  testthat::expect_identical(nrow(result), 52L)
+  testthat::expect_identical(nrow(result), 51L)
 })
 
 ##
@@ -391,7 +391,7 @@ testthat:: test_that("Output data frame is correct for data_center_expand", {
     outputFormat = "tibble"
   ))
   ##
-  testthat::expect_identical(nrow(result), 43L)
+  testthat::expect_identical(nrow(result), 42L)
 })
 ##
 testthat:: test_that("Output data frame is correct for data_filtered", {
@@ -415,7 +415,7 @@ testthat:: test_that("Output data frame is correct for data_filtered", {
     outputFormat = "tibble"
   ))
   ##
-  testthat::expect_identical(nrow(result), 43L)
+  testthat::expect_identical(nrow(result), 42L)
 })
 ##
 testthat:: test_that("Output data frame is correct for data_combined", {

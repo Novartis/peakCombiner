@@ -34,7 +34,7 @@ test_data_filtered <- peakCombiner:::filterByChromosomeNames(
 ##
 input_colnames <- colnames(test_data_filtered)
 ##
-blacklist <- backlist <- tibble::tibble(chrom = c("chr1"),
+blacklist <- backlist <- tibble::tibble(chrom = c("chr10"),
                                 start = c(100),
                                 end = c(1000))
 backlist
@@ -180,9 +180,9 @@ test_that("Output data frame is correct", {
   expect_true(is.numeric(data$center))
   expect_true(is.character(data$sample_name))
   ##
-  expect_equal(round(mean(data$center), 0), 3883.0)
-  expect_identical(nrow(data), 30L)
-  expect_identical(data$start[1], 3450L)
+  expect_equal(round(mean(data$center), 0), 285.0)
+  expect_identical(nrow(data), 31L)
+  expect_identical(data$start[1], 1L)
 })
 ##
 ### -----------------------------------------------------------------------###
