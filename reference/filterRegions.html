@@ -83,12 +83,12 @@ regions of interest.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filterRegions</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  include_by_chromosome_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  exclude_by_blacklist <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  include_above_score_cutoff <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  include_top_n_scoring <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  output_format <span class="op">=</span> <span class="st">"GenomicRanges"</span>,</span>
-<span>  show_messages <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  includeByChromosomeName <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  excludeByBlacklist <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  includeAboveScoreCutoff <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  includeTopNScoring <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  outputFormat <span class="op">=</span> <span class="st">"GenomicRanges"</span>,</span>
+<span>  showMessages <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -103,19 +103,20 @@ named <code>chrom</code>, <code>start</code>, <code>end</code>, <code>name</code
 columns will be maintained.</p></dd>
 
 
-<dt id="arg-include-by-chromosome-name">include_by_chromosome_name<a class="anchor" aria-label="anchor" href="#arg-include-by-chromosome-name"></a></dt>
+<dt id="arg-includebychromosomename">includeByChromosomeName<a class="anchor" aria-label="anchor" href="#arg-includebychromosomename"></a></dt>
 <dd><ul><li><p>'NULL' (default) - No chromosome name filtering will be done.
 * Character vector that contains chromosomes names to be retained.</p></li>
 </ul></dd>
 
 
-<dt id="arg-exclude-by-blacklist">exclude_by_blacklist<a class="anchor" aria-label="anchor" href="#arg-exclude-by-blacklist"></a></dt>
+<dt id="arg-excludebyblacklist">excludeByBlacklist<a class="anchor" aria-label="anchor" href="#arg-excludebyblacklist"></a></dt>
 <dd><ul><li><p>'NULL' (default) - No blacklist filtering will be done.
-* Data frame or tibble with columns <code>chrom</code>, <code>start</code>, and <code>end</code>.</p></li>
+* GenomicRanges object (default setup) or data frame/tibble with
+columns <code>chrom</code>, <code>start</code>, and <code>end</code>.</p></li>
 </ul></dd>
 
 
-<dt id="arg-include-above-score-cutoff">include_above_score_cutoff<a class="anchor" aria-label="anchor" href="#arg-include-above-score-cutoff"></a></dt>
+<dt id="arg-includeabovescorecutoff">includeAboveScoreCutoff<a class="anchor" aria-label="anchor" href="#arg-includeabovescorecutoff"></a></dt>
 <dd><ul><li><p>'NULL' (default) - No score filtering will be done.
 * Single numeric value that defines the <code>score</code> threshold above
 which all genomic regions will be retained. This results in
@@ -123,22 +124,22 @@ variable number of sites per sample.</p></li>
 </ul></dd>
 
 
-<dt id="arg-include-top-n-scoring">include_top_n_scoring<a class="anchor" aria-label="anchor" href="#arg-include-top-n-scoring"></a></dt>
+<dt id="arg-includetopnscoring">includeTopNScoring<a class="anchor" aria-label="anchor" href="#arg-includetopnscoring"></a></dt>
 <dd><ul><li><p>'NULL' (default) - No score filtering will be done.
 * Single numeric value representing the number of genomic regions
 per sample to be retained. The genomic regions are selected from
-highest to lowest score, and if include_top_n_scoring &gt; number of
+highest to lowest score, and if includeTopNScoring &gt; number of
 regions, then no filtering is done.</p></li>
 </ul></dd>
 
 
-<dt id="arg-output-format">output_format<a class="anchor" aria-label="anchor" href="#arg-output-format"></a></dt>
+<dt id="arg-outputformat">outputFormat<a class="anchor" aria-label="anchor" href="#arg-outputformat"></a></dt>
 <dd><p>Character value to define format of output object.
 Accepted values are "GenomicRanges" (default), "tibble"
 or "data.frame".</p></dd>
 
 
-<dt id="arg-show-messages">show_messages<a class="anchor" aria-label="anchor" href="#arg-show-messages"></a></dt>
+<dt id="arg-showmessages">showMessages<a class="anchor" aria-label="anchor" href="#arg-showmessages"></a></dt>
 <dd><p>Logical value of TRUE (default) or FALSE. Defines if
 info messages are displayed or not.</p></dd>
 
@@ -159,24 +160,26 @@ when there are many genomic regions identified in your peak-caller or
 input BED files.</p>
 <p>filterRegions can be used multiple times on the same data
 set, allowing a user to select regions of interest using a step-wise
-optimization approach.</p><ul><li><p><code>include_by_chromosome_name</code> -   Retains only chromosomes that are in the
+optimization approach.</p><ul><li><p><code>includeByChromosomeName</code> -   Retains only chromosomes that are in the
 provided vector. By not including
 mitochondrial, sex, or non-classical
 chromosomes, genomic regions found on
 these chromosomes can be removed. If set
 to 'NULL' (default), this step will be
 skipped (optional).</p></li>
-<li><p><code>exclude_by_blacklist</code> -         A data frame or tibble can be provided
-listing the genomic regions to remove
-(having <code>chrom</code>, <code>start</code>, and <code>end</code> column
-names). If set to 'NULL' (default), this
-step will be skipped (optional).
+<li><p><code>excludeByBlacklist</code> -         A GenomicRanges file, dataframe or tibble
+can be provided listing the genomic
+regions to remove (having <code>chrom</code> (
+<code>seqnames</code> for GenomicRanges) , <code>start</code>,
+and <code>end</code> column names). If set to 'NULL'
+(default), this step will be skipped
+(optional).
 Please note that if there are not matching
 entries in the 'chrom' columns of input
 and blacklist, an information message is
-displayed. This can happend und does not
+displayed. This can happend and does not
 cause any problems with the script.</p></li>
-<li><p><code>include_above_score_cutoff</code> -   Single numeric value that defines the
+<li><p><code>includeAboveScoreCutoff</code> -   Single numeric value that defines the
 <code>score</code> threshold above which all genomic
 regions will be retained. The <code>score</code>
 column in the peakCombiner input data
@@ -189,15 +192,15 @@ file from MACS2 as input). Importantly,
 applying this filter retains a variable
 number of genomic regions per sample, all
 having a score greater than the
-<code>include_above_score_cutoff</code> parameter. If
+<code>includeAboveScoreCutoff</code> parameter. If
 set to 'NULL' (default), this step will
 be skipped (optional).</p></li>
-<li><p><code>include_top_n_scoring</code> -        Single numeric value that defines how many
+<li><p><code>includeTopNScoring</code> -        Single numeric value that defines how many
 of the top scoring genomic regions (using
 the column <code>score</code>) are retained. All
 other genomic regions are discarded.
 Importantly, applying this filter retains
-<code>include_top_n_scoring</code> regions per
+<code>includeTopNScoring</code> regions per
 sample, which means that the minimum
 enrichment levels may vary between
 samples. Note that if multiple genomic
@@ -218,10 +221,12 @@ skipped (optional).</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data_prepared</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepareInputRegions.html">prepareInputRegions</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">syn_data_bed</span>,</span></span>
-<span class="r-in"><span>  output_format <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
-<span class="r-in"><span>  show_messages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  outputFormat <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
+<span class="r-in"><span>  showMessages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `output_format` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `outputFormat` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `starsAreBased` is <span style="color: #0000BB;">1</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `starts.in.df.are.0based` is <span style="color: #0000BB;">FALSE</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provide input `data` is a pre-loaded <span style="color: #0000BB;">&lt;data.frame&gt;</span> with the required column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   names.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Start preparing data.</span>
@@ -248,42 +253,42 @@ skipped (optional).</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">filterRegions</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">data_prepared</span>,</span></span>
-<span class="r-in"><span>  include_by_chromosome_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span>, <span class="st">"chr4"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  exclude_by_blacklist <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>  include_above_score_cutoff <span class="op">=</span> <span class="fl">10</span>,</span></span>
-<span class="r-in"><span>  include_top_n_scoring <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>  output_format <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
-<span class="r-in"><span>  show_messages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  includeByChromosomeName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span>, <span class="st">"chr4"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  excludeByBlacklist <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  includeAboveScoreCutoff <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>  includeTopNScoring <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>  outputFormat <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
+<span class="r-in"><span>  showMessages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provide input `data` is a <span style="color: #0000BB;">&lt;data.frame&gt;</span> with three or four columns and paths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   to existing files.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start loading and preparing data.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `output_format` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Checking <span style="color: #0000BB;">&lt;class&gt;</span> and <span style="color: #0000BB;">"values"</span> of all columns.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Structure of data was successfully checked to be an accepted input.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → The argument `include_by_chromosome_name` is a class <span style="color: #0000BB;">&lt;character&gt;</span> of length 3</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   and will be used to retain matchhing chromsome names in <span style="color: #00BB00;">chrom</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Input for `include_by_chromosome_name` contains values not found in the input</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provide input `data` is a <span style="color: #0000BB;">&lt;data.frame&gt;</span> with three or four columns and paths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   to existing files.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → Start loading and preparing data.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `outputFormat` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → The argument `includeByChromosomeName` is a class <span style="color: #0000BB;">&lt;character&gt;</span> of length 3 and</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   will be used to retain matchhing chromsome names in <span style="color: #00BB00;">chrom</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Input for `includeByChromosomeName` contains values not found in the input</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   data.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following chromosome name you entered is not used: <span style="color: #0000BB;">"chr4"</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → <span style="font-style: italic;">Is </span><span style="color: #0000BB; font-style: italic;">"include_by_chromosome_name"</span><span style="font-style: italic;"> correctly defined?</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → <span style="font-style: italic;">Is </span><span style="color: #0000BB; font-style: italic;">"includeByChromosomeName"</span><span style="font-style: italic;"> correctly defined?</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Entries in <span style="color: #00BB00;">chrom</span> with the values <span style="color: #0000BB;">"chr1"</span> and <span style="color: #0000BB;">"chr2"</span> are retained.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The following 7 entries in column <span style="color: #00BB00;">chrom</span> from the input data were not</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   retained: <span style="color: #0000BB;">"Chr2"</span>, <span style="color: #0000BB;">"chr10"</span>, <span style="color: #0000BB;">"chr4 2"</span>, <span style="color: #0000BB;">"chr4-2"</span>, <span style="color: #0000BB;">"chr4|2"</span>, <span style="color: #0000BB;">"chr42"</span>, and</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">"chr4?2"</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Input data was filtered to retain regions on defined chromosome.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The argument `exclude_by_blacklist` is <span style="color: #0000BB;">"NULL"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The argument `excludeByBlacklist` is <span style="color: #0000BB;">"NULL"</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> No filtering by blacklisted regions is done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Significance in <span style="color: #00BB00;">score</span> is filtered and all regions above <span style="color: #0000BB;">10</span> will be retained.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> A total of 0 of 37 input regions are retained with value in <span style="color: #00BB00;">score</span> a above 10.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> A total of 0 of 36 input regions are retained with value in <span style="color: #00BB00;">score</span> a above 10.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Input data was filtered to retain regions with a <span style="color: #00BB00;">score</span> above the defined</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   threshold.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The argument `include_top_n_scoring` extracted the the top 100 regions by</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">score</span> per sample (based on the values in <span style="color: #00BB00;">sample_name</span>).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The argument `includeTopNScoring` extracted the the top 100 regions by <span style="color: #00BB00;">score</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   per sample (based on the values in <span style="color: #00BB00;">sample_name</span>).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → The top enriched 100 regions per sample will be retained.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Input data was filtered and the top 100 enriched regions per sample are</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   retained.</span>

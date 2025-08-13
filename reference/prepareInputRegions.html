@@ -73,8 +73,10 @@ each sample.</p></li>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prepareInputRegions</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  output_format <span class="op">=</span> <span class="st">"GenomicRanges"</span>,</span>
-<span>  show_messages <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  outputFormat <span class="op">=</span> <span class="st">"GenomicRanges"</span>,</span>
+<span>  genome <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  starsAreBased <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  showMessages <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -92,13 +94,32 @@ each sample.</p></li>
 </ul></dd>
 
 
-<dt id="arg-output-format">output_format<a class="anchor" aria-label="anchor" href="#arg-output-format"></a></dt>
+<dt id="arg-outputformat">outputFormat<a class="anchor" aria-label="anchor" href="#arg-outputformat"></a></dt>
 <dd><p>Character value to define format of output object.
 Accepted values are "GenomicRanges" (default), "tibble"
 or "data.frame".</p></dd>
 
 
-<dt id="arg-show-messages">show_messages<a class="anchor" aria-label="anchor" href="#arg-show-messages"></a></dt>
+<dt id="arg-genome">genome<a class="anchor" aria-label="anchor" href="#arg-genome"></a></dt>
+<dd><p>Character value to define the matching genome reference to
+the input data. Default value is NA. Allows values are
+based on GenomicRanges supported genomes like "GRCh38",
+"GRCh38.p13", "Amel_HAv3.1", "WBcel235", "TAIR10.1",
+"hg38", "mm10", "rn6", "bosTau9", "canFam3", "musFur1",
+"galGal6","dm6", "ce11", and "sacCer3". Please see also
+help for <code><a href="https://rdrr.io/pkg/Seqinfo/man/Seqinfo-class.html" class="external-link">GenomeInfoDb::Seqinfo()</a></code> for more details.</p></dd>
+
+
+<dt id="arg-starsarebased">starsAreBased<a class="anchor" aria-label="anchor" href="#arg-starsarebased"></a></dt>
+<dd><p>Either 0, 1 (Default), or NA. Define if the provided
+input data is 0 or 1-based. Only, if paramter is NA
+then GenomicRanges object, tibbles and dataframes are
+considered 1-based, while data loaded from a
+sample_sheet is considered 0-based (expected to load a
+BED file).</p></dd>
+
+
+<dt id="arg-showmessages">showMessages<a class="anchor" aria-label="anchor" href="#arg-showmessages"></a></dt>
 <dd><p>Logical value of TRUE (default) or FALSE. Defines if
 info messages are displayed or not.</p></dd>
 
@@ -180,8 +201,11 @@ region. This can occure when using called peak files as multiple summits can
 be annotated within the sqme genomic regions (defined by <code>chrom</code>, <code>start</code>
 and <code>end</code>). To avoid mutliple entries, this script is checking the input for
 multiple summits within the same regions and maintains only the strongest
-enriched (based on the values in the column <code>score</code>). This step is mantory
-to quaranty an optimal result.</p>
+enriched (based on the values in the column <code>score</code>). This step is mandatory
+to guaranty an optimal result.</p>
+<p>An additional option is to provide already here a genome (details see below)
+and maintain this information for the function
+<code><a href="centerExpandRegions.html">centerExpandRegions()</a></code>.</p>
     </div>
 
     <div id="ref-examples">
@@ -191,10 +215,12 @@ to quaranty an optimal result.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data_prepared</span> <span class="op">&lt;-</span> <span class="fu">prepareInputRegions</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">syn_data_tibble</span>,</span></span>
-<span class="r-in"><span>  output_format <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
-<span class="r-in"><span>  show_messages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  outputFormat <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
+<span class="r-in"><span>  showMessages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `output_format` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `outputFormat` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `starsAreBased` is <span style="color: #0000BB;">1</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `starts.in.df.are.0based` is <span style="color: #0000BB;">FALSE</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provide input `data` is a pre-loaded <span style="color: #0000BB;">&lt;data.frame&gt;</span> with the required column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   names.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Start preparing data.</span>
@@ -215,20 +241,20 @@ to quaranty an optimal result.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Preparation of data finished successfully.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Output format is set to <span style="color: #0000BB;">"tibble"</span>.</span>
 <span class="r-in"><span><span class="va">data_prepared</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 52 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 51 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    chrom  start   end name            score strand center sample_name </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Chr2     101   800 control_rep1|9     80 .         700 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr1     301  <span style="text-decoration: underline;">1</span>000 control_rep1|1     96 .         600 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr1    <span style="text-decoration: underline;">3</span>501  <span style="text-decoration: underline;">4</span>400 control_rep1|2     95 .        <span style="text-decoration: underline;">3</span>800 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr1    <span style="text-decoration: underline;">4</span>701  <span style="text-decoration: underline;">5</span>300 control_rep1|3     46 .        <span style="text-decoration: underline;">4</span>900 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr1    <span style="text-decoration: underline;">5</span>601  <span style="text-decoration: underline;">6</span>100 control_rep1|5     26 .        <span style="text-decoration: underline;">5</span>700 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr1    <span style="text-decoration: underline;">6</span>701  <span style="text-decoration: underline;">7</span>400 control_rep1|6     25 .        <span style="text-decoration: underline;">7</span>000 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr10    301  <span style="text-decoration: underline;">1</span>000 control_rep1|7     75 .         600 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2     301  <span style="text-decoration: underline;">1</span>000 control_rep1|8     50 .         600 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr4 2   301  <span style="text-decoration: underline;">1</span>000 control_rep1|10    30 .         600 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr4-2   401  <span style="text-decoration: underline;">1</span>100 control_rep1|11    20 .         600 control_rep1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 42 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Chr2     100   800 control_rep1|9     80 .         601 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr1     300  <span style="text-decoration: underline;">1</span>000 control_rep1|1     96 .         301 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr1    <span style="text-decoration: underline;">3</span>500  <span style="text-decoration: underline;">4</span>400 control_rep1|2     95 .         301 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr1    <span style="text-decoration: underline;">4</span>700  <span style="text-decoration: underline;">5</span>300 control_rep1|3     46 .         201 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr1    <span style="text-decoration: underline;">5</span>600  <span style="text-decoration: underline;">6</span>100 control_rep1|5     26 .         101 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr1    <span style="text-decoration: underline;">6</span>700  <span style="text-decoration: underline;">7</span>400 control_rep1|6     25 .         301 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr10    300  <span style="text-decoration: underline;">1</span>000 control_rep1|7     75 .         301 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2     300  <span style="text-decoration: underline;">1</span>000 control_rep1|8     50 .         301 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr4 2   300  <span style="text-decoration: underline;">1</span>000 control_rep1|10    30 .         301 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr4-2   400  <span style="text-decoration: underline;">1</span>100 control_rep1|11    20 .         201 control_rep1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 41 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or a pre-loaded tibble with genomic regions and named columns.</span></span></span>
 <span class="r-in"><span></span></span>
@@ -242,11 +268,9 @@ to quaranty an optimal result.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">prepareInputRegions</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">combined_input</span>,</span></span>
-<span class="r-in"><span>  output_format <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
-<span class="r-in"><span>  show_messages <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  outputFormat <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
+<span class="r-in"><span>  showMessages <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `output_format` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Output format is set to <span style="color: #0000BB;">"tibble"</span>.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 19 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    chrom  start   end name              score strand center sample_name   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span>

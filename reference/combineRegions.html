@@ -74,12 +74,12 @@ Please see <a href="prepareInputRegions.html">prepareInputRegions</a> for more d
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">combineRegions</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  found_in_samples <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  combined_center <span class="op">=</span> <span class="st">"nearest"</span>,</span>
-<span>  annotate_with_input_names <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  combined_sample_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  output_format <span class="op">=</span> <span class="st">"GenomicRanges"</span>,</span>
-<span>  show_messages <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  foundInSamples <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  combinedCenter <span class="op">=</span> <span class="st">"nearest"</span>,</span>
+<span>  annotateWithInputNames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  combinedSampleName <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  outputFormat <span class="op">=</span> <span class="st">"GenomicRanges"</span>,</span>
+<span>  showMessages <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -94,17 +94,17 @@ named <code>chrom</code>, <code>start</code>, <code>end</code>, <code>name</code
 columns will be dropped</p></dd>
 
 
-<dt id="arg-found-in-samples">found_in_samples<a class="anchor" aria-label="anchor" href="#arg-found-in-samples"></a></dt>
+<dt id="arg-foundinsamples">foundInSamples<a class="anchor" aria-label="anchor" href="#arg-foundinsamples"></a></dt>
 <dd><p>Only include genomic regions that are found
-in at least <code>found_in_samples</code> <strong>number</strong>
-of samples. If <code>found_in_samples</code> is a fraction
+in at least <code>foundInSamples</code> <strong>number</strong>
+of samples. If <code>foundInSamples</code> is a fraction
 between 0 and 1, then only include genomic
 regions that ar found in at least
-<code>found_in_samples</code> <strong>fraction</strong> of samples.
+<code>foundInSamples</code> <strong>fraction</strong> of samples.
 Default value is 2.</p></dd>
 
 
-<dt id="arg-combined-center">combined_center<a class="anchor" aria-label="anchor" href="#arg-combined-center"></a></dt>
+<dt id="arg-combinedcenter">combinedCenter<a class="anchor" aria-label="anchor" href="#arg-combinedcenter"></a></dt>
 <dd><p>Defines how the column 'center' will be
 populated for each genomic region in the output
 data. Allowed options are
@@ -117,7 +117,7 @@ to mean of the 'center's of all overlapping
 input regions (default)</p></dd>
 
 
-<dt id="arg-annotate-with-input-names">annotate_with_input_names<a class="anchor" aria-label="anchor" href="#arg-annotate-with-input-names"></a></dt>
+<dt id="arg-annotatewithinputnames">annotateWithInputNames<a class="anchor" aria-label="anchor" href="#arg-annotatewithinputnames"></a></dt>
 <dd><p>TRUE / FALSE (default). If TRUE, a new
 column named 'input_names' is created
 in the output data that is populated for
@@ -127,7 +127,7 @@ If the column 'input_names' already
 exists, it will be overwritten.</p></dd>
 
 
-<dt id="arg-combined-sample-name">combined_sample_name<a class="anchor" aria-label="anchor" href="#arg-combined-sample-name"></a></dt>
+<dt id="arg-combinedsamplename">combinedSampleName<a class="anchor" aria-label="anchor" href="#arg-combinedsamplename"></a></dt>
 <dd><p>Optionally defines how the column 'sample_name'
 is populated for the output data.
 If not used, then the default is to simply
@@ -136,13 +136,13 @@ sample_names into a single comma-separated
 string</p></dd>
 
 
-<dt id="arg-output-format">output_format<a class="anchor" aria-label="anchor" href="#arg-output-format"></a></dt>
+<dt id="arg-outputformat">outputFormat<a class="anchor" aria-label="anchor" href="#arg-outputformat"></a></dt>
 <dd><p>Character value to define format of output object.
 Accepted values are "GenomicRanges" (default), "tibble"
 or "data.frame".</p></dd>
 
 
-<dt id="arg-show-messages">show_messages<a class="anchor" aria-label="anchor" href="#arg-show-messages"></a></dt>
+<dt id="arg-showmessages">showMessages<a class="anchor" aria-label="anchor" href="#arg-showmessages"></a></dt>
 <dd><p>Logical value of TRUE (default) or FALSE. Defines if
 info messages are displayed or not.</p></dd>
 
@@ -161,14 +161,14 @@ described in full in the Details below. Use as input for functions
 combining overlapping genomic regions from different samples.
 The general steps within this function are:</p><ul><li><p>Identify overlapping genomic regions from the input samples</p></li>
 <li><p>Retain overlapping genomic regions that are found in at least
-<code>found_in_samples</code> samples. In this way, you can remove rare or
+<code>foundInSamples</code> samples. In this way, you can remove rare or
 sample-specific regions</p></li>
 <li><p>Note that overlapping genomic regions must contain at least one 'center'
 from its input sample regions to be considered a valid genomic region.</p></li>
 <li><p>As you can use the output data from this step again (e.g., to
 center and expand the new set of consensus regions), we must define
 the 'center', 'score', 'sample_name', and 'name' values for the new
-genomic regions. We do this as follows:</p><ul><li><p>'center' is defined by the <code>combined_center</code> parameter, which has three
+genomic regions. We do this as follows:</p><ul><li><p>'center' is defined by the <code>combinedCenter</code> parameter, which has three
 options.
 * <code>middle</code>        - the mathematical center of the new region
 * <code>strongest</code>     - the 'center' of the input region that has the
@@ -179,8 +179,8 @@ to mean of the 'center's of all overlapping
 input regions (default)</p></li>
 <li><p>'score' is the score of the genomic region from the sample whose
 'center's was used, or the mean of the 'score's if <code>middle</code> was selected
-for the <code>combined_center</code> parameter</p></li>
-<li><p>'sample_name' can be user defined (<code>combined_sample_name</code>) or is a
+for the <code>combinedCenter</code> parameter</p></li>
+<li><p>'sample_name' can be user defined (<code>combinedSampleName</code>) or is a
 concatenated string of all input 'sample_names' (default).</p></li>
 <li><p>'name' is created by combining 'sample_name' and row number to create a
 unique identifier for each newly created genomic region.</p></li>
@@ -196,23 +196,21 @@ will be updated.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">data_prepared</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepareInputRegions.html">prepareInputRegions</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">syn_data_bed</span>,</span></span>
-<span class="r-in"><span>  output_format <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
-<span class="r-in"><span>  show_messages <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  outputFormat <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
+<span class="r-in"><span>  showMessages <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `output_format` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Output format is set to <span style="color: #0000BB;">"tibble"</span>.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Lets combine the input data by defining all potential option</span></span></span>
 <span class="r-in"><span><span class="fu">combineRegions</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">data_prepared</span>,</span></span>
-<span class="r-in"><span>  found_in_samples <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>  combined_center <span class="op">=</span> <span class="st">"nearest"</span>,</span></span>
-<span class="r-in"><span>  annotate_with_input_names <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  combined_sample_name <span class="op">=</span> <span class="st">"consensus"</span>,</span></span>
-<span class="r-in"><span>  output_format <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
-<span class="r-in"><span>  show_messages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  foundInSamples <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  combinedCenter <span class="op">=</span> <span class="st">"nearest"</span>,</span></span>
+<span class="r-in"><span>  annotateWithInputNames <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  combinedSampleName <span class="op">=</span> <span class="st">"consensus"</span>,</span></span>
+<span class="r-in"><span>  outputFormat <span class="op">=</span> <span class="st">"tibble"</span>,</span></span>
+<span class="r-in"><span>  showMessages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `output_format` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `outputFormat` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provide input `data` is a <span style="color: #0000BB;">&lt;data.frame&gt;</span> with three or four columns and paths</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   to existing files.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Start loading and preparing data.</span>
@@ -220,7 +218,7 @@ will be updated.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Structure of data was successfully checked to be an accepted input.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Start with the disjoining and filtering genomic regions.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Disjoin and filter by `found_in_samples` of genomic regions successfully</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Disjoin and filter by `foundInSamples` of genomic regions successfully</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   finished.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Start with combining remaining genomic regions.</span>
@@ -234,7 +232,7 @@ will be updated.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   finished.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Information from input <span style="color: #00BB00;">center</span> will be added to output data frame.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `combined_center` was defined as <span style="color: #0000BB;">"nearest"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `combinedCenter` was defined as <span style="color: #0000BB;">"nearest"</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The mean of all input centers is calculated and the nearest input <span style="color: #00BB00;">center</span> is</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   used</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Center information in <span style="color: #00BB00;">center</span> and <span style="color: #00BB00;">score</span> are added to the output data frame.</span>
@@ -246,7 +244,7 @@ will be updated.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   <span style="color: #00BB00;">sample_name</span> and the row number.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> The columns <span style="color: #00BB00;">sample_name</span> and <span style="color: #00BB00;">name</span> were successfully populated.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `annotate_with_input_names` was set to <span style="color: #0000BB;">"TRUE"</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `annotateWithInputNames` was set to <span style="color: #0000BB;">"TRUE"</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Column <span style="color: #00BB00;">input_names</span> is added to output data frame.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Additional column <span style="color: #00BB00;">input_names</span> was successfully populated.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   </span>
@@ -258,16 +256,16 @@ will be updated.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    chrom  start   end name         score strand center sample_name input_names  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr1     101  <span style="text-decoration: underline;">1</span>000 consensus|1      0 .        550  consensus   control_rep1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr1    <span style="text-decoration: underline;">2</span>501  <span style="text-decoration: underline;">3</span>200 consensus|2      0 .       <span style="text-decoration: underline;">2</span>900. consensus   treatment_re…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr1    <span style="text-decoration: underline;">3</span>501  <span style="text-decoration: underline;">4</span>400 consensus|3      0 .       <span style="text-decoration: underline;">3</span>950. consensus   control_rep1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr1    <span style="text-decoration: underline;">4</span>501  <span style="text-decoration: underline;">5</span>300 consensus|4      0 .       <span style="text-decoration: underline;">4</span>900. consensus   control_rep1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr1    <span style="text-decoration: underline;">5</span>701  <span style="text-decoration: underline;">6</span>300 consensus|5      0 .       <span style="text-decoration: underline;">6</span>050. consensus   control_rep1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr1    <span style="text-decoration: underline;">6</span>701  <span style="text-decoration: underline;">7</span>400 consensus|6      0 .       <span style="text-decoration: underline;">7</span>050. consensus   control_rep1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2     101  <span style="text-decoration: underline;">1</span>000 consensus|7      0 .        550. consensus   control_rep1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr10    101  <span style="text-decoration: underline;">1</span>000 consensus|8      0 .        550. consensus   control_rep1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr4 2   301  <span style="text-decoration: underline;">1</span>000 consensus|9      0 .        650. consensus   control_rep1…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr4-2   401   900 consensus|10     0 .        550. consensus   control_rep1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr1     100  <span style="text-decoration: underline;">1</span>000 consensus|1      0 .         550 consensus   control_rep1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr1    <span style="text-decoration: underline;">2</span>500  <span style="text-decoration: underline;">3</span>200 consensus|2      0 .        <span style="text-decoration: underline;">2</span>900 consensus   treatment_re…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr1    <span style="text-decoration: underline;">3</span>500  <span style="text-decoration: underline;">4</span>400 consensus|3      0 .        <span style="text-decoration: underline;">3</span>950 consensus   control_rep1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr1    <span style="text-decoration: underline;">4</span>500  <span style="text-decoration: underline;">5</span>300 consensus|4      0 .        <span style="text-decoration: underline;">4</span>900 consensus   control_rep1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr1    <span style="text-decoration: underline;">5</span>700  <span style="text-decoration: underline;">6</span>300 consensus|5      0 .        <span style="text-decoration: underline;">6</span>050 consensus   control_rep1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr1    <span style="text-decoration: underline;">6</span>700  <span style="text-decoration: underline;">7</span>400 consensus|6      0 .        <span style="text-decoration: underline;">7</span>050 consensus   control_rep1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2     100  <span style="text-decoration: underline;">1</span>000 consensus|7      0 .         550 consensus   control_rep1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr10    100  <span style="text-decoration: underline;">1</span>000 consensus|8      0 .         550 consensus   control_rep1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr4 2   300  <span style="text-decoration: underline;">1</span>000 consensus|9      0 .         650 consensus   control_rep1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr4-2   400   900 consensus|10     0 .         750 consensus   control_rep1…</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
