@@ -171,7 +171,7 @@ combineRegions <- function(data,
       "i" = "Input data {.arg data} is a class {.cls GRanges}."
     ))    
     
-    input_file_genome <- GenomeInfoDb::genome(data) |> unique()
+    input_file_genome <- Seqinfo::genome(data) |> unique()
     
     if (length(input_file_genome) > 1) {
       cli::cli_abort(c(
@@ -228,7 +228,7 @@ combineRegions <- function(data,
       ">" = "Start converting and preparing data."
     ))
     
-    input_seqinfo <- GenomeInfoDb::seqinfo(data)
+    input_seqinfo <- Seqinfo::seqinfo(data)
     
     data_filtered <-
       tibble::as_tibble(data) |>

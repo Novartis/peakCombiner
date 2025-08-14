@@ -88,7 +88,7 @@
 #'                      "GRCh38.p13", "Amel_HAv3.1", "WBcel235", "TAIR10.1", 
 #'                      "hg38", "mm10", "rn6", "bosTau9", "canFam3", "musFur1", 
 #'                      "galGal6","dm6", "ce11", and "sacCer3". Please see also
-#'                      help for [GenomeInfoDb::Seqinfo()] for more details.
+#'                      help for [Seqinfo::Seqinfo()] for more details.
 #'
 #' @param trim_start  Logical value of TRUE or FALSE (default). If TRUE, and 
 #'                      no valid reference genome are provided in `genome`, 
@@ -249,7 +249,7 @@ centerExpandRegions <- function(data,
       "i" = "Input data {.arg data} is a class {.cls GRanges}."
     ))    
     
-    input_file_genome <- GenomeInfoDb::genome(data) |> unique()
+    input_file_genome <- Seqinfo::genome(data) |> unique()
     
     if (length(input_file_genome) > 1) {
       cli::cli_abort(c(
@@ -332,7 +332,7 @@ centerExpandRegions <- function(data,
       ">" = "Start converting and preparing data."
     ))
     
-    input_seqinfo <- GenomeInfoDb::seqinfo(data)
+    input_seqinfo <- Seqinfo::seqinfo(data)
     
     data <-
       tibble::as_tibble(data) |>
@@ -430,8 +430,8 @@ centerExpandRegions <- function(data,
   
   if(!is.na(genome_used)) {
       # Use provided genome
-      gr_genome <- GenomeInfoDb::Seqinfo(genome = genome_used)
-      gr_seqlevels <- GenomeInfoDb::seqlevels(gr_genome)
+      gr_genome <- Seqinfo::Seqinfo(genome = genome_used)
+      gr_seqlevels <- Seqinfo::seqlevels(gr_genome)
       
       # Filter not matching chromsomes
       data_filtered <- data |>
@@ -495,8 +495,8 @@ centerExpandRegions <- function(data,
           ">" = "Using {.field genome} {.val {genome}} to assign genome."
         ))
         
-        gr_genome <- GenomeInfoDb::Seqinfo(genome = genome)
-        gr_seqlevels <- GenomeInfoDb::seqlevels(gr_genome)
+        gr_genome <- Seqinfo::Seqinfo(genome = genome)
+        gr_seqlevels <- Seqinfo::seqlevels(gr_genome)
         
         # Filter not matching chromsomes
         data_filtered <- data |>

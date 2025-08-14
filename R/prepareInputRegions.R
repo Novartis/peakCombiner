@@ -109,7 +109,7 @@
 #'                      "GRCh38.p13", "Amel_HAv3.1", "WBcel235", "TAIR10.1", 
 #'                      "hg38", "mm10", "rn6", "bosTau9", "canFam3", "musFur1", 
 #'                      "galGal6","dm6", "ce11", and "sacCer3". Please see also
-#'                      help for [GenomeInfoDb::Seqinfo()] for more details. 
+#'                      help for [Seqinfo::seqinfo()] for more details. 
 #'
 #' @param starsAreBased Either 0, 1 (Default), or NA. Define if the provided 
 #'                        input data is 0 or 1-based. Only, if paramter is NA 
@@ -240,7 +240,7 @@ prepareInputRegions <- function(
       "i" = "Input data {.arg data} is a class {.cls GRanges}."
     ))    
     
-    input_file_genome <- GenomeInfoDb::genome(data) |> unique()
+    input_file_genome <- Seqinfo::genome(data) |> unique()
     
     if (length(input_file_genome) > 1) {
       cli::cli_abort(c(
@@ -351,7 +351,7 @@ prepareInputRegions <- function(
       ">" = "Start converting and preparing data."
     ))
     
-    input_seqinfo <- GenomeInfoDb::seqinfo(data)
+    input_seqinfo <- Seqinfo::seqinfo(data)
     
     data_prepared <-
       tibble::as_tibble(data) |>
