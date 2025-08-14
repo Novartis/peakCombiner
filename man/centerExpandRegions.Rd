@@ -56,7 +56,7 @@ based on GenomicRanges supported genomes like "GRCh38",
 "GRCh38.p13", "Amel_HAv3.1", "WBcel235", "TAIR10.1",
 "hg38", "mm10", "rn6", "bosTau9", "canFam3", "musFur1",
 "galGal6","dm6", "ce11", and "sacCer3". Please see also
-help for \code{\link[GenomeInfoDb:Seqinfo-class]{GenomeInfoDb::Seqinfo()}} for more details.}
+help for \code{\link[Seqinfo:Seqinfo-class]{Seqinfo::Seqinfo()}} for more details.}
 
 \item{trim_start}{Logical value of TRUE or FALSE (default). If TRUE, and
 no valid reference genome are provided in \code{genome},
