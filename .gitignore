@@ -4,8 +4,8 @@
 .Ruserdata
 .github
 inst/doc
-.Rproj
-^peakCombiner-git\\.Rproj$
+#.Rproj
+#^peakCombiner-git\\.Rproj$
 
 #For the moment not push CITATION
 CITATION
