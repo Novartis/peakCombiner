@@ -75,7 +75,7 @@ each sample.</p></li>
 <span>  <span class="va">data</span>,</span>
 <span>  outputFormat <span class="op">=</span> <span class="st">"GenomicRanges"</span>,</span>
 <span>  genome <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  starsAreBased <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  startsAreBased <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  showMessages <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -107,10 +107,10 @@ based on GenomicRanges supported genomes like "GRCh38",
 "GRCh38.p13", "Amel_HAv3.1", "WBcel235", "TAIR10.1",
 "hg38", "mm10", "rn6", "bosTau9", "canFam3", "musFur1",
 "galGal6","dm6", "ce11", and "sacCer3". Please see also
-help for <code><a href="https://rdrr.io/pkg/Seqinfo/man/Seqinfo-class.html" class="external-link">GenomeInfoDb::Seqinfo()</a></code> for more details.</p></dd>
+help for <code><a href="https://rdrr.io/pkg/Seqinfo/man/seqinfo.html" class="external-link">Seqinfo::seqinfo()</a></code> for more details.</p></dd>
 
 
-<dt id="arg-starsarebased">starsAreBased<a class="anchor" aria-label="anchor" href="#arg-starsarebased"></a></dt>
+<dt id="arg-startsarebased">startsAreBased<a class="anchor" aria-label="anchor" href="#arg-startsarebased"></a></dt>
 <dd><p>Either 0, 1 (Default), or NA. Define if the provided
 input data is 0 or 1-based. Only, if paramter is NA
 then GenomicRanges object, tibbles and dataframes are
@@ -219,7 +219,7 @@ and maintain this information for the function
 <span class="r-in"><span>  showMessages <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `outputFormat` is set to <span style="color: #0000BB;">"tibble"</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `starsAreBased` is <span style="color: #0000BB;">1</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `startsAreBased` is <span style="color: #0000BB;">1</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Argument `starts.in.df.are.0based` is <span style="color: #0000BB;">FALSE</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Provide input `data` is a pre-loaded <span style="color: #0000BB;">&lt;data.frame&gt;</span> with the required column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   names.</span>
