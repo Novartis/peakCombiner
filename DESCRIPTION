@@ -51,6 +51,7 @@ Imports:
     dplyr (>= 1.1.2),
     IRanges,
     GenomicRanges,
+    GenomeInfoDb,
     tidyselect,
     purrr,
     readr (>= 2.1.2),
