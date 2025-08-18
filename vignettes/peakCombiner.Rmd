@@ -209,18 +209,18 @@ combined_input |>
 prepareInputRegions(
   data = combined_input,
   outputFormat = "tibble",
-  starsAreBased = 1,
+  startsAreBased = 1,
   showMessages = FALSE
 )
 ```
 
-If you set the `starsAreBased = 0`, the package assumes the input is 0-based and the value in the column `start` is adjusted. 
+If you set the `startsAreBased = 0`, the package assumes the input is 0-based and the value in the column `start` is adjusted. 
 
 ```{r, eval=TRUE}
 prepareInputRegions(
   data = combined_input,
   outputFormat = "tibble",
-  starsAreBased = 0,
+  startsAreBased = 0,
   showMessages = FALSE
 )
 ```
@@ -268,7 +268,7 @@ sample_sheet
     ```{r, eval = FALSE}
 prepareInputRegions(
   data = sample_sheet,
-  starsAreBased = 0,
+  startsAreBased = 0,
   showMessages = FALSE
 )
     ```
@@ -343,7 +343,7 @@ combined_input |>
 prepareInputRegions(
   data = combined_input,
   outputFormat = "tibble",
-  starsAreBased = 1,
+  startsAreBased = 1,
   showMessages = FALSE
 )
     ```
@@ -415,7 +415,7 @@ And now we use it as input for `prepareInputRegions`.
 prepareInputRegions(
   data = syn_data_bed,
   outputFormat = "data.frame",
-   starsAreBased = 0,
+   startsAreBased = 0,
   showMessages = FALSE
 )
 ```

@@ -111,7 +111,7 @@
 #'                      "galGal6","dm6", "ce11", and "sacCer3". Please see also
 #'                      help for [Seqinfo::seqinfo()] for more details. 
 #'
-#' @param starsAreBased Either 0, 1 (Default), or NA. Define if the provided 
+#' @param startsAreBased Either 0, 1 (Default), or NA. Define if the provided 
 #'                        input data is 0 or 1-based. Only, if paramter is NA 
 #'                        then GenomicRanges object, tibbles and dataframes are
 #'                        considered 1-based, while data loaded from a
@@ -170,7 +170,7 @@ prepareInputRegions <- function(
     data, 
     outputFormat = "GenomicRanges",
     genome = NA, 
-    starsAreBased = 1, 
+    startsAreBased = 1, 
     showMessages = TRUE
     ) {
   ### -----------------------------------------------------------------------###
@@ -281,17 +281,17 @@ prepareInputRegions <- function(
   ### Check if input is 0 or 1 based
   ### -----------------------------------------------------------------------###
   
-  if(!is.na(starsAreBased) & !is.numeric(starsAreBased)) {
+  if(!is.na(startsAreBased) & !is.numeric(startsAreBased)) {
     cli::cli_abort(c(
-      "x" = "Argument {.arg starsAreBased} has to be either numeric {.val 0}, 
+      "x" = "Argument {.arg startsAreBased} has to be either numeric {.val 0}, 
       numeric {.num 1} or {.val NA}}.",
-      "i" = "Argument {.arg starsAreBased} is {.val {starsAreBased}}."
+      "i" = "Argument {.arg startsAreBased} is {.val {startsAreBased}}."
     ))
   }
   
-  if(is.na(starsAreBased)) {
+  if(is.na(startsAreBased)) {
     cli::cli_inform(c(
-      "i" = "Argument {.arg starsAreBased} is {.val {starsAreBased}}."
+      "i" = "Argument {.arg startsAreBased} is {.val {startsAreBased}}."
     ))
     
     if (all(required_samplesheet_colnames %in% colnames(data))) {
@@ -312,18 +312,18 @@ prepareInputRegions <- function(
       
     }
     
-  } else if (starsAreBased %in% c(0,1)) {
+  } else if (startsAreBased %in% c(0,1)) {
     cli::cli_inform(c(
-      "i" = "Argument {.arg starsAreBased} is {.val {starsAreBased}}."
+      "i" = "Argument {.arg startsAreBased} is {.val {startsAreBased}}."
     ))
     
-    if (starsAreBased == 1) {
+    if (startsAreBased == 1) {
       starts.in.df.are.0based <- FALSE
       cli::cli_inform(c(
         "i" = "Argument {.arg starts.in.df.are.0based} is 
         {.val {starts.in.df.are.0based}}."
       ))
-    } else if (starsAreBased == 0) {
+    } else if (startsAreBased == 0) {
       starts.in.df.are.0based <- TRUE
       cli::cli_inform(c(
         "i" = "Argument {.arg starts.in.df.are.0based} is 
@@ -333,9 +333,9 @@ prepareInputRegions <- function(
     
   } else {
     cli::cli_abort(c(
-      "x" = "Argument {.arg starsAreBased} has to be either {.val 0}, {.val 1} 
+      "x" = "Argument {.arg startsAreBased} has to be either {.val 0}, {.val 1} 
       or {.val NA}}.",
-      "i" = "Argument {.arg starsAreBased} is {.val {starsAreBased}}."
+      "i" = "Argument {.arg startsAreBased} is {.val {startsAreBased}}."
     ))
   }
   
@@ -375,10 +375,10 @@ prepareInputRegions <- function(
       )
   } else if (all(required_colnames %in% colnames(data))) {
     
-    #if (!is.na(starsAreBased) | starsAreBased == 2) {
+    #if (!is.na(startsAreBased) | startsAreBased == 2) {
     #  cli::cli_inform(c(
     #    "i" = "Provide input {.arg data} is a tibble and the parameter 
-    #    {.arg starsAreBased} was set to {.var 0} by user.",
+    #    {.arg startsAreBased} was set to {.var 0} by user.",
     #    ">" = "Converting input to 1-based."
     #  ))
     #  data_prepared <- data |>
@@ -617,10 +617,10 @@ prepareInputRegions <- function(
       data_prepared <- data_prepared
     } else if (inherits(data, "tbl_df") || inherits(data, "data.frame")) {
       
-      if (starsAreBased %in% c(1)) {
+      if (startsAreBased %in% c(1)) {
         data_prepared <- data_prepared
         
-      } else if (starsAreBased %in% c(0, NA)) {
+      } else if (startsAreBased %in% c(0, NA)) {
         data_prepared <- data_prepared |>
           dplyr::mutate(start = .data$start + 1)
         }

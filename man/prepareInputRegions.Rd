@@ -8,7 +8,7 @@ prepareInputRegions(
   data,
   outputFormat = "GenomicRanges",
   genome = NA,
-  starsAreBased = 1,
+  startsAreBased = 1,
   showMessages = TRUE
 )
 }
@@ -35,7 +35,7 @@ based on GenomicRanges supported genomes like "GRCh38",
 "galGal6","dm6", "ce11", and "sacCer3". Please see also
 help for \code{\link[Seqinfo:seqinfo]{Seqinfo::seqinfo()}} for more details.}
 
-\item{starsAreBased}{Either 0, 1 (Default), or NA. Define if the provided
+\item{startsAreBased}{Either 0, 1 (Default), or NA. Define if the provided
 input data is 0 or 1-based. Only, if paramter is NA
 then GenomicRanges object, tibbles and dataframes are
 considered 1-based, while data loaded from a
