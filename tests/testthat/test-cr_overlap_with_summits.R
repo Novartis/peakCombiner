@@ -50,7 +50,8 @@ test_data_reduce <- peakCombiner:::crReduce(
 ##
 test_data_overlap <- peakCombiner:::crOverlapWithSummits(
   data = test_data_reduce,
-  input = test_data_filtered
+  input = test_data_filtered,
+  removeFlankOverlaps = TRUE
 )
 ##
 ### -----------------------------------------------------------------------###
@@ -90,6 +91,57 @@ test_that("Input data frame has the expected structure", {
   expect_true(is.character(data$sample_name))
   expect_true(sum(stringr::str_detect(data$name, "|")) > 0)
 })
+##
+### -----------------------------------------------------------------------###
+### Test removeFlankOverlaps
+### -----------------------------------------------------------------------###
+##
+
+testthat::expect_no_error(
+  peakCombiner:::crOverlapWithSummits(
+  data = test_data_reduce,
+  input = test_data_filtered,
+  removeFlankOverlaps = TRUE
+  )
+)
+
+
+testthat::expect_no_error(
+  peakCombiner:::crOverlapWithSummits(
+    data = test_data_reduce,
+    input = test_data_filtered,
+    removeFlankOverlaps = FALSE
+  )
+)
+
+testthat::expect_error(
+  peakCombiner:::crOverlapWithSummits(
+    data = test_data_reduce,
+    input = test_data_filtered,
+    removeFlankOverlaps = NULL
+  )
+)
+
+## See if non-overlaping regions are removed using removeFlankOverlaps
+test_data_reduce_1 <-test_data_reduce[1:5,] |> 
+  dplyr::mutate(chrom = "chr5") |> 
+  rbind(test_data_reduce)
+
+testthat::expect_equal(
+  peakCombiner:::crOverlapWithSummits(
+  data = test_data_reduce_1,
+  input = test_data_filtered,
+  removeFlankOverlaps = FALSE
+  ) |> nrow(), 47
+)
+testthat::expect_equal(
+  peakCombiner:::crOverlapWithSummits(
+    data = test_data_reduce_1,
+    input = test_data_filtered,
+    removeFlankOverlaps = TRUE
+  ) |> nrow(), 42
+)
+
 ##
 ### -----------------------------------------------------------------------###
 ### Test Output

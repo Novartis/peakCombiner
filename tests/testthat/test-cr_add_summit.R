@@ -49,7 +49,7 @@ test_data_disjoin_filter <- peakCombiner:::crDisjoinFilter(
 test_data_reduce <- peakCombiner:::crReduce(data = test_data_disjoin_filter)
 test_data_overlap <- peakCombiner:::crOverlapWithSummits(
   data = test_data_reduce,
-  input = test_data_filtered
+  input = test_data_filtered,
 )
 ##
 test_data_combined_with_summit <- peakCombiner:::crAddSummit(
