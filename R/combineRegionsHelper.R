@@ -295,12 +295,21 @@ crReduce <- function(data) {
 #'
 #' @param input The original input file from `combineRegions` to extract center
 #' information
+#' 
+#' @param removeFlankOverlaps TRUE (default) / FALSE. If TRUE, the combined 
+#'                            regions are checked for an overlap with an input 
+#'                            summit. Regions without such an overlap are 
+#'                            considered as false positive regions caused by an
+#'                            artificial overlap of neighboring regions due to 
+#'                            the expansion step. If FLASE, this step will be 
+#'                            skipped.
 #'
 #' @return A tibble with the following columns: `chrom`, `start`, `end`,
 #' `width`, `strand`, `name`.
 #'
 crOverlapWithSummits <- function(data,
-                                    input) {
+                                 input,
+                                 removeFlankOverlaps = TRUE) {
   ### -----------------------------------------------------------------------###
   ### Correct parameters & load needed variables
   ### -----------------------------------------------------------------------###
@@ -348,66 +357,87 @@ crOverlapWithSummits <- function(data,
     rm(missing_cols)
   }
 
+  ## Check if removeFlankOverlaps is logical
+  
+  if(!is.logical(removeFlankOverlaps)) {
+    
+    cli::cli_abort(c(
+      "x" = "Parameter {.arg removeFlankOverlaps} has to {.cls logical}."
+    ))
+    
+  }
+  
   ### -----------------------------------------------------------------------###
   ### Combine peaks - Overlap with summit
   ### -----------------------------------------------------------------------###
   ## 3: Remove false positive peaks without summit
-  cli::cli_inform(c(
-    ">" = "Start with identification of overlaps between the original summit and
+  
+  if(isTRUE(removeFlankOverlaps) ){
+    cli::cli_inform(c(
+      ">" = "Start with identification of overlaps between the original summit and
     remaining genomic regions.",
-    "i" = "Remaining regions without overlap will be
+      "i" = "Remaining regions without overlap will be
     removed."
-  ))
-
-  ## Define summits from input data
-  summits <-
-    data |>
-    dplyr::mutate(
-      start = .data$center,
-      end = .data$center + 1
-    ) |>
-    dplyr::select("chrom", "start", "end") |>
-    unique()
-
-  ## Get overlap between NEW PEAKs and original summits
-  overlap_meta <-
-    GenomicRanges::countOverlaps(
-      GenomicRanges::makeGRangesFromDataFrame(
-        data |>
-          dplyr::select("chrom", "start", "end") |>
-          unique(),
-        keep.extra.columns = TRUE
-      ),
-      GenomicRanges::makeGRangesFromDataFrame(summits,
-        keep.extra.columns = TRUE
-      )
-    ) |>
-    tibble::as_tibble() |>
-    tibble::rownames_to_column() |>
-    dplyr::relocate("ranking" = "rowname", .after = tidyr::last_col()) |>
-    dplyr::rename(count = "value")
-
-  ## Make a df with all overlapping peaks
-  data_filtered_overlap <-
-    data |>
-    dplyr::group_by(
-      .data$chrom,
-      .data$start,
-      .data$end,
-      .data$width,
-      .data$strand
-    ) |>
-    tidyr::nest() |>
-    tibble::rownames_to_column() |>
-    dplyr::relocate("ranking" = "rowname", .after = tidyr::last_col()) |>
-    dplyr::left_join(overlap_meta) |>
-    dplyr::filter(!.data$count == 0) |>
-    dplyr::select(-"ranking", -"count") |>
-    tidyr::unnest(cols = c(data)) |>
-    dplyr::ungroup()
-
-  rm(summits, overlap_meta)
-
+    ))
+    
+    ## Define summits from input data
+    summits <-
+      input |>
+      dplyr::mutate(
+        start = .data$center,
+        end = .data$center + 1
+      ) |>
+      dplyr::select("chrom", "start", "end") |>
+      unique()
+    
+    ## Get overlap between NEW PEAKs and original summits
+    overlap_meta <-
+      GenomicRanges::countOverlaps(
+        GenomicRanges::makeGRangesFromDataFrame(
+          data |>
+            dplyr::select("chrom", "start", "end") |>
+            unique(),
+          keep.extra.columns = TRUE
+        ),
+        GenomicRanges::makeGRangesFromDataFrame(summits,
+                                                keep.extra.columns = TRUE
+        )
+      ) |>
+      tibble::as_tibble() |>
+      tibble::rownames_to_column() |>
+      dplyr::relocate("ranking" = "rowname", .after = tidyr::last_col()) |>
+      dplyr::rename(count = "value") |> suppressWarnings()
+    
+    ## Make a df with all overlapping peaks
+    data_filtered_overlap <-
+      data |>
+      dplyr::group_by(
+        .data$chrom,
+        .data$start,
+        .data$end,
+        .data$width,
+        .data$strand
+      ) |>
+      tidyr::nest() |>
+      tibble::rownames_to_column() |>
+      dplyr::relocate("ranking" = "rowname", .after = tidyr::last_col()) |>
+      dplyr::left_join(overlap_meta) |>
+      dplyr::filter(!.data$count == 0) |>
+      dplyr::select(-"ranking", -"count") |>
+      tidyr::unnest(cols = c(data)) |>
+      dplyr::ungroup()
+    
+    rm(summits, overlap_meta)
+  
+  } else if (isFALSE(removeFlankOverlaps)) {
+    cli::cli_inform(c(
+    "i" = "Regions are not checked for overlap with innput summits. 
+    Nothing is removed."
+    ))
+    data_filtered_overlap <-
+      data
+  }
+  
   ### -----------------------------------------------------------------------###
   ### Return prepared input data
   ### -----------------------------------------------------------------------###

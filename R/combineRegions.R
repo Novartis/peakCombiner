@@ -59,6 +59,7 @@
 #'                            regions that ar found in at least
 #'                            `foundInSamples` **fraction** of samples.
 #'                            Default value is 2.
+#' 
 #' @param combinedCenter   Defines how the column 'center' will be
 #'                            populated for each genomic region in the output
 #'                            data. Allowed options are
@@ -69,6 +70,15 @@
 #'          * `nearest`       - the 'center' of the input region that is closest
 #'                              to mean of the 'center's of all overlapping
 #'                              input regions (default)
+#' 
+#' @param removeFlankOverlaps TRUE (default) / FALSE. If TRUE, the combined 
+#'                            regions are checked for an overlap with an input 
+#'                            summit. Regions without such an overlap are 
+#'                            considered as false positive regions caused by an
+#'                            artificial overlap of neighboring regions due to 
+#'                            the expansion step. If FLASE, this step will be 
+#'                            skipped.
+#' 
 #' @param annotateWithInputNames TRUE / FALSE (default). If TRUE, a new
 #'                                    column named 'input_names' is created
 #'                                    in the output data that is populated for
@@ -127,6 +137,7 @@
 combineRegions <- function(data,
                             foundInSamples = 2,
                             combinedCenter = "nearest",
+                            removeFlankOverlaps = TRUE,
                             annotateWithInputNames = FALSE,
                             combinedSampleName = NULL,
                             outputFormat = "GenomicRanges",
@@ -300,7 +311,8 @@ combineRegions <- function(data,
   ## 3: Remove false positive peaks without summit
   data_overlap_summit <- crOverlapWithSummits(
     data = data_reduce,
-    input = data
+    input = data,
+    removeFlankOverlaps = removeFlankOverlaps
   )
 
   ### -----------------------------------------------------------------------###
