@@ -9,6 +9,7 @@ combineRegions(
   data,
   foundInSamples = 2,
   combinedCenter = "nearest",
+  removeFlankOverlaps = TRUE,
   annotateWithInputNames = FALSE,
   combinedSampleName = NULL,
   outputFormat = "GenomicRanges",
@@ -39,6 +40,14 @@ regions
 * \code{nearest}       - the 'center' of the input region that is closest
 to mean of the 'center's of all overlapping
 input regions (default)}
+
+\item{removeFlankOverlaps}{TRUE (default) / FALSE. If TRUE, the combined
+regions are checked for an overlap with an input
+summit. Regions without such an overlap are
+considered as false positive regions caused by an
+artificial overlap of neighboring regions due to
+the expansion step. If FLASE, this step will be
+skipped.}
 
 \item{annotateWithInputNames}{TRUE / FALSE (default). If TRUE, a new
 column named 'input_names' is created

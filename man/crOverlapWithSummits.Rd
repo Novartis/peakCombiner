@@ -4,7 +4,7 @@
 \alias{crOverlapWithSummits}
 \title{Overlap genomic regions with original summits to remove false positive}
 \usage{
-crOverlapWithSummits(data, input)
+crOverlapWithSummits(data, input, removeFlankOverlaps = TRUE)
 }
 \arguments{
 \item{data}{PeakCombiner data frame structure with required columns
@@ -14,6 +14,14 @@ columns will be dropped}
 
 \item{input}{The original input file from \code{combineRegions} to extract center
 information}
+
+\item{removeFlankOverlaps}{TRUE (default) / FALSE. If TRUE, the combined
+regions are checked for an overlap with an input
+summit. Regions without such an overlap are
+considered as false positive regions caused by an
+artificial overlap of neighboring regions due to
+the expansion step. If FLASE, this step will be
+skipped.}
 }
 \value{
 A tibble with the following columns: \code{chrom}, \code{start}, \code{end},
