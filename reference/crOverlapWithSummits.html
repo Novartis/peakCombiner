@@ -62,7 +62,7 @@ For details see the details for <a href="combineRegions.html">combineRegions</a>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crOverlapWithSummits</span><span class="op">(</span><span class="va">data</span>, <span class="va">input</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crOverlapWithSummits</span><span class="op">(</span><span class="va">data</span>, <span class="va">input</span>, removeFlankOverlaps <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -79,6 +79,16 @@ columns will be dropped</p></dd>
 <dt id="arg-input">input<a class="anchor" aria-label="anchor" href="#arg-input"></a></dt>
 <dd><p>The original input file from <code>combineRegions</code> to extract center
 information</p></dd>
+
+
+<dt id="arg-removeflankoverlaps">removeFlankOverlaps<a class="anchor" aria-label="anchor" href="#arg-removeflankoverlaps"></a></dt>
+<dd><p>TRUE (default) / FALSE. If TRUE, the combined
+regions are checked for an overlap with an input
+summit. Regions without such an overlap are
+considered as false positive regions caused by an
+artificial overlap of neighboring regions due to
+the expansion step. If FLASE, this step will be
+skipped.</p></dd>
 
 </dl></div>
     <div id="value">

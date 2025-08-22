@@ -76,6 +76,7 @@ Please see <a href="prepareInputRegions.html">prepareInputRegions</a> for more d
 <span>  <span class="va">data</span>,</span>
 <span>  foundInSamples <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  combinedCenter <span class="op">=</span> <span class="st">"nearest"</span>,</span>
+<span>  removeFlankOverlaps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  annotateWithInputNames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  combinedSampleName <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  outputFormat <span class="op">=</span> <span class="st">"GenomicRanges"</span>,</span>
@@ -115,6 +116,16 @@ regions
 * <code>nearest</code>       - the 'center' of the input region that is closest
 to mean of the 'center's of all overlapping
 input regions (default)</p></dd>
+
+
+<dt id="arg-removeflankoverlaps">removeFlankOverlaps<a class="anchor" aria-label="anchor" href="#arg-removeflankoverlaps"></a></dt>
+<dd><p>TRUE (default) / FALSE. If TRUE, the combined
+regions are checked for an overlap with an input
+summit. Regions without such an overlap are
+considered as false positive regions caused by an
+artificial overlap of neighboring regions due to
+the expansion step. If FLASE, this step will be
+skipped.</p></dd>
 
 
 <dt id="arg-annotatewithinputnames">annotateWithInputNames<a class="anchor" aria-label="anchor" href="#arg-annotatewithinputnames"></a></dt>
