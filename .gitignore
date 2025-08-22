@@ -4,6 +4,7 @@
 .Ruserdata
 .github
 inst/doc
+peakCombiner_hex.png
 #.Rproj
 #^peakCombiner-git\\.Rproj$
 
