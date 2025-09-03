@@ -5,7 +5,7 @@
 .github
 inst/doc
 peakCombiner_hex.png
-#.Rproj
+.Rproj
 #^peakCombiner-git\\.Rproj$
 
 #For the moment not push CITATION
